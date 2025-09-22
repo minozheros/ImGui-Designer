@@ -1,0 +1,748 @@
+{
+  "ImGuiStyle": [
+    {
+      "type": "float",
+      "name": "FontSizeBase"
+    },
+    {
+      "type": "float",
+      "name": "FontScaleMain"
+    },
+    {
+      "type": "float",
+      "name": "FontScaleDpi"
+    },
+    {
+      "type": "float",
+      "name": "Alpha"
+    },
+    {
+      "type": "float",
+      "name": "DisabledAlpha"
+    },
+    {
+      "type": "ImVec2",
+      "name": "WindowPadding"
+    },
+    {
+      "type": "float",
+      "name": "WindowRounding"
+    },
+    {
+      "type": "float",
+      "name": "WindowBorderSize"
+    },
+    {
+      "type": "float",
+      "name": "WindowBorderHoverPadding"
+    },
+    {
+      "type": "ImVec2",
+      "name": "WindowMinSize"
+    },
+    {
+      "type": "ImVec2",
+      "name": "WindowTitleAlign"
+    },
+    {
+      "type": "ImGuiDir",
+      "name": "WindowMenuButtonPosition"
+    },
+    {
+      "type": "float",
+      "name": "ChildRounding"
+    },
+    {
+      "type": "float",
+      "name": "ChildBorderSize"
+    },
+    {
+      "type": "float",
+      "name": "PopupRounding"
+    },
+    {
+      "type": "float",
+      "name": "PopupBorderSize"
+    },
+    {
+      "type": "ImVec2",
+      "name": "FramePadding"
+    },
+    {
+      "type": "float",
+      "name": "FrameRounding"
+    },
+    {
+      "type": "float",
+      "name": "FrameBorderSize"
+    },
+    {
+      "type": "ImVec2",
+      "name": "ItemSpacing"
+    },
+    {
+      "type": "ImVec2",
+      "name": "ItemInnerSpacing"
+    },
+    {
+      "type": "ImVec2",
+      "name": "CellPadding"
+    },
+    {
+      "type": "ImVec2",
+      "name": "TouchExtraPadding"
+    },
+    {
+      "type": "float",
+      "name": "IndentSpacing"
+    },
+    {
+      "type": "float",
+      "name": "ColumnsMinSpacing"
+    },
+    {
+      "type": "float",
+      "name": "ScrollbarSize"
+    },
+    {
+      "type": "float",
+      "name": "ScrollbarRounding"
+    },
+    {
+      "type": "float",
+      "name": "ScrollbarPadding"
+    },
+    {
+      "type": "float",
+      "name": "GrabMinSize"
+    },
+    {
+      "type": "float",
+      "name": "GrabRounding"
+    },
+    {
+      "type": "float",
+      "name": "LogSliderDeadzone"
+    },
+    {
+      "type": "float",
+      "name": "ImageBorderSize"
+    },
+    {
+      "type": "float",
+      "name": "TabRounding"
+    },
+    {
+      "type": "float",
+      "name": "TabBorderSize"
+    },
+    {
+      "type": "float",
+      "name": "TabMinWidthBase"
+    },
+    {
+      "type": "float",
+      "name": "TabMinWidthShrink"
+    },
+    {
+      "type": "float",
+      "name": "TabCloseButtonMinWidthSelected"
+    },
+    {
+      "type": "float",
+      "name": "TabCloseButtonMinWidthUnselected"
+    },
+    {
+      "type": "float",
+      "name": "TabBarBorderSize"
+    },
+    {
+      "type": "float",
+      "name": "TabBarOverlineSize"
+    },
+    {
+      "type": "float",
+      "name": "TableAngledHeadersAngle"
+    },
+    {
+      "type": "ImVec2",
+      "name": "TableAngledHeadersTextAlign"
+    },
+    {
+      "type": "ImGuiTreeNodeFlags",
+      "name": "TreeLinesFlags"
+    },
+    {
+      "type": "float",
+      "name": "TreeLinesSize"
+    },
+    {
+      "type": "float",
+      "name": "TreeLinesRounding"
+    },
+    {
+      "type": "ImGuiDir",
+      "name": "ColorButtonPosition"
+    },
+    {
+      "type": "ImVec2",
+      "name": "ButtonTextAlign"
+    },
+    {
+      "type": "ImVec2",
+      "name": "SelectableTextAlign"
+    },
+    {
+      "type": "float",
+      "name": "SeparatorTextBorderSize"
+    },
+    {
+      "type": "ImVec2",
+      "name": "SeparatorTextAlign"
+    },
+    {
+      "type": "ImVec2",
+      "name": "SeparatorTextPadding"
+    },
+    {
+      "type": "ImVec2",
+      "name": "DisplayWindowPadding"
+    },
+    {
+      "type": "ImVec2",
+      "name": "DisplaySafeAreaPadding"
+    },
+    {
+      "type": "bool",
+      "name": "DockingNodeHasCloseButton"
+    },
+    {
+      "type": "float",
+      "name": "DockingSeparatorSize"
+    },
+    {
+      "type": "float",
+      "name": "MouseCursorScale"
+    },
+    {
+      "type": "bool",
+      "name": "AntiAliasedLines"
+    },
+    {
+      "type": "bool",
+      "name": "AntiAliasedLinesUseTex"
+    },
+    {
+      "type": "bool",
+      "name": "AntiAliasedFill"
+    },
+    {
+      "type": "float",
+      "name": "CurveTessellationTol"
+    },
+    {
+      "type": "float",
+      "name": "CircleTessellationMaxError"
+    },
+    {
+      "type": "float",
+      "name": "HoverStationaryDelay"
+    },
+    {
+      "type": "float",
+      "name": "HoverDelayShort"
+    },
+    {
+      "type": "float",
+      "name": "HoverDelayNormal"
+    },
+    {
+      "type": "ImGuiHoveredFlags",
+      "name": "HoverFlagsForTooltipMouse"
+    },
+    {
+      "type": "ImGuiHoveredFlags",
+      "name": "HoverFlagsForTooltipNav"
+    },
+    {
+      "type": "float",
+      "name": "_MainScale"
+    },
+    {
+      "type": "float",
+      "name": "_NextFrameFontSizeBase"
+    }
+  ],
+  "ImGuiKeyData": [
+    {
+      "type": "bool",
+      "name": "Down"
+    },
+    {
+      "type": "float",
+      "name": "DownDuration"
+    },
+    {
+      "type": "float",
+      "name": "DownDurationPrev"
+    },
+    {
+      "type": "float",
+      "name": "AnalogValue"
+    }
+  ],
+  "ImGuiIO": [
+    {
+      "type": "ImGuiConfigFlags",
+      "name": "ConfigFlags"
+    },
+    {
+      "type": "ImGuiBackendFlags",
+      "name": "BackendFlags"
+    },
+    {
+      "type": "ImVec2",
+      "name": "DisplaySize"
+    },
+    {
+      "type": "ImVec2",
+      "name": "DisplayFramebufferScale"
+    },
+    {
+      "type": "float",
+      "name": "DeltaTime"
+    },
+    {
+      "type": "float",
+      "name": "IniSavingRate"
+    },
+    {
+      "type": "bool",
+      "name": "FontAllowUserScaling"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigNavSwapGamepadButtons"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigNavMoveSetMousePos"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigNavCaptureKeyboard"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigNavEscapeClearFocusItem"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigNavEscapeClearFocusWindow"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigNavCursorVisibleAuto"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigNavCursorVisibleAlways"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigDockingNoSplit"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigDockingWithShift"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigDockingAlwaysTabBar"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigDockingTransparentPayload"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigViewportsNoAutoMerge"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigViewportsNoTaskBarIcon"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigViewportsNoDecoration"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigViewportsNoDefaultParent"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigViewportsPlatformFocusSetsImGuiFocus"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigDpiScaleFonts"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigDpiScaleViewports"
+    },
+    {
+      "type": "bool",
+      "name": "MouseDrawCursor"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigMacOSXBehaviors"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigInputTrickleEventQueue"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigInputTextCursorBlink"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigInputTextEnterKeepActive"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigDragClickToInputText"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigWindowsResizeFromEdges"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigWindowsMoveFromTitleBarOnly"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigWindowsCopyContentsWithCtrlC"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigScrollbarScrollByPage"
+    },
+    {
+      "type": "float",
+      "name": "ConfigMemoryCompactTimer"
+    },
+    {
+      "type": "float",
+      "name": "MouseDoubleClickTime"
+    },
+    {
+      "type": "float",
+      "name": "MouseDoubleClickMaxDist"
+    },
+    {
+      "type": "float",
+      "name": "MouseDragThreshold"
+    },
+    {
+      "type": "float",
+      "name": "KeyRepeatDelay"
+    },
+    {
+      "type": "float",
+      "name": "KeyRepeatRate"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigErrorRecovery"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigErrorRecoveryEnableAssert"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigErrorRecoveryEnableDebugLog"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigErrorRecoveryEnableTooltip"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigDebugIsDebuggerPresent"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigDebugHighlightIdConflicts"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigDebugHighlightIdConflictsShowItemPicker"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigDebugBeginReturnValueOnce"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigDebugBeginReturnValueLoop"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigDebugIgnoreFocusLoss"
+    },
+    {
+      "type": "bool",
+      "name": "ConfigDebugIniSettings"
+    },
+    {
+      "type": "bool",
+      "name": "WantCaptureMouse"
+    },
+    {
+      "type": "bool",
+      "name": "WantCaptureKeyboard"
+    },
+    {
+      "type": "bool",
+      "name": "WantTextInput"
+    },
+    {
+      "type": "bool",
+      "name": "WantSetMousePos"
+    },
+    {
+      "type": "bool",
+      "name": "WantSaveIniSettings"
+    },
+    {
+      "type": "bool",
+      "name": "NavActive"
+    },
+    {
+      "type": "bool",
+      "name": "NavVisible"
+    },
+    {
+      "type": "float",
+      "name": "Framerate"
+    },
+    {
+      "type": "int",
+      "name": "MetricsRenderVertices"
+    },
+    {
+      "type": "int",
+      "name": "MetricsRenderIndices"
+    },
+    {
+      "type": "int",
+      "name": "MetricsRenderWindows"
+    },
+    {
+      "type": "int",
+      "name": "MetricsActiveWindows"
+    },
+    {
+      "type": "ImVec2",
+      "name": "MouseDelta"
+    },
+    {
+      "type": "ImVec2",
+      "name": "MousePos"
+    },
+    {
+      "type": "float",
+      "name": "MouseWheel"
+    },
+    {
+      "type": "float",
+      "name": "MouseWheelH"
+    },
+    {
+      "type": "ImGuiMouseSource",
+      "name": "MouseSource"
+    },
+    {
+      "type": "ImGuiID",
+      "name": "MouseHoveredViewport"
+    },
+    {
+      "type": "bool",
+      "name": "KeyCtrl"
+    },
+    {
+      "type": "bool",
+      "name": "KeyShift"
+    },
+    {
+      "type": "bool",
+      "name": "KeyAlt"
+    },
+    {
+      "type": "bool",
+      "name": "KeySuper"
+    },
+    {
+      "type": "ImGuiKeyChord",
+      "name": "KeyMods"
+    },
+    {
+      "type": "bool",
+      "name": "WantCaptureMouseUnlessPopupClose"
+    },
+    {
+      "type": "ImVec2",
+      "name": "MousePosPrev"
+    },
+    {
+      "type": "bool",
+      "name": "MouseWheelRequestAxisSwap"
+    },
+    {
+      "type": "bool",
+      "name": "MouseCtrlLeftAsRightClick"
+    },
+    {
+      "type": "float",
+      "name": "PenPressure"
+    },
+    {
+      "type": "bool",
+      "name": "AppFocusLost"
+    },
+    {
+      "type": "bool",
+      "name": "AppAcceptingEvents"
+    },
+    {
+      "type": "ImWchar16",
+      "name": "InputQueueSurrogate"
+    },
+    {
+      "type": "ImVector<ImWchar>",
+      "name": "InputQueueCharacters"
+    },
+    {
+      "type": "float",
+      "name": "FontGlobalScale"
+    }
+  ],
+  "ImGuiSizeCallbackData": [
+    {
+      "type": "ImVec2",
+      "name": "Pos"
+    },
+    {
+      "type": "ImVec2",
+      "name": "CurrentSize"
+    },
+    {
+      "type": "ImVec2",
+      "name": "DesiredSize"
+    }
+  ],
+  "ImGuiStoragePair": [
+    {
+      "type": "ImGuiID",
+      "name": "key"
+    },
+    {
+      "type": "int",
+      "name": "val_i"
+    },
+    {
+      "type": "float",
+      "name": "val_f"
+    }
+  ],
+  "ImGuiMultiSelectIO": [
+    {
+      "type": "ImVector<ImGuiSelectionRequest>",
+      "name": "Requests"
+    },
+    {
+      "type": "ImGuiSelectionUserData",
+      "name": "RangeSrcItem"
+    },
+    {
+      "type": "ImGuiSelectionUserData",
+      "name": "NavIdItem"
+    },
+    {
+      "type": "bool",
+      "name": "NavIdSelected"
+    },
+    {
+      "type": "bool",
+      "name": "RangeSrcReset"
+    },
+    {
+      "type": "int",
+      "name": "ItemsCount"
+    }
+  ],
+  "ImGuiSelectionRequest": [
+    {
+      "type": "ImGuiSelectionRequestType",
+      "name": "Type"
+    },
+    {
+      "type": "bool",
+      "name": "Selected"
+    },
+    {
+      "type": "ImS8",
+      "name": "RangeDirection"
+    },
+    {
+      "type": "ImGuiSelectionUserData",
+      "name": "RangeFirstItem"
+    },
+    {
+      "type": "ImGuiSelectionUserData",
+      "name": "RangeLastItem"
+    }
+  ],
+  "ImGuiSelectionBasicStorage": [
+    {
+      "type": "int",
+      "name": "Size"
+    },
+    {
+      "type": "bool",
+      "name": "PreserveOrder"
+    }
+  ],
+  "ImGuiPlatformIO": [
+    {
+      "type": "ImWchar",
+      "name": "Platform_LocaleDecimalPoint"
+    },
+    {
+      "type": "int",
+      "name": "Renderer_TextureMaxWidth"
+    },
+    {
+      "type": "int",
+      "name": "Renderer_TextureMaxHeight"
+    },
+    {
+      "type": "ImVector<ImGuiPlatformMonitor>",
+      "name": "Monitors"
+    },
+    {
+      "type": ">",
+      "name": "Textures"
+    },
+    {
+      "type": ">",
+      "name": "Viewports"
+    }
+  ]
+}

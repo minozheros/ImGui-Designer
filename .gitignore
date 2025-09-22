@@ -1,0 +1,41 @@
+# Build directories
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.ninja
+*.o
+*.obj
+*.so
+*.a
+*.lib
+*.dll
+*.exe
+*.app
+*.dSYM/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Compilation database
+compile_commands.json
+
+# Dependency folders
+_deps/
+
+# Logs
+*.log
+
+# MacOS
+.DS_Store
+
+# Other
+*.user
+*.bak
+*.tmp
+

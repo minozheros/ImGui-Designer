@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+"""
+generate_imgui_enum_maps.py
+
+Generates enum-to-string maps and nlohmann::json converters for all ImGui typedef-enums
+using imgui_typedef_values.json. Output is a C++ header file suitable for inclusion.
+"""
+
+import json
+from pathlib import Path
+import sys
+import re
+
+HEADER = '''// This file is auto-generated. Do not edit directly.
+#pragma once
+#include <imgui.h>
+#include <nlohmann/json.hpp>
+#include <string>
+#include <unordered_map>
+
+'''
+
+def format_enum_name(typedef_name, value):
+    # Use the value as-is (e.g., ImGuiCol_Text)
+    return value
+
+def generate_enum_map(typedef_name, values, defined_symbols):
+    # Only include values that are actually defined
+    lines = []
+    lines.append(f"// {typedef_name} enum <-> string maps\n")
+    lines.append(f"static const std::unordered_map<{typedef_name}, std::string> {typedef_name}ToString = {{")
+    for v in values:
+        if v in defined_symbols:
+            lines.append(f"    {{{format_enum_name(typedef_name, v)}, \"{v}\"}},")
+        else:
+            print(f"WARNING: {v} (for {typedef_name}) is not defined in ImGui headers. Skipping.")
+    lines.append("};\n")
+    lines.append(f"static const std::unordered_map<std::string, {typedef_name}> StringTo{typedef_name} = {{")
+    for v in values:
+        if v in defined_symbols:
+            lines.append(f"    {{\"{v}\", {format_enum_name(typedef_name, v)}}},")
+    lines.append("};\n")
+    return '\n'.join(lines)
+
+def generate_nlohmann_converter(typedef_name):
+    # Generate to_json/from_json using the maps
+    return f'''
+inline void to_json(nlohmann::json& j, const {typedef_name}& v) {{
+    auto it = {typedef_name}ToString.find(v);
+    if (it != {typedef_name}ToString.end()) j = it->second;
+    else j = nullptr;
+}}
+
+inline void from_json(const nlohmann::json& j, {typedef_name}& v) {{
+    auto it = StringTo{typedef_name}.find(j.get<std::string>());
+    if (it != StringTo{typedef_name}.end()) v = it->second;
+    else throw std::runtime_error("invalid enum value for {typedef_name}");
+}}
+'''
+
+
+def collect_defined_symbols(imgui_src_dir):
+    symbols = set()
+    for path in Path(imgui_src_dir).rglob("*.h"):
+        with open(path, 'r', encoding='utf-8', errors='ignore') as f:
+            for line in f:
+                # Match enum values and #define constants
+                m = re.match(r'\s*(ImGui\w+),?', line)
+                if m:
+                    symbols.add(m.group(1))
+                m = re.match(r'\s*#define\s+(ImGui\w+)', line)
+                if m:
+                    symbols.add(m.group(1))
+    return symbols
+
+def main():
+    # Input/output paths
+    script_dir = Path(__file__).parent
+    typedef_values_path = script_dir / "output" / "imgui_typedef_values.json"
+    output_path = Path("src/core/types/enums/imgui_enum_maps.hpp")
+    imgui_src_dir = Path("build/_deps/imgui-src")
+
+    # Load typedef values
+    with open(typedef_values_path, 'r', encoding='utf-8') as f:
+        typedef_values = json.load(f)
+
+    # Collect all defined enum symbols from ImGui headers
+    defined_symbols = collect_defined_symbols(imgui_src_dir)
+
+    # Generate code
+    code = [HEADER]
+    for typedef_name, values in typedef_values.items():
+        if not isinstance(values, list):
+            continue  # skip non-enum typedefs
+        code.append(generate_enum_map(typedef_name, values, defined_symbols))
+        code.append(generate_nlohmann_converter(typedef_name))
+
+    # Write output
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_path, 'w', encoding='utf-8') as f:
+        f.write('\n'.join(code))
+    print(f"Generated {output_path}")
+
+if __name__ == "__main__":
+    main()
