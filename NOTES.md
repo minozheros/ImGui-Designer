@@ -1,3 +1,68 @@
+# Project Structure Overview (as of 23. September 2025)
+
+
+This section documents the main directories and their intended purposes to clarify where information, code, and assets should be placed. Update as the project evolves.
+
+## Top-Level Directories
+
+- `src/` — Main C++ source code for the application
+  - `src/main.cpp` — Application entry point
+  - `src/app/` — Application-level helpers, user preferences, and configuration files
+    - `preferences/` — Default and user-editable config/theme JSONs
+  - `src/core/` — Core logic and reusable components
+    - `components/` — Visual blocks, windows, registries, and event handlers
+    - `events/` — Event system headers
+    - `factories/` — Factory patterns for component creation
+    - `helpers/` — Initialization, logging, and utility helpers
+    - `themes/` — Theme loader and related code
+    - `types/` — Enums, interfaces, and type definitions
+- `tests/` — Unit and integration tests (Catch2-based)
+  preferences
+- `cmake/` — CMake configuration scripts and code generation logic
+  - `CompilerWarnings.cmake`, `StandardProjectSettings.cmake`, etc. — Project-wide build settings
+  - `generators/` — **All CMake code generators live here.**
+    - Each `.cmake` file in this folder is automatically included by the main `CMakeLists.txt`.
+    - Used for code generation, preprocessing, and custom build steps (e.g., ImGui API info extraction).
+    - To add a new generator, simply create a new `.cmake` file in this directory.
+- `scripts/` — Python and YAML scripts for code generation, validation, and automation
+  - `generate_all.py` — Main entry for codegen pipeline
+  - `extract_imgui_api_information.py`, `generate_blocks_yaml.py`, etc. — Specialized codegen and checks
+  - `output/` — Generated JSON and coverage reports
+- `fonts/` — Font files (e.g., `arial.ttf`, `Quartz.ttf`, `forkawesome-webfont.ttf`)
+- `third_party/` — External dependencies (not tracked by package manager)
+  - `imgui/`, `implot/`, `fmod/` — Source or CMake integration for third-party libraries
+  - `README.txt` — Notes on third-party usage
+- `build/` — Build output, generated binaries, and CMake artifacts
+  - `bin/` — Compiled executables and runtime assets
+  - `*_build/`, `*_src/`, `*_subbuild/` — CMake external project builds
+  - `CMakeFiles/`, `CTestTestfile.cmake`, etc. — CMake system files
+
+## Key Project Files
+
+- `CMakeLists.txt` — Main CMake build configuration
+- `README_NODES.md` — Documentation for node system or project-specific notes
+- `NOTES.md` — Design decisions, gotchas, and project workflow notes (this file)
+- `.github/instructions/first.instructions.md` — Assistant and workflow instructions
+- `.gitignore` — Files and folders excluded from git
+- `.clang-tidy` — Linting and static analysis configuration
+
+## Conventions
+
+- Source code: Place new features in `src/core/` or `src/app/` as appropriate.
+- Tests: Add new test files to `tests/` and register in CMake if needed.
+- Scripts: Place automation/codegen scripts in `scripts/` and document usage.
+- Third-party: Add new dependencies to `third_party/` and update documentation.
+- Build output: All generated files and binaries go in `build/`.
+
+
+## Git Commit Workflow
+
+- After every successful build, a git commit is automatically created with a meaningful message summarizing the changes.
+- This applies to both manual and automated edits.
+- The commit message will reflect the nature of the changes (e.g., feature, fix, refactor, config update, etc.).
+- This ensures every working state is restorable and all progress is tracked.
+
+Add new folders or files to this list as the project evolves to keep the structure clear and maintainable.
 
 # Code Generators in CMake
 

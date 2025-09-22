@@ -19,7 +19,7 @@ namespace core
 
         spdlog::debug("Rendering Designer screen");
 
-        // Fill the main viewport with the dockspace host window
+        // Fill the main viewport with the dockspace host window, removing all padding and constraints
         ImGuiViewport *viewport = ImGui::GetMainViewport();
         ImGui::SetNextWindowPos(viewport->Pos);
         ImGui::SetNextWindowSize(viewport->Size);
@@ -27,8 +27,10 @@ namespace core
         ImGuiWindowFlags host_window_flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_MenuBar;
         ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+        ImGui::SetNextWindowSizeConstraints(viewport->Size, viewport->Size);
         ImGui::Begin("MainDockSpace", nullptr, host_window_flags);
-        ImGui::PopStyleVar(2);
+        ImGui::PopStyleVar(3);
 
         ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
         if (ImGui::DockBuilderGetNode(dockspace_id) == nullptr)
