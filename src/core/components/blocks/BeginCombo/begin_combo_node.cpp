@@ -1,4 +1,3 @@
-
 #include "begin_combo_node.hpp"
 #include <array>
 #include <cstring>
@@ -20,6 +19,8 @@ BeginComboNode::BeginComboNode(ed::NodeId id, const BeginComboParams &params)
       outputPinId_(makePinId(id, 2))
 {
     spdlog::info("BeginComboNode constructed, id: {}", id_.Get());
+    // Store the node id in the VisualBlock base so the VisualWindow can position it
+    setNodeId(id_);
 }
 
 BeginComboNode::~BeginComboNode()
@@ -42,6 +43,8 @@ void BeginComboNode::draw()
     std::strncpy(labelBuf.data(), params_.label.c_str(), kMaxLabelLen - 1);
     std::strncpy(previewBuf.data(), params_.preview_value.c_str(), kMaxPreviewLen - 1);
 
+    // Limit item widths so the node doesn't become excessively wide.
+    ImGui::PushItemWidth(220.0f);
     if (ImGui::InputText("Label", labelBuf.data(), kMaxLabelLen))
     {
         params_.label = labelBuf.data();
@@ -51,6 +54,7 @@ void BeginComboNode::draw()
         params_.preview_value = previewBuf.data();
     }
     ImGui::InputInt("Flags", reinterpret_cast<int *>(&params_.flags));
+    ImGui::PopItemWidth();
 
     ed::BeginPin(outputPinId_, ed::PinKind::Output);
     ImGui::Text("Out");

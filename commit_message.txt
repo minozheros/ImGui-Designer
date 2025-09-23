@@ -22,9 +22,10 @@ Also updated assistant workflow rules to explicitly forbid empty/redundant names
 
 Fix toolbar search autofocus and input handling
 
-- Change: Focus toolbar search input only on mouse-release inside toolbar
-- Change: Removed automatic multi-monitor window repositioning
-- Change: Added diagnostic logging to compare GLFW vs ImGui input states
+- Change: Focus toolbar search input only on mouse-release inside toolbar (avoid stealing clicks)
+- Change: Remove automatic multi-monitor window repositioning
+- Tweak: Constrained BeginCombo node control widths to 220px to avoid very wide nodes
+- Add: Diagnostic logging for GLFW vs ImGui input states
 
 These changes prevent the InputText from stealing clicks and help diagnose
 input mismatches across monitor setups. See NOTES.md for rationale.

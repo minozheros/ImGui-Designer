@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <imgui.h>
+#include <imgui_node_editor.h>
 #include <unordered_map>
 #include <any>
 #include <memory>
@@ -9,6 +10,8 @@
 #include <cstring>
 #include <implot.h>
 #include <spdlog/spdlog.h>
+
+namespace ed = ax::NodeEditor;
 
 class VisualBlock
 {
@@ -25,7 +28,11 @@ public:
     const std::unordered_map<std::string, std::any> &getInputs() const;
     const std::unordered_map<std::string, std::any> &getOutputs() const;
 
+    virtual void setNodeId(ed::NodeId id) { nodeId_ = id; }
+    virtual ed::NodeId getNodeId() const { return nodeId_; }
+
 protected:
     std::unordered_map<std::string, std::any> inputs_;
     std::unordered_map<std::string, std::any> outputs_;
+    ed::NodeId nodeId_{0};
 };
