@@ -34,7 +34,8 @@ def extract_api_functions(imgui_h):
     ns_content = ns_match.group(1)
     # Match IMGUI_API function declarations (multi-line, with or without default args)
     func_pattern = re.compile(r'IMGUI_API\s+([\w:<>:&*]+)\s+(\w+)\s*\(([^)]*)\)\s*;', re.MULTILINE)
-    param_pattern = re.compile(r'([\w:<>:&*]+)\s*(\*?\w+)?(\s*=\s*[^,]+)?')
+    # Improved: match full type including const, pointers, and references
+    param_pattern = re.compile(r'((?:const\s+)?[\w:<>]+(?:\s*[*&]+)*)\s*(\w+)?(\s*=\s*[^,]+)?')
     functions = []
     enums_used = set()
     for m in func_pattern.finditer(ns_content):
@@ -46,7 +47,7 @@ def extract_api_functions(imgui_h):
                 continue
             pm = param_pattern.match(p)
             if pm:
-                ptype = pm.group(1)
+                ptype = pm.group(1).replace('  ', ' ').strip()
                 pname = pm.group(2) or ''
                 param_list.append({'type': ptype, 'name': pname})
                 if ptype.startswith('ImGui'):

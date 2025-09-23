@@ -134,8 +134,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       }
     ]
   },
@@ -144,8 +144,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       }
     ]
   },
@@ -189,8 +189,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "name"
       },
       {
         "type": "bool*",
@@ -277,8 +277,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "size"
       },
       {
         "type": "ImGuiCond",
@@ -291,12 +291,12 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "size_min"
       },
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "size_max"
       },
       {
         "type": "ImGuiSizeCallback",
@@ -313,8 +313,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "size"
       }
     ]
   },
@@ -342,8 +342,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "scroll"
       }
     ]
   },
@@ -372,8 +372,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "pos"
       },
       {
         "type": "ImGuiCond",
@@ -386,8 +386,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "size"
       },
       {
         "type": "ImGuiCond",
@@ -419,12 +419,12 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "name"
       },
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "pos"
       },
       {
         "type": "ImGuiCond",
@@ -437,12 +437,12 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "name"
       },
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "size"
       },
       {
         "type": "ImGuiCond",
@@ -455,8 +455,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "name"
       },
       {
         "type": "bool",
@@ -473,8 +473,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "name"
       }
     ]
   },
@@ -623,8 +623,8 @@
         "name": "idx"
       },
       {
-        "type": "const",
-        "name": "ImVec4"
+        "type": "const ImVec4&",
+        "name": "col"
       }
     ]
   },
@@ -661,8 +661,8 @@
         "name": "idx"
       },
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "val"
       }
     ]
   },
@@ -792,8 +792,8 @@
     "return_type": "ImU32",
     "params": [
       {
-        "type": "const",
-        "name": "ImVec4"
+        "type": "const ImVec4&",
+        "name": "col"
       }
     ]
   },
@@ -821,8 +821,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "pos"
       }
     ]
   },
@@ -851,8 +851,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "local_pos"
       }
     ]
   },
@@ -915,8 +915,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "size"
       }
     ]
   },
@@ -980,8 +980,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "str_id"
       }
     ]
   },
@@ -990,12 +990,12 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "str_id_begin"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "str_id_end"
       }
     ]
   },
@@ -1004,8 +1004,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "ptr_id"
       }
     ]
   },
@@ -1029,8 +1029,8 @@
     "return_type": "ImGuiID",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "str_id"
       }
     ]
   },
@@ -1039,12 +1039,12 @@
     "return_type": "ImGuiID",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "str_id_begin"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "str_id_end"
       }
     ]
   },
@@ -1053,8 +1053,8 @@
     "return_type": "ImGuiID",
     "params": [
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "ptr_id"
       }
     ]
   },
@@ -1073,12 +1073,12 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "text"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "text_end"
       }
     ]
   },
@@ -1087,8 +1087,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       }
     ]
   },
@@ -1097,8 +1097,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       }
     ]
   },
@@ -1107,12 +1107,12 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "str_id"
       },
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "size"
       },
       {
         "type": "ImGuiButtonFlags",
@@ -1125,8 +1125,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "str_id"
       },
       {
         "type": "ImGuiDir",
@@ -1139,8 +1139,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "bool*",
@@ -1153,8 +1153,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int*",
@@ -1171,8 +1171,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "unsigned",
@@ -1189,8 +1189,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "bool",
@@ -1203,8 +1203,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int*",
@@ -1226,8 +1226,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       }
     ]
   },
@@ -1236,12 +1236,12 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "url"
       }
     ]
   },
@@ -1250,12 +1250,12 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "preview_value"
       },
       {
         "type": "ImGuiComboFlags",
@@ -1273,16 +1273,16 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int*",
         "name": "current_item"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "const"
       },
       {
         "type": "int",
@@ -1299,16 +1299,16 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int*",
         "name": "current_item"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "items_separated_by_zeros"
       },
       {
         "type": "int",
@@ -1321,8 +1321,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float*",
@@ -1341,8 +1341,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1355,8 +1355,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float",
@@ -1375,8 +1375,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1389,8 +1389,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float",
@@ -1409,8 +1409,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1423,8 +1423,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float",
@@ -1443,8 +1443,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1457,8 +1457,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float*",
@@ -1481,12 +1481,12 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format_max"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1499,8 +1499,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int*",
@@ -1519,8 +1519,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1533,8 +1533,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int",
@@ -1553,8 +1553,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1567,8 +1567,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int",
@@ -1587,8 +1587,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1601,8 +1601,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int",
@@ -1621,8 +1621,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1635,8 +1635,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int*",
@@ -1659,12 +1659,12 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format_max"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1677,8 +1677,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "ImGuiDataType",
@@ -1693,16 +1693,16 @@
         "name": "v_speed"
       },
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "p_min"
       },
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "p_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1715,8 +1715,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "ImGuiDataType",
@@ -1735,16 +1735,16 @@
         "name": "v_speed"
       },
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "p_min"
       },
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "p_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1757,8 +1757,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float*",
@@ -1773,8 +1773,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1787,8 +1787,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float",
@@ -1803,8 +1803,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1817,8 +1817,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float",
@@ -1833,8 +1833,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1847,8 +1847,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float",
@@ -1863,8 +1863,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1877,8 +1877,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float*",
@@ -1893,8 +1893,8 @@
         "name": "v_degrees_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1907,8 +1907,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int*",
@@ -1923,8 +1923,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1937,8 +1937,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int",
@@ -1953,8 +1953,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1967,8 +1967,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int",
@@ -1983,8 +1983,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -1997,8 +1997,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int",
@@ -2013,8 +2013,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -2027,8 +2027,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "ImGuiDataType",
@@ -2039,16 +2039,16 @@
         "name": "p_data"
       },
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "p_min"
       },
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "p_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -2061,8 +2061,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "ImGuiDataType",
@@ -2077,16 +2077,16 @@
         "name": "components"
       },
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "p_min"
       },
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "p_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -2099,12 +2099,12 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "size"
       },
       {
         "type": "float*",
@@ -2119,8 +2119,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -2133,12 +2133,12 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "size"
       },
       {
         "type": "int*",
@@ -2153,8 +2153,8 @@
         "name": "v_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -2167,12 +2167,12 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "size"
       },
       {
         "type": "ImGuiDataType",
@@ -2183,16 +2183,16 @@
         "name": "p_data"
       },
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "p_min"
       },
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "p_max"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiSliderFlags",
@@ -2205,8 +2205,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "char*",
@@ -2235,12 +2235,12 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "hint"
       },
       {
         "type": "char*",
@@ -2269,8 +2269,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float*",
@@ -2285,8 +2285,8 @@
         "name": "step_fast"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiInputTextFlags",
@@ -2299,16 +2299,16 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float",
         "name": "v"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiInputTextFlags",
@@ -2321,16 +2321,16 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float",
         "name": "v"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiInputTextFlags",
@@ -2343,16 +2343,16 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float",
         "name": "v"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiInputTextFlags",
@@ -2365,8 +2365,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int*",
@@ -2391,8 +2391,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int",
@@ -2409,8 +2409,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int",
@@ -2427,8 +2427,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int",
@@ -2445,8 +2445,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "double*",
@@ -2461,8 +2461,8 @@
         "name": "step_fast"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiInputTextFlags",
@@ -2475,8 +2475,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "ImGuiDataType",
@@ -2487,16 +2487,16 @@
         "name": "p_data"
       },
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "p_step"
       },
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "p_step_fast"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiInputTextFlags",
@@ -2509,8 +2509,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "ImGuiDataType",
@@ -2525,16 +2525,16 @@
         "name": "components"
       },
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "p_step"
       },
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "p_step_fast"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "format"
       },
       {
         "type": "ImGuiInputTextFlags",
@@ -2547,8 +2547,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float",
@@ -2565,8 +2565,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float",
@@ -2583,8 +2583,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float",
@@ -2601,8 +2601,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "float",
@@ -2613,8 +2613,8 @@
         "name": "flags"
       },
       {
-        "type": "const",
-        "name": "float"
+        "type": "const float*",
+        "name": "ref_col"
       }
     ]
   },
@@ -2633,8 +2633,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       }
     ]
   },
@@ -2643,8 +2643,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "ImGuiTreeNodeFlags",
@@ -2657,8 +2657,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "str_id"
       }
     ]
   },
@@ -2667,8 +2667,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "ptr_id"
       }
     ]
   },
@@ -2687,8 +2687,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "ImGuiTreeNodeFlags",
@@ -2701,8 +2701,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "bool*",
@@ -2786,16 +2786,16 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "int*",
         "name": "current_item"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "const"
       },
       {
         "type": "int",
@@ -2812,8 +2812,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "prefix"
       },
       {
         "type": "bool",
@@ -2826,8 +2826,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "prefix"
       },
       {
         "type": "int",
@@ -2840,8 +2840,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "prefix"
       },
       {
         "type": "unsigned",
@@ -2854,16 +2854,16 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "prefix"
       },
       {
         "type": "float",
         "name": "v"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "float_format"
       }
     ]
   },
@@ -2892,8 +2892,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "bool",
@@ -2911,12 +2911,12 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "shortcut"
       },
       {
         "type": "bool",
@@ -2933,12 +2933,12 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "shortcut"
       },
       {
         "type": "bool*",
@@ -2970,8 +2970,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "str_id"
       },
       {
         "type": "ImGuiWindowFlags",
@@ -2984,8 +2984,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "name"
       },
       {
         "type": "bool*",
@@ -3007,8 +3007,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "str_id"
       },
       {
         "type": "ImGuiPopupFlags",
@@ -3035,8 +3035,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "str_id"
       },
       {
         "type": "ImGuiPopupFlags",
@@ -3054,8 +3054,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "str_id"
       },
       {
         "type": "ImGuiPopupFlags",
@@ -3068,8 +3068,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "str_id"
       },
       {
         "type": "ImGuiPopupFlags",
@@ -3082,8 +3082,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "str_id"
       },
       {
         "type": "ImGuiPopupFlags",
@@ -3096,8 +3096,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "str_id"
       },
       {
         "type": "ImGuiPopupFlags",
@@ -3144,8 +3144,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "ImGuiTableColumnFlags",
@@ -3180,8 +3180,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       }
     ]
   },
@@ -3271,8 +3271,8 @@
         "name": "count"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "id"
       },
       {
         "type": "bool",
@@ -3348,8 +3348,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "str_id"
       },
       {
         "type": "ImGuiTabBarFlags",
@@ -3367,8 +3367,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "bool*",
@@ -3390,8 +3390,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "label"
       },
       {
         "type": "ImGuiTabItemFlags",
@@ -3404,8 +3404,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "tab_or_docked_window_label"
       }
     ]
   },
@@ -3418,16 +3418,16 @@
         "name": "dockspace_id"
       },
       {
-        "type": "const",
-        "name": "ImGuiViewport"
+        "type": "const ImGuiViewport*",
+        "name": "viewport"
       },
       {
         "type": "ImGuiDockNodeFlags",
         "name": "flags"
       },
       {
-        "type": "const",
-        "name": "ImGuiWindowClass"
+        "type": "const ImGuiWindowClass*",
+        "name": "window_class"
       }
     ]
   },
@@ -3450,8 +3450,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "ImGuiWindowClass"
+        "type": "const ImGuiWindowClass*",
+        "name": "window_class"
       }
     ]
   },
@@ -3484,8 +3484,8 @@
         "name": "auto_open_depth"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "filename"
       }
     ]
   },
@@ -3524,12 +3524,12 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "type"
       },
       {
-        "type": "const",
-        "name": "void"
+        "type": "const void*",
+        "name": "data"
       },
       {
         "type": "size_t",
@@ -3576,12 +3576,12 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "clip_rect_min"
       },
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "clip_rect_max"
       },
       {
         "type": "bool",
@@ -3749,8 +3749,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "size"
       }
     ]
   },
@@ -3759,12 +3759,12 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "rect_min"
       },
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "rect_max"
       }
     ]
   },
@@ -3803,12 +3803,12 @@
     "return_type": "ImVec2",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "text"
       },
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "text_end"
       },
       {
         "type": "bool",
@@ -3835,8 +3835,8 @@
     "return_type": "ImU32",
     "params": [
       {
-        "type": "const",
-        "name": "ImVec4"
+        "type": "const ImVec4&",
+        "name": "in"
       }
     ]
   },
@@ -4083,12 +4083,12 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "r_min"
       },
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2&",
+        "name": "r_max"
       },
       {
         "type": "bool",
@@ -4101,8 +4101,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "ImVec2"
+        "type": "const ImVec2*",
+        "name": "mouse_pos"
       }
     ]
   },
@@ -4189,8 +4189,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "text"
       }
     ]
   },
@@ -4199,8 +4199,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "ini_filename"
       }
     ]
   },
@@ -4209,8 +4209,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "ini_data"
       },
       {
         "type": "size_t",
@@ -4223,8 +4223,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "ini_filename"
       }
     ]
   },
@@ -4233,8 +4233,8 @@
     "return_type": "void",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "text"
       }
     ]
   },
@@ -4258,8 +4258,8 @@
     "return_type": "bool",
     "params": [
       {
-        "type": "const",
-        "name": "char"
+        "type": "const char*",
+        "name": "version_str"
       },
       {
         "type": "size_t",

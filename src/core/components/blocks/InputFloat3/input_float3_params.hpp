@@ -1,0 +1,10 @@
+#pragma once
+#include <imgui.h>
+#include <string>
+
+struct InputFloat3Params {
+    std::string label;
+    float v;
+    std::string format;
+    ImGuiInputTextFlags flags;
+};
