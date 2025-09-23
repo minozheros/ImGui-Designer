@@ -1,7 +1,3 @@
-# This file is used for automated git commit messages.
-# Edit or overwrite this file before each commit as needed.
-
-
 Refactor toolbar UI, docking, and workflow; document ImGui docking limitations
 
 - Encapsulated toolbar logic in ToolbarPanel class and improved search/filter UX
