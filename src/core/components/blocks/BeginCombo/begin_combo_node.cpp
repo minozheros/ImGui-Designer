@@ -17,7 +17,8 @@ namespace core
           inputPinLabel_(makePinId(id, 1)),
           inputPinPreview_(makePinId(id, 2)),
           inputPinFlags_(makePinId(id, 3)),
-          outputPinReturn_(makePinId(id, 4))
+          outputPinReturn_(makePinId(id, 4)),
+          prevNodeWidth_(0.0f)
     {
         spdlog::info("BeginComboNode constructed, id: {}", id_.Get());
         setNodeId(id_);
@@ -43,15 +44,31 @@ namespace core
         spdlog::info("BeginComboNode::draw called, id: {}", id_.Get());
         ed::BeginNode(id_);
 
-        // Node header
         ImGui::Text("BeginCombo");
 
-        // Use columns for proper left/right layout without expanding node width
-        ImGui::Columns(2, "NodeLayout", false);
-        ImGui::SetColumnWidth(0, 120.0f); // Fixed width for left column (inputs)
-        ImGui::SetColumnWidth(1, 100.0f); // Fixed width for right column (outputs)
+        // Calculate column widths based on content
+        float bulletSpace = 15.0f; // Estimate space for bullet indicator
+        float inputWidth = std::max({ImGui::CalcTextSize("Label").x + bulletSpace,
+                                     ImGui::CalcTextSize("Preview").x + bulletSpace,
+                                     ImGui::CalcTextSize("Flags").x + bulletSpace}) +
+                           10.0f;                                                  // Padding
+        float outputWidth = ImGui::CalcTextSize("Return").x + bulletSpace + 10.0f; // Padding
 
-        // Left column - Inputs
+        spdlog::info("Calculated inputWidth: {}, outputWidth: {}", inputWidth, outputWidth);
+
+        // Use previous node width if available, otherwise calculate based on content
+        float calculatedWidth = inputWidth + 20.0f + outputWidth;
+        float nodeWidth = (prevNodeWidth_ > 0.0f) ? prevNodeWidth_ : calculatedWidth;
+        spdlog::info("Using nodeWidth for positioning: {} (calculated: {})", nodeWidth, calculatedWidth);
+
+        float nodePosX = ed::GetNodePosition(id_).x;
+        spdlog::info("Node position X: {}", nodePosX);
+
+        // Save starting Y position for side-by-side layout
+        float startY = ImGui::GetCursorPosY();
+
+        // Draw inputs group at left
+        ImGui::BeginGroup();
         ImGui::Text("Inputs:");
 
         // Label input pin with visual indicator
@@ -74,9 +91,13 @@ namespace core
         ImGui::SameLine();
         ImGui::Text("Flags");
         ed::EndPin();
+        ImGui::EndGroup();
 
-        // Right column - Outputs
-        ImGui::NextColumn();
+        spdlog::info("nodewidth: {}, prevNodeWidth_: {}", nodeWidth, prevNodeWidth_);
+        // Position outputs group at right edge of node, same Y
+        float outputX = nodeWidth - outputWidth;
+        ImGui::SetCursorPos(ImVec2(outputX + nodePosX, startY));
+        ImGui::BeginGroup();
         ImGui::Text("Outputs:");
 
         // Output pin for return value
@@ -85,38 +106,13 @@ namespace core
         ImGui::SameLine();
         ImGui::Bullet(); // Visual circle indicator
         ed::EndPin();
+        ImGui::EndGroup();
 
-        ImGui::Columns(1); // Reset to single column
+        float actualNodeWidth = ed::GetNodeSize(id_).x;
+        spdlog::info("Node width after drawing: {} (was using {})", actualNodeWidth, nodeWidth);
 
-        // Parameter controls in the center/bottom
-        ImGui::Separator();
-        ImGui::Text("Parameters:");
-
-        std::array<char, kMaxLabelLen> labelBuf{};
-        std::array<char, kMaxPreviewLen> previewBuf{};
-        if (params_.label.value.value)
-            std::strncpy(labelBuf.data(), params_.label.value.value, kMaxLabelLen - 1);
-        if (params_.preview_value.value.value)
-            std::strncpy(previewBuf.data(), params_.preview_value.value.value, kMaxPreviewLen - 1);
-
-        ImGui::PushItemWidth(200.0f);
-        if (ImGui::InputText("Label", labelBuf.data(), kMaxLabelLen))
-        {
-            params_.label.value.value = labelBuf.data();
-            setInput("label", params_.label.value.value);
-        }
-        if (ImGui::InputText("Preview", previewBuf.data(), kMaxPreviewLen))
-        {
-            params_.preview_value.value.value = previewBuf.data();
-            setInput("preview_value", params_.preview_value.value.value);
-        }
-        int flagsInt = static_cast<int>(params_.flags.value.value);
-        if (ImGui::InputInt("Flags", &flagsInt))
-        {
-            params_.flags.value.value = static_cast<ImGuiComboFlags>(flagsInt);
-            setInput("flags", params_.flags.value.value);
-        }
-        ImGui::PopItemWidth();
+        // Update for next frame
+        prevNodeWidth_ = calculatedWidth;
 
         ed::EndNode();
     }

@@ -1,8 +1,1 @@
-Refactor BeginComboNode to use column layout for constrained width
-
-- Replace cursor positioning with ImGui::Columns() for proper width control
-- Left column (120px): Inputs with bullet indicators
-- Right column (100px): Outputs with bullet indicators  
-- Total node width constrained to ~220px instead of expanding dynamically
-- Maintain visual separation while preventing excessive node width
-- Use ImGui::Columns(1) to reset for parameter controls section
+Refine BeginComboNode layout: remove parameter controls, implement side-by-side input/output positioning with dynamic width calculation based on content, and stabilize node sizing

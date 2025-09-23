@@ -29,6 +29,8 @@ namespace core
         ed::PinId inputPinFlags_;
         ed::PinId outputPinReturn_;
 
+        float prevNodeWidth_;
+
         void updateIO();
     };
 }
