@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct ListBoxParams {
+namespace core {
+struct ListBoxParams : public core::IParameterParamsBase {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<int*> current_item = ParameterBase<int*>("current_item", ParameterType::INPUT);
     ParameterBase<int> items_count = ParameterBase<int>("items_count", ParameterType::INPUT);

@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct BeginComboParams {
+namespace core {
+struct BeginComboParams : public core::IParameterParamsBase {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<const char*> preview_value = ParameterBase<const char*>("preview_value", ParameterType::INPUT);
     ParameterBase<ImGuiComboFlags> flags = ParameterBase<ImGuiComboFlags>("flags", ParameterType::INPUT);

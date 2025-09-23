@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct VSliderFloatParams {
+namespace core {
+struct VSliderFloatParams : public core::IParameterParamsBase {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<const ImVec2&> size = ParameterBase<const ImVec2&>("size", ParameterType::INPUT);
     ParameterBase<float*> v = ParameterBase<float*>("v", ParameterType::INPUT);

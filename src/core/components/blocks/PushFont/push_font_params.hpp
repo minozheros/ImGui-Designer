@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct PushFontParams {
+namespace core {
+struct PushFontParams : public core::IParameterParamsBase {
     ParameterBase<ImFont*> font = ParameterBase<ImFont*>("font", ParameterType::INPUT);
     ParameterBase<float> font_size_base_unscaled = ParameterBase<float>("font_size_base_unscaled", ParameterType::INPUT);
 

@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct ColorConvertHSVtoRGBParams {
+namespace core {
+struct ColorConvertHSVtoRGBParams : public core::IParameterParamsBase {
     ParameterBase<float> h = ParameterBase<float>("h", ParameterType::INPUT);
     ParameterBase<float> s = ParameterBase<float>("s", ParameterType::INPUT);
     ParameterBase<float> v = ParameterBase<float>("v", ParameterType::INPUT);

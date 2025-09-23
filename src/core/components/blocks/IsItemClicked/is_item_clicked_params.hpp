@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct IsItemClickedParams {
+namespace core {
+struct IsItemClickedParams : public core::IParameterParamsBase {
     ParameterBase<ImGuiMouseButton> mouse_button = ParameterBase<ImGuiMouseButton>("mouse_button", ParameterType::INPUT);
     ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
 

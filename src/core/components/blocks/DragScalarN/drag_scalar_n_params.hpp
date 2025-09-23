@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct DragScalarNParams {
+namespace core {
+struct DragScalarNParams : public core::IParameterParamsBase {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<ImGuiDataType> data_type = ParameterBase<ImGuiDataType>("data_type", ParameterType::INPUT);
     ParameterBase<void*> p_data = ParameterBase<void*>("p_data", ParameterType::OUTPUT);

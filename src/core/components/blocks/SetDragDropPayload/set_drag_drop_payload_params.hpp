@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct SetDragDropPayloadParams {
+namespace core {
+struct SetDragDropPayloadParams : public core::IParameterParamsBase {
     ParameterBase<const char*> type = ParameterBase<const char*>("type", ParameterType::INPUT);
     ParameterBase<const void*> data = ParameterBase<const void*>("data", ParameterType::INPUT);
     ParameterBase<size_t> sz = ParameterBase<size_t>("sz", ParameterType::INPUT);

@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct PushItemFlagParams {
+namespace core {
+struct PushItemFlagParams : public core::IParameterParamsBase {
     ParameterBase<ImGuiItemFlags> option = ParameterBase<ImGuiItemFlags>("option", ParameterType::INPUT);
     ParameterBase<bool> enabled = ParameterBase<bool>("enabled", ParameterType::INPUT);
 

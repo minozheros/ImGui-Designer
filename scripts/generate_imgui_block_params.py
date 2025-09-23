@@ -24,7 +24,8 @@ def write_param_struct(func, dir_path):
         "#pragma once",
         "#include <imgui.h>",
         "#include <vector>",
-        "#include <core/types/base/parameter_base.hpp>"
+        "#include <core/types/base/parameter_base.hpp>",
+        "#include <core/types/interfaces/IParameterParamsBase.hpp>"
     ]
     # Add return value if not void
     ret_type = func.get('return_type', 'void').strip()
@@ -58,7 +59,7 @@ def write_param_struct(func, dir_path):
     vector_lines.append("    }\n")
 
     fields = '\n'.join(field_lines) if field_lines else '    // No parameters\n'
-    code = '\n'.join(includes) + f"\n\nnamespace core\n{{\nstruct {struct} {{\n{fields}\n\n" + ''.join(vector_lines) + f"}};\n}}\n"
+    code = '\n'.join(includes) + f"\n\nnamespace core {{\nstruct {struct} : public core::IParameterParamsBase {{\n{fields}\n\n" + ''.join(vector_lines) + "};\n}\n"
     # File name: <function_name>_params.hpp, snake_case
     def camel_to_snake(name):
         import re

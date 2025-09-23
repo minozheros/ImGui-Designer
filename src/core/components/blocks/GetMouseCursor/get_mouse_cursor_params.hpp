@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct GetMouseCursorParams {
+namespace core {
+struct GetMouseCursorParams : public core::IParameterParamsBase {
     ParameterBase<ImGuiMouseCursor> return_value = ParameterBase<ImGuiMouseCursor>("return_value", ParameterType::RETURN);
 
     std::vector<core::IParameterBase*> params;

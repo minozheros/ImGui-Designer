@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct GetFrameHeightWithSpacingParams {
+namespace core {
+struct GetFrameHeightWithSpacingParams : public core::IParameterParamsBase {
     ParameterBase<float> return_value = ParameterBase<float>("return_value", ParameterType::RETURN);
 
     std::vector<core::IParameterBase*> params;

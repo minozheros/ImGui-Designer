@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct DockSpaceOverViewportParams {
+namespace core {
+struct DockSpaceOverViewportParams : public core::IParameterParamsBase {
     ParameterBase<ImGuiID> dockspace_id = ParameterBase<ImGuiID>("dockspace_id", ParameterType::INPUT);
     ParameterBase<const ImGuiViewport*> viewport = ParameterBase<const ImGuiViewport*>("viewport", ParameterType::INPUT);
     ParameterBase<ImGuiDockNodeFlags> flags = ParameterBase<ImGuiDockNodeFlags>("flags", ParameterType::INPUT);

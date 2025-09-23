@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct SetNextItemShortcutParams {
+namespace core {
+struct SetNextItemShortcutParams : public core::IParameterParamsBase {
     ParameterBase<ImGuiKeyChord> key_chord = ParameterBase<ImGuiKeyChord>("key_chord", ParameterType::INPUT);
     ParameterBase<ImGuiInputFlags> flags = ParameterBase<ImGuiInputFlags>("flags", ParameterType::INPUT);
 

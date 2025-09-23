@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct DestroyPlatformWindowsParams {
+namespace core {
+struct DestroyPlatformWindowsParams : public core::IParameterParamsBase {
     // No parameters
 
 

@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct InvisibleButtonParams {
+namespace core {
+struct InvisibleButtonParams : public core::IParameterParamsBase {
     ParameterBase<const char*> str_id = ParameterBase<const char*>("str_id", ParameterType::INPUT);
     ParameterBase<const ImVec2&> size = ParameterBase<const ImVec2&>("size", ParameterType::INPUT);
     ParameterBase<ImGuiButtonFlags> flags = ParameterBase<ImGuiButtonFlags>("flags", ParameterType::INPUT);

@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct TableGetColumnFlagsParams {
+namespace core {
+struct TableGetColumnFlagsParams : public core::IParameterParamsBase {
     ParameterBase<int> column_n = ParameterBase<int>("column_n", ParameterType::INPUT);
     ParameterBase<ImGuiTableColumnFlags> return_value = ParameterBase<ImGuiTableColumnFlags>("return_value", ParameterType::RETURN);
 

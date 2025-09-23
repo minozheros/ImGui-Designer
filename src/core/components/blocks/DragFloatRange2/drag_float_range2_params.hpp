@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct DragFloatRange2Params {
+namespace core {
+struct DragFloatRange2Params : public core::IParameterParamsBase {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<float*> v_current_min = ParameterBase<float*>("v_current_min", ParameterType::INPUT);
     ParameterBase<float*> v_current_max = ParameterBase<float*>("v_current_max", ParameterType::INPUT);

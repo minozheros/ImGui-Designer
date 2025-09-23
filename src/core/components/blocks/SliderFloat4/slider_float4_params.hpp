@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct SliderFloat4Params {
+namespace core {
+struct SliderFloat4Params : public core::IParameterParamsBase {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<float> v_min = ParameterBase<float>("v_min", ParameterType::INPUT);
     ParameterBase<float> v_max = ParameterBase<float>("v_max", ParameterType::INPUT);

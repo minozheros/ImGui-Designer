@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct GetForegroundDrawListParams {
+namespace core {
+struct GetForegroundDrawListParams : public core::IParameterParamsBase {
     ParameterBase<ImGuiViewport*> viewport = ParameterBase<ImGuiViewport*>("viewport", ParameterType::INPUT);
     ParameterBase<ImDrawList*> return_value = ParameterBase<ImDrawList*>("return_value", ParameterType::RETURN);
 

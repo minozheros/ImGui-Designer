@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct TableSetupScrollFreezeParams {
+namespace core {
+struct TableSetupScrollFreezeParams : public core::IParameterParamsBase {
     ParameterBase<int> cols = ParameterBase<int>("cols", ParameterType::INPUT);
     ParameterBase<int> rows = ParameterBase<int>("rows", ParameterType::INPUT);
 

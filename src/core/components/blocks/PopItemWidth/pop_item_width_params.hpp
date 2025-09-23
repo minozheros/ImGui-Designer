@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct PopItemWidthParams {
+namespace core {
+struct PopItemWidthParams : public core::IParameterParamsBase {
     // No parameters
 
 

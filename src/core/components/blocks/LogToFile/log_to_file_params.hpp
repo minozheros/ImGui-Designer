@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct LogToFileParams {
+namespace core {
+struct LogToFileParams : public core::IParameterParamsBase {
     ParameterBase<int> auto_open_depth = ParameterBase<int>("auto_open_depth", ParameterType::INPUT);
     ParameterBase<const char*> filename = ParameterBase<const char*>("filename", ParameterType::INPUT);
 

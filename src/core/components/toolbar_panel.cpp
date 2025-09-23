@@ -122,16 +122,26 @@ namespace core
 
         for (const auto &group : groupedNodes)
         {
-            ImGui::Separator();
-            ImGui::PushID((group.first + "_header").c_str());
-            if (ImGui::CollapsingHeader(group.first.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+            // Filter nodes in this group by search
+            std::vector<std::string> filteredNodes;
+            for (const auto &nodeName : group.second)
             {
-                for (const auto &nodeName : group.second)
+                std::string nodeLower = toLower(nodeName);
+                if (searchLower.empty() || nodeLower.find(searchLower) != std::string::npos)
+                    filteredNodes.push_back(nodeName);
+            }
+            // Only show group if it contains matching nodes
+            if (!filteredNodes.empty())
+            {
+                ImGui::Separator();
+                ImGui::PushID((group.first + "_header").c_str());
+                // Auto-expand header if searching
+                bool open = searchLower.empty() ? false : true;
+                if (ImGui::CollapsingHeader(group.first.c_str(), open ? ImGuiTreeNodeFlags_DefaultOpen : 0))
                 {
-                    ImGui::PushID((nodeName + "_node").c_str());
-                    std::string nodeLower = toLower(nodeName);
-                    if (searchLower.empty() || nodeLower.find(searchLower) != std::string::npos)
+                    for (const auto &nodeName : filteredNodes)
                     {
+                        ImGui::PushID((nodeName + "_node").c_str());
                         bool clicked = ImGui::Button(nodeName.c_str(), ImVec2(buttonWidth, 0));
                         // ...existing button logic...
                         bool hovered = ImGui::IsItemHovered();
@@ -180,11 +190,11 @@ namespace core
                             auto &io2 = ImGui::GetIO();
                             spdlog::info("ToolbarPanel: Click not registered -> MousePos=({:.1f},{:.1f}), MouseDown[0]={}, MouseDownDuration[0]={:.3f}, IsMouseClicked(0)={}, ActiveID={}, HoveredID={}", io2.MousePos.x, io2.MousePos.y, io2.MouseDown[0], io2.MouseDownDuration[0], ImGui::IsMouseClicked(0), ImGui::GetActiveID(), ImGui::GetHoveredID());
                         }
+                        ImGui::PopID();
                     }
-                    ImGui::PopID();
                 }
+                ImGui::PopID();
             }
-            ImGui::PopID();
         }
         ImGui::EndChild();
         ImGui::PopStyleVar();

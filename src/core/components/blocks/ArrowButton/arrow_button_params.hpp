@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct ArrowButtonParams {
+namespace core {
+struct ArrowButtonParams : public core::IParameterParamsBase {
     ParameterBase<const char*> str_id = ParameterBase<const char*>("str_id", ParameterType::INPUT);
     ParameterBase<ImGuiDir> dir = ParameterBase<ImGuiDir>("dir", ParameterType::INPUT);
     ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);

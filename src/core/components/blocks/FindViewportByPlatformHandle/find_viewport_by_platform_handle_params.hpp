@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct FindViewportByPlatformHandleParams {
+namespace core {
+struct FindViewportByPlatformHandleParams : public core::IParameterParamsBase {
     ParameterBase<void*> platform_handle = ParameterBase<void*>("platform_handle", ParameterType::INPUT);
     ParameterBase<ImGuiViewport*> return_value = ParameterBase<ImGuiViewport*>("return_value", ParameterType::RETURN);
 

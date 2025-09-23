@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct RadioButtonParams {
+namespace core {
+struct RadioButtonParams : public core::IParameterParamsBase {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<int*> v = ParameterBase<int*>("v", ParameterType::INPUT);
     ParameterBase<int> v_button = ParameterBase<int>("v_button", ParameterType::INPUT);

@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct SetScrollFromPosYParams {
+namespace core {
+struct SetScrollFromPosYParams : public core::IParameterParamsBase {
     ParameterBase<float> local_y = ParameterBase<float>("local_y", ParameterType::INPUT);
     ParameterBase<float> center_y_ratio = ParameterBase<float>("center_y_ratio", ParameterType::INPUT);
 

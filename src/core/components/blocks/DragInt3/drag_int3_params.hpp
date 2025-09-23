@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct DragInt3Params {
+namespace core {
+struct DragInt3Params : public core::IParameterParamsBase {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<float> v_speed = ParameterBase<float>("v_speed", ParameterType::INPUT);
     ParameterBase<int> v_min = ParameterBase<int>("v_min", ParameterType::INPUT);

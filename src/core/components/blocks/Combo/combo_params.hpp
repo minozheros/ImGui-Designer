@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct ComboParams {
+namespace core {
+struct ComboParams : public core::IParameterParamsBase {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<int*> current_item = ParameterBase<int*>("current_item", ParameterType::INPUT);
     ParameterBase<const char*> items_separated_by_zeros = ParameterBase<const char*>("items_separated_by_zeros", ParameterType::INPUT);

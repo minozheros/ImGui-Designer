@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct MemAllocParams {
+namespace core {
+struct MemAllocParams : public core::IParameterParamsBase {
     ParameterBase<size_t> size = ParameterBase<size_t>("size", ParameterType::INPUT);
     ParameterBase<void*> return_value = ParameterBase<void*>("return_value", ParameterType::RETURN);
 

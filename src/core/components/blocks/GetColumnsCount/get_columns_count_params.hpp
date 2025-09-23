@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct GetColumnsCountParams {
+namespace core {
+struct GetColumnsCountParams : public core::IParameterParamsBase {
     ParameterBase<int> return_value = ParameterBase<int>("return_value", ParameterType::RETURN);
 
     std::vector<core::IParameterBase*> params;

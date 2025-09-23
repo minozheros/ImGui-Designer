@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct InputIntParams {
+namespace core {
+struct InputIntParams : public core::IParameterParamsBase {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<int*> v = ParameterBase<int*>("v", ParameterType::INPUT);
     ParameterBase<int> step = ParameterBase<int>("step", ParameterType::INPUT);

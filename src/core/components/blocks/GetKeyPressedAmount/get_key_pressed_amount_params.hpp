@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct GetKeyPressedAmountParams {
+namespace core {
+struct GetKeyPressedAmountParams : public core::IParameterParamsBase {
     ParameterBase<ImGuiKey> key = ParameterBase<ImGuiKey>("key", ParameterType::INPUT);
     ParameterBase<float> repeat_delay = ParameterBase<float>("repeat_delay", ParameterType::INPUT);
     ParameterBase<float> rate = ParameterBase<float>("rate", ParameterType::INPUT);

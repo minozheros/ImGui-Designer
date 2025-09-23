@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct CalcTextSizeParams {
+namespace core {
+struct CalcTextSizeParams : public core::IParameterParamsBase {
     ParameterBase<const char*> text = ParameterBase<const char*>("text", ParameterType::INPUT);
     ParameterBase<const char*> text_end = ParameterBase<const char*>("text_end", ParameterType::INPUT);
     ParameterBase<bool> hide_text_after_double_hash = ParameterBase<bool>("hide_text_after_double_hash", ParameterType::INPUT);

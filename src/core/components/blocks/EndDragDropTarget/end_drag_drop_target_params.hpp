@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct EndDragDropTargetParams {
+namespace core {
+struct EndDragDropTargetParams : public core::IParameterParamsBase {
     // No parameters
 
 

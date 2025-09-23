@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct InputTextWithHintParams {
+namespace core {
+struct InputTextWithHintParams : public core::IParameterParamsBase {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<const char*> hint = ParameterBase<const char*>("hint", ParameterType::INPUT);
     ParameterBase<char*> buf = ParameterBase<char*>("buf", ParameterType::INPUT);

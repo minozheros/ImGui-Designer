@@ -1,5 +1,8 @@
 Add vector<IParameterBase*> aggregation to generated blocks
 Generator now emits a std::vector<core::IParameterBase*> member for each block
 Constructor populates vector with all block parameters
-Prepares for heterogeneous parameter handling
-Follows encapsulation and code organization rules
+Regenerate parameter structs and fix bracket output in generator script.
+Parameter structs now inherit from core::IParameterParamsBase.
+All generated code follows project conventions and rules from .github/instructions/first.instructions.md.
+Manual edits to interfaces and map files have been respected.
+Includes are grouped at the top, code is formatted consistently, and no redundant brackets remain in generated files.

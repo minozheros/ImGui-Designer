@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct EndFrameParams {
+namespace core {
+struct EndFrameParams : public core::IParameterParamsBase {
     // No parameters
 
 

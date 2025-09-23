@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct DebugCheckVersionAndDataLayoutParams {
+namespace core {
+struct DebugCheckVersionAndDataLayoutParams : public core::IParameterParamsBase {
     ParameterBase<const char*> version_str = ParameterBase<const char*>("version_str", ParameterType::INPUT);
     ParameterBase<size_t> sz_io = ParameterBase<size_t>("sz_io", ParameterType::INPUT);
     ParameterBase<size_t> sz_style = ParameterBase<size_t>("sz_style", ParameterType::INPUT);

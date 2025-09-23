@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct CheckboxFlagsParams {
+namespace core {
+struct CheckboxFlagsParams : public core::IParameterParamsBase {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<unsigned int*> flags = ParameterBase<unsigned int*>("flags", ParameterType::INPUT);
     ParameterBase<unsigned int> flags_value = ParameterBase<unsigned int>("flags_value", ParameterType::INPUT);

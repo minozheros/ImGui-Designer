@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct ColorConvertU32ToFloat4Params {
+namespace core {
+struct ColorConvertU32ToFloat4Params : public core::IParameterParamsBase {
     ParameterBase<ImU32> in = ParameterBase<ImU32>("in", ParameterType::INPUT);
     ParameterBase<ImVec4> return_value = ParameterBase<ImVec4>("return_value", ParameterType::RETURN);
 

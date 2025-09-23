@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct OpenPopupOnItemClickParams {
+namespace core {
+struct OpenPopupOnItemClickParams : public core::IParameterParamsBase {
     ParameterBase<const char*> str_id = ParameterBase<const char*>("str_id", ParameterType::INPUT);
     ParameterBase<ImGuiPopupFlags> popup_flags = ParameterBase<ImGuiPopupFlags>("popup_flags", ParameterType::INPUT);
 

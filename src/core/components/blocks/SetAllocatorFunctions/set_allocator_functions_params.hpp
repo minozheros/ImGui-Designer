@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct SetAllocatorFunctionsParams {
+namespace core {
+struct SetAllocatorFunctionsParams : public core::IParameterParamsBase {
     ParameterBase<ImGuiMemAllocFunc> alloc_func = ParameterBase<ImGuiMemAllocFunc>("alloc_func", ParameterType::INPUT);
     ParameterBase<ImGuiMemFreeFunc> free_func = ParameterBase<ImGuiMemFreeFunc>("free_func", ParameterType::INPUT);
     ParameterBase<void*> user_data = ParameterBase<void*>("user_data", ParameterType::INPUT);

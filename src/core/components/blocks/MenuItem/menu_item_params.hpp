@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct MenuItemParams {
+namespace core {
+struct MenuItemParams : public core::IParameterParamsBase {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<const char*> shortcut = ParameterBase<const char*>("shortcut", ParameterType::INPUT);
     ParameterBase<bool*> p_selected = ParameterBase<bool*>("p_selected", ParameterType::OUTPUT);

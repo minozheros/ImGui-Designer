@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct BeginParams {
+namespace core {
+struct BeginParams : public core::IParameterParamsBase {
     ParameterBase<const char*> name = ParameterBase<const char*>("name", ParameterType::INPUT);
     ParameterBase<bool*> p_open = ParameterBase<bool*>("p_open", ParameterType::OUTPUT);
     ParameterBase<ImGuiWindowFlags> flags = ParameterBase<ImGuiWindowFlags>("flags", ParameterType::INPUT);

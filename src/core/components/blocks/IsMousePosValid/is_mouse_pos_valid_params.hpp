@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct IsMousePosValidParams {
+namespace core {
+struct IsMousePosValidParams : public core::IParameterParamsBase {
     ParameterBase<const ImVec2*> mouse_pos = ParameterBase<const ImVec2*>("mouse_pos", ParameterType::INPUT);
     ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
 

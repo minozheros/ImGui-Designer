@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct SetColumnOffsetParams {
+namespace core {
+struct SetColumnOffsetParams : public core::IParameterParamsBase {
     ParameterBase<int> column_index = ParameterBase<int>("column_index", ParameterType::INPUT);
     ParameterBase<float> offset_x = ParameterBase<float>("offset_x", ParameterType::INPUT);
 

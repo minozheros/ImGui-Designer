@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct ColumnsParams {
+namespace core {
+struct ColumnsParams : public core::IParameterParamsBase {
     ParameterBase<int> count = ParameterBase<int>("count", ParameterType::INPUT);
     ParameterBase<const char*> id = ParameterBase<const char*>("id", ParameterType::INPUT);
     ParameterBase<bool> borders = ParameterBase<bool>("borders", ParameterType::INPUT);

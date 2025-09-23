@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct InputFloatParams {
+namespace core {
+struct InputFloatParams : public core::IParameterParamsBase {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<float*> v = ParameterBase<float*>("v", ParameterType::INPUT);
     ParameterBase<float> step = ParameterBase<float>("step", ParameterType::INPUT);

@@ -2,10 +2,10 @@
 #include <imgui.h>
 #include <vector>
 #include <core/types/base/parameter_base.hpp>
+#include <core/types/interfaces/IParameterParamsBase.hpp>
 
-namespace core
-{
-struct SetNextWindowCollapsedParams {
+namespace core {
+struct SetNextWindowCollapsedParams : public core::IParameterParamsBase {
     ParameterBase<bool> collapsed = ParameterBase<bool>("collapsed", ParameterType::INPUT);
     ParameterBase<ImGuiCond> cond = ParameterBase<ImGuiCond>("cond", ParameterType::INPUT);
 
