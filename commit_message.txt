@@ -1,8 +1,7 @@
 Refactor toolbar UI, docking, and workflow; document ImGui docking limitations
 
-- Encapsulated toolbar logic in ToolbarPanel class and improved search/filter UX
-- Enforced minimum toolbar width and improved label/input layout
-- Added logging for toolbar width changes
-- Attempted multiple workarounds for ImGui docking minimum size/undocking issues
-- Reverted to default docking behavior after testing restrictions and standalone window
-- Documented ImGui docking limitations and workflow in project notes
+Add !c command rule to agent instructions
+
+- Added a section to .github/instructions/first.instructions.md defining the !c command as the trigger for the agent to create a commit.
+- The agent will now stage all relevant files, update commit_message.txt with a clear message, and use git commit -F commit_message.txt when !c is issued.
+- If the user provides a message, it will be used; otherwise, the agent will generate a concise, descriptive message.

@@ -1,5 +1,9 @@
 # Commit Message Workflow
 
+# Special Commands for Agent
+
+- `!c` (exclamation-c): When the user writes `!c`, it is a command for the agent to create a commit with the current changes. The agent should stage all relevant files, update `commit_message.txt` with a clear, detailed message describing the changes, and use `git commit -F commit_message.txt` to create the commit. If the user provides a message, use it; otherwise, generate a concise, descriptive message.
+
 For all automated or semi-automated git commits, use the file `commit_message.txt` in the project root:
 
 - Before each commit, update the contents of `commit_message.txt` with a clear, detailed message describing the changes.
