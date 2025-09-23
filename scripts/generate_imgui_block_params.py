@@ -7,17 +7,11 @@ JSON_PATH = os.path.join(os.path.dirname(__file__), 'output', 'imgui_functions.j
 BLOCKS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../src/core/components/blocks'))
 
 def cpp_type(param):
-    # Compose C++ type from JSON param dict
-    # Use the type as-is from JSON, including pointer and const
+    # Compose ParameterBase<T> type for struct field
     t = param['type'].strip()
     n = param['name']
-    # Remap string pointers to std::string
-    if t in ('const char*', 'char*'):
-        return f'std::string {n}'
-    # If type is just 'const', treat as 'const <name>' (legacy fallback)
-    if t == 'const':
-        return f"const {n}"
-    return f"{t} {n}" if n else t
+    # Use the type as-is from JSON, including pointer and const
+    return t, n
 
 def struct_name(func_name):
     return f"{func_name}Params"
@@ -25,23 +19,31 @@ def struct_name(func_name):
 def write_param_struct(func, dir_path):
     struct = struct_name(func['name'])
     params = func.get('params', [])
-    if not params:
-        fields = '    // No parameters\n'
-        needs_string = False
-    else:
-        field_lines = []
-        needs_string = False
-        for p in params:
-            t = p['type'].strip()
-            if t in ('const char*', 'char*'):
-                needs_string = True
-            field_lines.append(f"    {cpp_type(p)};")
-        fields = '\n'.join(field_lines)
-    # Always include <imgui.h> for ImGui types, and <string> if needed
-    includes = ["#pragma once", "#include <imgui.h>"]
-    if needs_string:
-        includes.append("#include <string>")
-    code = '\n'.join(includes) + f"\n\nstruct {struct} {{\n{fields}\n}};\n"
+    field_lines = []
+    includes = ["#pragma once", "#include <imgui.h>", "#include <core/types/base/parameter_base.hpp>"]
+    # Add return value if not void
+    ret_type = func.get('return_type', 'void').strip()
+    # ParameterType mapping
+    def param_type_for(p):
+        # Heuristic: pointer types with names like p_*, out_*, or ending with _out are outputs
+        t = p['type']
+        n = p['name']
+        is_pointer = '*' in t
+        is_output = (
+            is_pointer and (
+                n.startswith('p_') or n.startswith('out_') or n.endswith('_out') or 'output' in n.lower()
+            )
+        )
+        return 'ParameterType::OUTPUT' if is_output else 'ParameterType::INPUT'
+    # Add parameter fields
+    for p in params:
+        t, n = cpp_type(p)
+        field_lines.append(f"    ParameterBase<{t}> {n} = ParameterBase<{t}>(\"{n}\", {param_type_for(p)});")
+    # Add return value field if not void
+    if ret_type != 'void':
+        field_lines.append(f"    ParameterBase<{ret_type}> return_value = ParameterBase<{ret_type}>(\"return_value\", ParameterType::RETURN);")
+    fields = '\n'.join(field_lines) if field_lines else '    // No parameters\n'
+    code = '\n'.join(includes) + f"\n\nstruct {struct} {{\n{fields}\n\n    {struct}() = default;\n}};\n"
     # File name: <function_name>_params.hpp, snake_case
     def camel_to_snake(name):
         import re

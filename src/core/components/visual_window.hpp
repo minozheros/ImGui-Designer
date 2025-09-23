@@ -24,6 +24,15 @@ namespace core
         void addBlock(std::unique_ptr<VisualBlock> block)
         {
             spdlog::info("VisualWindow::addBlock called. Block count before: {}", blocks.size());
+            if (block)
+            {
+                const auto &blockRef = *block;
+                spdlog::info("VisualWindow::addBlock: block type is {}", typeid(blockRef).name());
+            }
+            else
+            {
+                spdlog::warn("VisualWindow::addBlock: block is nullptr");
+            }
             // Assign node id to block (if provided by the block) and set a sensible default position
             ed::EditorContext *ctx = editorContext;
             blocks.push_back(std::move(block));

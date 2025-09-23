@@ -1,8 +1,11 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct BeginPopupContextVoidParams {
-    std::string str_id;
-    ImGuiPopupFlags popup_flags;
+    ParameterBase<const char*> str_id = ParameterBase<const char*>("str_id", ParameterType::INPUT);
+    ParameterBase<ImGuiPopupFlags> popup_flags = ParameterBase<ImGuiPopupFlags>("popup_flags", ParameterType::INPUT);
+    ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
+
+    BeginPopupContextVoidParams() = default;
 };

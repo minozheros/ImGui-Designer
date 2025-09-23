@@ -1,7 +1,9 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct ShowFontSelectorParams {
-    std::string label;
+    ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
+
+    ShowFontSelectorParams() = default;
 };

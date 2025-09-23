@@ -1,9 +1,11 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct InputInt4Params {
-    std::string label;
-    int v;
-    ImGuiInputTextFlags flags;
+    ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
+    ParameterBase<ImGuiInputTextFlags> flags = ParameterBase<ImGuiInputTextFlags>("flags", ParameterType::INPUT);
+    ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
+
+    InputInt4Params() = default;
 };

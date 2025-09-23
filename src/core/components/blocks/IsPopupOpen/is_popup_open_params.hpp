@@ -1,8 +1,11 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct IsPopupOpenParams {
-    std::string str_id;
-    ImGuiPopupFlags flags;
+    ParameterBase<const char*> str_id = ParameterBase<const char*>("str_id", ParameterType::INPUT);
+    ParameterBase<ImGuiPopupFlags> flags = ParameterBase<ImGuiPopupFlags>("flags", ParameterType::INPUT);
+    ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
+
+    IsPopupOpenParams() = default;
 };

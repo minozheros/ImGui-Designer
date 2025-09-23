@@ -1,7 +1,10 @@
 #pragma once
 #include <imgui.h>
+#include <core/types/base/parameter_base.hpp>
 
 struct SameLineParams {
-    float offset_from_start_x;
-    float spacing;
+    ParameterBase<float> offset_from_start_x = ParameterBase<float>("offset_from_start_x", ParameterType::INPUT);
+    ParameterBase<float> spacing = ParameterBase<float>("spacing", ParameterType::INPUT);
+
+    SameLineParams() = default;
 };

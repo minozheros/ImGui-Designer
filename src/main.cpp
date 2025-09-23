@@ -32,6 +32,10 @@ static GLFWmousebuttonfun g_prev_mouse_button_cb = nullptr;
 static void debug_mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
 {
     spdlog::info("DebugMouseCB: button={}, action={}, mods={}", button, action, mods);
+
+    // Manually call ImGui's mouse button handling since we disabled auto-callbacks
+    ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
+
     if (g_prev_mouse_button_cb)
         g_prev_mouse_button_cb(window, button, action, mods);
 }
@@ -80,7 +84,11 @@ int main(int argc, char *argv[])
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
     glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
     glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
+    glfwWindowHint(GLFW_FOCUSED, GLFW_TRUE); // Ensure window gets focus
     ctx.designerWindow = core::setup_glfw_window_and_opengl_context(800, 600, "ImGui-Designer");
+
+    // Explicitly focus the window after creation
+    glfwFocusWindow(ctx.designerWindow);
 
     spdlog::debug("Windows and renderers set up successfully");
 
@@ -93,8 +101,17 @@ int main(int argc, char *argv[])
         spdlog::error("Failed to initialize main ImGui context");
         return -1;
     }
+    // Install GLFW callbacks manually since we disabled auto-installation in ImGui init
     // Install debug mouse callback (chain previous if any)
     g_prev_mouse_button_cb = glfwSetMouseButtonCallback(ctx.designerWindow, debug_mouse_button_callback);
+
+    // Install other ImGui callbacks manually
+    glfwSetScrollCallback(ctx.designerWindow, ImGui_ImplGlfw_ScrollCallback);
+    glfwSetKeyCallback(ctx.designerWindow, ImGui_ImplGlfw_KeyCallback);
+    glfwSetCharCallback(ctx.designerWindow, ImGui_ImplGlfw_CharCallback);
+    glfwSetCursorPosCallback(ctx.designerWindow, ImGui_ImplGlfw_CursorPosCallback);
+    glfwSetCursorEnterCallback(ctx.designerWindow, ImGui_ImplGlfw_CursorEnterCallback);
+    glfwSetWindowFocusCallback(ctx.designerWindow, ImGui_ImplGlfw_WindowFocusCallback);
     spdlog::debug("ImGui context initialized successfully");
     const int target_fps = ctx.preferences->safe_get({"performance", "target_fps"}, 25);
     const double frame_delay = 1.0 / target_fps;

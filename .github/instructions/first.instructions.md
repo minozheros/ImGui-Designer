@@ -16,7 +16,7 @@
 
 4. **Code Quality & Review:**
 
-- After every file edit, review for:
+- Before finishing any file edit, review for:
   - Redundant/duplicate code or sections
   - All `#include` directives grouped at the very top of the file, before any namespace or code
   - All required `#include` directives for any types, functions, or macros used in the file are present (no missing includes)
@@ -46,7 +46,8 @@
 - Use ImGui, nlohmann/json, and spdlog as documented.
 - Use short includes (e.g., `#include "enums/VisualBlockTypes.hpp"`).
 - Follow established folder structure for enums, interfaces, and types.
-  - All `.cpp` files in `src/` are automatically included in the build by CMake. You do not need to manually update CMakeLists.txt when adding new source files to `src/`.
+- All `.cpp` files in `src/` are automatically included in the build by CMake. You do not need to manually update CMakeLists.txt when adding new source files to `src/`.
+- When adding or changing code in any file, always follow the existing structure, formatting, and conventions present in that file. Do not introduce inconsistent organization, style, or layout.
 
 8. **Change Management:**
 
@@ -55,10 +56,15 @@
 - Ensure changes are robust, maintainable, and production-ready.
 - Document all design decisions and noteworthy changes in `NOTES.md`.
 
-9. **Interaction & Suggestions:**
+10. **Contextual File Selection:**
 
-- Before making any code change, perform an extensive search of the codebase to find the most appropriate and maintainable location for new code, extensions, or modifications. Avoid duplication and ensure maintainability by reusing or extending existing components where possible. Document any non-obvious placement decisions.
-- Break down complex tasks into steps and explain reasoning.
+- If a file is not clearly specified in a command, but one or more files are present in the context, select the file that best matches the task. If multiple files could fit and it is ambiguous, ask the user which file to use.
 - Offer multiple solutions or viewpoints when appropriate.
 - Seek clarity if a question is unclear.
 - Acknowledge and correct errors.
+
+11. **Logging**
+
+- All application logs are written to `build/ImGui-Designer.log` by default. This file contains all spdlog output, including debug, info, warning, and error messages.
+- The logger is configured in `src/core/helpers/init/spdlog_dedup.hpp` to deduplicate repeated messages and log both to the console and to this file.
+- Check this log for detailed runtime diagnostics, debugging, and error tracking.

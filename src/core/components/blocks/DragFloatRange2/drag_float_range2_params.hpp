@@ -1,15 +1,18 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct DragFloatRange2Params {
-    std::string label;
-    float* v_current_min;
-    float* v_current_max;
-    float v_speed;
-    float v_min;
-    float v_max;
-    std::string format;
-    std::string format_max;
-    ImGuiSliderFlags flags;
+    ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
+    ParameterBase<float*> v_current_min = ParameterBase<float*>("v_current_min", ParameterType::INPUT);
+    ParameterBase<float*> v_current_max = ParameterBase<float*>("v_current_max", ParameterType::INPUT);
+    ParameterBase<float> v_speed = ParameterBase<float>("v_speed", ParameterType::INPUT);
+    ParameterBase<float> v_min = ParameterBase<float>("v_min", ParameterType::INPUT);
+    ParameterBase<float> v_max = ParameterBase<float>("v_max", ParameterType::INPUT);
+    ParameterBase<const char*> format = ParameterBase<const char*>("format", ParameterType::INPUT);
+    ParameterBase<const char*> format_max = ParameterBase<const char*>("format_max", ParameterType::INPUT);
+    ParameterBase<ImGuiSliderFlags> flags = ParameterBase<ImGuiSliderFlags>("flags", ParameterType::INPUT);
+    ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
+
+    DragFloatRange2Params() = default;
 };

@@ -1,7 +1,9 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct SetTabItemClosedParams {
-    std::string tab_or_docked_window_label;
+    ParameterBase<const char*> tab_or_docked_window_label = ParameterBase<const char*>("tab_or_docked_window_label", ParameterType::INPUT);
+
+    SetTabItemClosedParams() = default;
 };

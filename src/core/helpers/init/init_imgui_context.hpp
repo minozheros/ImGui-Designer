@@ -15,7 +15,7 @@ namespace core
         ImGuiIO &io = ImGui::GetIO();
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io.IniFilename = NULL;
-        ImGui_ImplGlfw_InitForOpenGL(window, true);
+        ImGui_ImplGlfw_InitForOpenGL(window, false); // Don't install callbacks, we'll handle them manually
         ImGui_ImplOpenGL3_Init("#version 330");
         // Load fonts for this context
         io.Fonts->AddFontFromFileTTF("fonts/arial.ttf", 16.0f);

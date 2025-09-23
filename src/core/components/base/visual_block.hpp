@@ -16,9 +16,15 @@ namespace ed = ax::NodeEditor;
 class VisualBlock
 {
 public:
+    VisualBlock()
+    {
+        const auto &self = *this;
+        spdlog::info("VisualBlock constructed: {}", typeid(self).name());
+    }
     virtual ~VisualBlock()
     {
-        spdlog::info("VisualBlock destroyed: {}", typeid(*this).name());
+        const auto &self = *this;
+        spdlog::info("VisualBlock destroyed: {}", typeid(self).name());
     }
     virtual void render() = 0;
     virtual ImVec2 getPreferredSize(const char *name = nullptr, const char *value = nullptr, int numInputs = 0, int numOutputs = 0) const;

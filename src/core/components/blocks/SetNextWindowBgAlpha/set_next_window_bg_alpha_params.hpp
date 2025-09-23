@@ -1,6 +1,9 @@
 #pragma once
 #include <imgui.h>
+#include <core/types/base/parameter_base.hpp>
 
 struct SetNextWindowBgAlphaParams {
-    float alpha;
+    ParameterBase<float> alpha = ParameterBase<float>("alpha", ParameterType::INPUT);
+
+    SetNextWindowBgAlphaParams() = default;
 };

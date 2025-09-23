@@ -1,8 +1,11 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct BeginMenuParams {
-    std::string label;
-    bool enabled;
+    ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
+    ParameterBase<bool> enabled = ParameterBase<bool>("enabled", ParameterType::INPUT);
+    ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
+
+    BeginMenuParams() = default;
 };

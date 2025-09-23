@@ -1,9 +1,12 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct RadioButtonParams {
-    std::string label;
-    int* v;
-    int v_button;
+    ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
+    ParameterBase<int*> v = ParameterBase<int*>("v", ParameterType::INPUT);
+    ParameterBase<int> v_button = ParameterBase<int>("v_button", ParameterType::INPUT);
+    ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
+
+    RadioButtonParams() = default;
 };

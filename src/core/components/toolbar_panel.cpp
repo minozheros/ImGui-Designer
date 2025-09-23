@@ -54,17 +54,32 @@ namespace core
                 nodeSearch = searchBuffer;
             }
         }
-        // Auto-focus the search input only once when the mouse enters the toolbar area.
-        // This avoids forcing focus every frame (which can interfere with mouse clicks).
+        // Auto-focus the search input when the mouse enters the toolbar area
+        // (only if the mouse button is not down), and keep the mouse-release
+        // fallback to avoid stealing clicks from buttons.
         ImVec2 mouse = ImGui::GetIO().MousePos;
         ImRect childRect(ImGui::GetWindowPos(), ImVec2(ImGui::GetWindowPos().x + focusAreaWidth, ImGui::GetWindowPos().y + ImGui::GetWindowSize().y));
-        // Focus the search box on mouse-release inside the toolbar, but only if the release wasn't over another item.
         static bool searchAutoFocused = false;
+        static bool mouseWasInside = false;
         auto &io = ImGui::GetIO();
-        if (childRect.Contains(mouse))
+        bool inside = childRect.Contains(mouse);
+
+        // TEMPORARILY DISABLE AUTOFOCUS TO TEST BUTTON CLICKS
+        // Only apply autofocus logic when no UI element is active or hovered
+        // bool canAutofocus = (ImGui::GetActiveID() == 0 && ImGui::GetHoveredID() == 0);
+        bool canAutofocus = true; // RE-ENABLED AFTER TESTING
+
+        if (inside && canAutofocus)
         {
-            // Only react to the release event (avoids stealing clicks on buttons)
-            if (ImGui::IsMouseReleased(0) && ImGui::GetHoveredID() == 0)
+            // If the mouse just entered and there's no mouse button down, focus once.
+            if (!mouseWasInside && !io.MouseDown[0] && !searchAutoFocused)
+            {
+                ImGui::SetKeyboardFocusHere(-1);
+                searchAutoFocused = true;
+            }
+
+            // Release-based fallback: focus when mouse released inside and not over another item.
+            if (ImGui::IsMouseReleased(0))
             {
                 if (!searchAutoFocused)
                 {
@@ -73,21 +88,13 @@ namespace core
                 }
             }
         }
-        else
+        else if (!inside)
         {
-            // Reset so next valid release will refocus once
+            // Reset so next valid enter/release will refocus once
             searchAutoFocused = false;
         }
+        mouseWasInside = inside;
         ImGui::PopID();
-
-        // If the toolbar window isn't hovered, clear any active ImGui item to avoid blocking mouse input
-        bool toolbarHovered = ImGui::IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem);
-        ImGuiID activeIdBefore = ImGui::GetActiveID();
-        if (!toolbarHovered && activeIdBefore != 0)
-        {
-            spdlog::info("ToolbarPanel: clearing active ImGui ID {} because toolbar not hovered", (unsigned)activeIdBefore);
-            ImGui::ClearActiveID();
-        }
 
         std::string searchLower = toLower(nodeSearch);
         float buttonWidth = ImGui::GetContentRegionAvail().x;
@@ -128,16 +135,24 @@ namespace core
                     spdlog::info("ToolbarPanel: Button '{}' clicked", nodeName);
                     VisualWindow *gVisualWindow = appContext.visualWindow.get();
                     spdlog::info("ToolbarPanel: VisualWindow pointer is {}", (gVisualWindow ? "valid" : "null"));
-                    if (gVisualWindow && nodeName == "BeginCombo")
+                    if (gVisualWindow)
                     {
-                        static int nextId = 1;
-                        BeginComboParams params;
-                        params.label = "Label";
-                        params.preview_value = "Preview";
-                        params.flags = 0;
-                        auto node = std::make_unique<BeginComboNode>(ed::NodeId(nextId++), params);
-                        spdlog::info("ToolbarPanel: Adding BeginComboNode to VisualWindow");
-                        gVisualWindow->addBlock(std::move(node));
+                        auto block = appContext.factories->nodeFactory.get()->createBlockByName(nodeName);
+                        if (block)
+                        {
+                            // Use a reference to avoid warning about side effects in typeid
+                            const auto &blockRef = *block;
+                            spdlog::info("ToolbarPanel: Created block of type '{}'", typeid(blockRef).name());
+                            gVisualWindow->addBlock(std::move(block));
+                        }
+                        else
+                        {
+                            spdlog::warn("ToolbarPanel: Failed to create block for node '{}'", nodeName);
+                        }
+                    }
+                    else
+                    {
+                        spdlog::warn("ToolbarPanel: Cannot add block, VisualWindow is null");
                     }
                 }
                 else

@@ -1,6 +1,9 @@
 #pragma once
 #include <imgui.h>
+#include <core/types/base/parameter_base.hpp>
 
 struct SetNextItemStorageIDParams {
-    ImGuiID storage_id;
+    ParameterBase<ImGuiID> storage_id = ParameterBase<ImGuiID>("storage_id", ParameterType::INPUT);
+
+    SetNextItemStorageIDParams() = default;
 };

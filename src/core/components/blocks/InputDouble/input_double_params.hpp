@@ -1,12 +1,15 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct InputDoubleParams {
-    std::string label;
-    double* v;
-    double step;
-    double step_fast;
-    std::string format;
-    ImGuiInputTextFlags flags;
+    ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
+    ParameterBase<double*> v = ParameterBase<double*>("v", ParameterType::INPUT);
+    ParameterBase<double> step = ParameterBase<double>("step", ParameterType::INPUT);
+    ParameterBase<double> step_fast = ParameterBase<double>("step_fast", ParameterType::INPUT);
+    ParameterBase<const char*> format = ParameterBase<const char*>("format", ParameterType::INPUT);
+    ParameterBase<ImGuiInputTextFlags> flags = ParameterBase<ImGuiInputTextFlags>("flags", ParameterType::INPUT);
+    ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
+
+    InputDoubleParams() = default;
 };

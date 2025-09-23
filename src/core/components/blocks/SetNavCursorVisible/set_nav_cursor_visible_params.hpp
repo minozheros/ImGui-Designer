@@ -1,6 +1,9 @@
 #pragma once
 #include <imgui.h>
+#include <core/types/base/parameter_base.hpp>
 
 struct SetNavCursorVisibleParams {
-    bool visible;
+    ParameterBase<bool> visible = ParameterBase<bool>("visible", ParameterType::INPUT);
+
+    SetNavCursorVisibleParams() = default;
 };

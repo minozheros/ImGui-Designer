@@ -11,14 +11,19 @@ namespace core
         using Handler = std::function<T(T)>;
 
         T value;
+
         T minValue;
         T maxValue;
         T defaultValue;
 
-        Handler onOverflow;
-        Handler onUnderflow;
+        Handler onOverflow = nullptr;
+        Handler onUnderflow = nullptr;
 
-        Value(T minV, T maxV, T defV,
+        Value() {
+            value = T();
+        }
+        
+        Value(T minV, T maxV , T defV,
               Handler overflowHandler = nullptr,
               Handler underflowHandler = nullptr)
             : value(defV), minValue(minV), maxValue(maxV), defaultValue(defV)

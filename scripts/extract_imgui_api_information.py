@@ -34,27 +34,60 @@ def extract_api_functions(imgui_h):
     ns_content = ns_match.group(1)
     # Match IMGUI_API function declarations (multi-line, with or without default args)
     func_pattern = re.compile(r'IMGUI_API\s+([\w:<>:&*]+)\s+(\w+)\s*\(([^)]*)\)\s*;', re.MULTILINE)
-    # Improved: match full type including const, pointers, and references
-    param_pattern = re.compile(r'((?:const\s+)?[\w:<>]+(?:\s*[*&]+)*)\s*(\w+)?(\s*=\s*[^,]+)?')
+    # Match: type (multi-word, with *, &, const, etc.) and name (last word)
+    # This version ensures pointer/reference markers are part of the type
+    param_pattern = re.compile(r'^(?P<type>.+?[*&]?)\s+(?P<name>\w+)(\s*=\s*[^,]+)?$')
     functions = []
     enums_used = set()
+    seen_types = set()
+    param_log_lines = []
     for m in func_pattern.finditer(ns_content):
         ret_type, func_name, params = m.groups()
         param_list = []
+        detected_types = set()
         for p in params.split(','):
             p = p.strip()
             if not p or p == 'void':
                 continue
             pm = param_pattern.match(p)
             if pm:
-                ptype = pm.group(1).replace('  ', ' ').strip()
-                pname = pm.group(2) or ''
+                # Remove extra spaces but preserve pointer/reference
+                ptype = re.sub(r'\s+', ' ', pm.group('type')).strip()
+                pname = pm.group('name') or ''
                 param_list.append({'type': ptype, 'name': pname})
                 if ptype.startswith('ImGui'):
                     enums_used.add(ptype)
+                if ptype not in seen_types:
+                    detected_types.add(ptype)
+                    seen_types.add(ptype)
+        if detected_types:
+            param_str = ', '.join([p.strip() for p in params.split(',') if p.strip() and p.strip() != 'void'])
+            param_log_lines.append(f"{ret_type} {func_name}({param_str})")
+            # Add return parameter
+            if ret_type.strip() != 'void':
+                param_log_lines.append(f"  return: {ret_type}")
+            # For each parameter, state input/output and type
+            for param in param_list:
+                # Heuristic: pointer types with names like p_*, out_*, or ending with _out are outputs
+                is_pointer = '*' in param['type']
+                name = param['name']
+                is_output = (
+                    is_pointer and (
+                        name.startswith('p_') or name.startswith('out_') or name.endswith('_out') or 'output' in name.lower()
+                    )
+                )
+                direction = 'output' if is_output else 'input'
+                param_log_lines.append(f"  {direction}: {param['type']} {param['name']}")
+            param_log_lines.append("")
         if ret_type.startswith('ImGui'):
             enums_used.add(ret_type)
         functions.append({'name': func_name, 'return_type': ret_type, 'params': param_list})
+    # Write log to file
+    output_dir = Path('scripts/output')
+    output_dir.mkdir(parents=True, exist_ok=True)
+    log_path = output_dir / 'parameters.txt'
+    with log_path.open('w') as f:
+        f.write('\n'.join(param_log_lines))
     return functions, enums_used
 
 def extract_enum_definitions(imgui_h, relevant_enums):

@@ -1,7 +1,9 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct DebugTextEncodingParams {
-    std::string text;
+    ParameterBase<const char*> text = ParameterBase<const char*>("text", ParameterType::INPUT);
+
+    DebugTextEncodingParams() = default;
 };

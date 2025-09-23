@@ -1,8 +1,10 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct OpenPopupOnItemClickParams {
-    std::string str_id;
-    ImGuiPopupFlags popup_flags;
+    ParameterBase<const char*> str_id = ParameterBase<const char*>("str_id", ParameterType::INPUT);
+    ParameterBase<ImGuiPopupFlags> popup_flags = ParameterBase<ImGuiPopupFlags>("popup_flags", ParameterType::INPUT);
+
+    OpenPopupOnItemClickParams() = default;
 };

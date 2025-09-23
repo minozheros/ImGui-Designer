@@ -1,7 +1,9 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct SetWindowFocusParams {
-    std::string name;
+    ParameterBase<const char*> name = ParameterBase<const char*>("name", ParameterType::INPUT);
+
+    SetWindowFocusParams() = default;
 };

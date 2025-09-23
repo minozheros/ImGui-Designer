@@ -1,13 +1,16 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct InputScalarParams {
-    std::string label;
-    ImGuiDataType data_type;
-    void* p_data;
-    const void* p_step;
-    const void* p_step_fast;
-    std::string format;
-    ImGuiInputTextFlags flags;
+    ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
+    ParameterBase<ImGuiDataType> data_type = ParameterBase<ImGuiDataType>("data_type", ParameterType::INPUT);
+    ParameterBase<void*> p_data = ParameterBase<void*>("p_data", ParameterType::OUTPUT);
+    ParameterBase<const void*> p_step = ParameterBase<const void*>("p_step", ParameterType::OUTPUT);
+    ParameterBase<const void*> p_step_fast = ParameterBase<const void*>("p_step_fast", ParameterType::OUTPUT);
+    ParameterBase<const char*> format = ParameterBase<const char*>("format", ParameterType::INPUT);
+    ParameterBase<ImGuiInputTextFlags> flags = ParameterBase<ImGuiInputTextFlags>("flags", ParameterType::INPUT);
+    ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
+
+    InputScalarParams() = default;
 };

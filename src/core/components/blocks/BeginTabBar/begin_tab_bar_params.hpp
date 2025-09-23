@@ -1,8 +1,11 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct BeginTabBarParams {
-    std::string str_id;
-    ImGuiTabBarFlags flags;
+    ParameterBase<const char*> str_id = ParameterBase<const char*>("str_id", ParameterType::INPUT);
+    ParameterBase<ImGuiTabBarFlags> flags = ParameterBase<ImGuiTabBarFlags>("flags", ParameterType::INPUT);
+    ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
+
+    BeginTabBarParams() = default;
 };

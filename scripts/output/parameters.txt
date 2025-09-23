@@ -1,0 +1,259 @@
+ImGuiContext* CreateContext(ImFontAtlas* shared_font_atlas = NULL)
+  return: ImGuiContext*
+  input: ImFontAtlas* shared_font_atlas
+
+void DestroyContext(ImGuiContext* ctx = NULL)
+  input: ImGuiContext* ctx
+
+void ShowDemoWindow(bool* p_open = NULL)
+  output: bool* p_open
+
+void ShowStyleEditor(ImGuiStyle* ref = NULL)
+  input: ImGuiStyle* ref
+
+bool ShowStyleSelector(const char* label)
+  return: bool
+  input: const char* label
+
+bool Begin(const char* name, bool* p_open = NULL, ImGuiWindowFlags flags = 0)
+  return: bool
+  input: const char* name
+  output: bool* p_open
+  input: ImGuiWindowFlags flags
+
+bool IsWindowFocused(ImGuiFocusedFlags flags=0)
+  return: bool
+  input: ImGuiFocusedFlags flags
+
+bool IsWindowHovered(ImGuiHoveredFlags flags=0)
+  return: bool
+  input: ImGuiHoveredFlags flags
+
+void SetNextWindowSize(const ImVec2& size, ImGuiCond cond = 0)
+  input: const ImVec2& size
+  input: ImGuiCond cond
+
+void SetNextWindowSizeConstraints(const ImVec2& size_min, const ImVec2& size_max, ImGuiSizeCallback custom_callback = NULL, void* custom_callback_data = NULL)
+  input: const ImVec2& size_min
+  input: const ImVec2& size_max
+  input: ImGuiSizeCallback custom_callback
+  input: void* custom_callback_data
+
+void SetNextWindowCollapsed(bool collapsed, ImGuiCond cond = 0)
+  input: bool collapsed
+  input: ImGuiCond cond
+
+void SetNextWindowBgAlpha(float alpha)
+  input: float alpha
+
+void SetNextWindowViewport(ImGuiID viewport_id)
+  input: ImGuiID viewport_id
+
+void PushFont(ImFont* font, float font_size_base_unscaled)
+  input: ImFont* font
+  input: float font_size_base_unscaled
+
+void PushStyleColor(ImGuiCol idx, ImU32 col)
+  input: ImGuiCol idx
+  input: ImU32 col
+
+void PushStyleColor(ImGuiCol idx, const ImVec4& col)
+  input: ImGuiCol idx
+  input: const ImVec4& col
+
+void PopStyleColor(int count = 1)
+  input: int count
+
+void PushStyleVar(ImGuiStyleVar idx, float val)
+  input: ImGuiStyleVar idx
+  input: float val
+
+void PushItemFlag(ImGuiItemFlags option, bool enabled)
+  input: ImGuiItemFlags option
+  input: bool enabled
+
+void PushID(const void* ptr_id)
+  input: const void* ptr_id
+
+bool InvisibleButton(const char* str_id, const ImVec2& size, ImGuiButtonFlags flags = 0)
+  return: bool
+  input: const char* str_id
+  input: const ImVec2& size
+  input: ImGuiButtonFlags flags
+
+bool ArrowButton(const char* str_id, ImGuiDir dir)
+  return: bool
+  input: const char* str_id
+  input: ImGuiDir dir
+
+bool CheckboxFlags(const char* label, int* flags, int flags_value)
+  return: bool
+  input: const char* label
+  input: int* flags
+  input: int flags_value
+
+bool CheckboxFlags(const char* label, unsigned int* flags, unsigned int flags_value)
+  return: bool
+  input: const char* label
+  input: unsigned int* flags
+  input: unsigned int flags_value
+
+bool BeginCombo(const char* label, const char* preview_value, ImGuiComboFlags flags = 0)
+  return: bool
+  input: const char* label
+  input: const char* preview_value
+  input: ImGuiComboFlags flags
+
+bool DragFloat(const char* label, float* v, float v_speed = 1.0f, float v_min = 0.0f, float v_max = 0.0f, const char* format = "%.3f", ImGuiSliderFlags flags = 0)
+  return: bool
+  input: const char* label
+  input: float* v
+  input: float v_speed
+  input: float v_min
+  input: float v_max
+  input: const char* format
+  input: ImGuiSliderFlags flags
+
+bool DragScalar(const char* label, ImGuiDataType data_type, void* p_data, float v_speed = 1.0f, const void* p_min = NULL, const void* p_max = NULL, const char* format = NULL, ImGuiSliderFlags flags = 0)
+  return: bool
+  input: const char* label
+  input: ImGuiDataType data_type
+  output: void* p_data
+  input: float v_speed
+  output: const void* p_min
+  output: const void* p_max
+  input: const char* format
+  input: ImGuiSliderFlags flags
+
+bool InputText(const char* label, char* buf, size_t buf_size, ImGuiInputTextFlags flags = 0, ImGuiInputTextCallback callback = NULL, void* user_data = NULL)
+  return: bool
+  input: const char* label
+  input: char* buf
+  input: size_t buf_size
+  input: ImGuiInputTextFlags flags
+  input: ImGuiInputTextCallback callback
+  input: void* user_data
+
+bool InputDouble(const char* label, double* v, double step = 0.0, double step_fast = 0.0, const char* format = "%.6f", ImGuiInputTextFlags flags = 0)
+  return: bool
+  input: const char* label
+  input: double* v
+  input: double step
+  input: double step_fast
+  input: const char* format
+  input: ImGuiInputTextFlags flags
+
+bool ColorEdit3(const char* label, float col[3], ImGuiColorEditFlags flags = 0)
+  return: bool
+  input: const char* label
+  input: ImGuiColorEditFlags flags
+
+bool ColorPicker4(const char* label, float col[4], ImGuiColorEditFlags flags = 0, const float* ref_col = NULL)
+  return: bool
+  input: const char* label
+  input: ImGuiColorEditFlags flags
+  input: const float* ref_col
+
+bool TreeNodeEx(const char* label, ImGuiTreeNodeFlags flags = 0)
+  return: bool
+  input: const char* label
+  input: ImGuiTreeNodeFlags flags
+
+ImGuiMultiSelectIO* BeginMultiSelect(ImGuiMultiSelectFlags flags, int selection_size = -1, int items_count = -1)
+  return: ImGuiMultiSelectIO*
+  input: ImGuiMultiSelectFlags flags
+  input: int selection_size
+  input: int items_count
+
+void SetNextItemSelectionUserData(ImGuiSelectionUserData selection_user_data)
+  input: ImGuiSelectionUserData selection_user_data
+
+void OpenPopup(const char* str_id, ImGuiPopupFlags popup_flags = 0)
+  input: const char* str_id
+  input: ImGuiPopupFlags popup_flags
+
+void TableNextRow(ImGuiTableRowFlags row_flags = 0, float min_row_height = 0.0f)
+  input: ImGuiTableRowFlags row_flags
+  input: float min_row_height
+
+void TableSetupColumn(const char* label, ImGuiTableColumnFlags flags = 0, float init_width_or_weight = 0.0f, ImGuiID user_id = 0)
+  input: const char* label
+  input: ImGuiTableColumnFlags flags
+  input: float init_width_or_weight
+  input: ImGuiID user_id
+
+void TableSetBgColor(ImGuiTableBgTarget target, ImU32 color, int column_n = -1)
+  input: ImGuiTableBgTarget target
+  input: ImU32 color
+  input: int column_n
+
+bool BeginTabBar(const char* str_id, ImGuiTabBarFlags flags = 0)
+  return: bool
+  input: const char* str_id
+  input: ImGuiTabBarFlags flags
+
+bool BeginTabItem(const char* label, bool* p_open = NULL, ImGuiTabItemFlags flags = 0)
+  return: bool
+  input: const char* label
+  output: bool* p_open
+  input: ImGuiTabItemFlags flags
+
+ImGuiID DockSpaceOverViewport(ImGuiID dockspace_id = 0, const ImGuiViewport* viewport = NULL, ImGuiDockNodeFlags flags = 0, const ImGuiWindowClass* window_class = NULL)
+  return: ImGuiID
+  input: ImGuiID dockspace_id
+  input: const ImGuiViewport* viewport
+  input: ImGuiDockNodeFlags flags
+  input: const ImGuiWindowClass* window_class
+
+bool BeginDragDropSource(ImGuiDragDropFlags flags = 0)
+  return: bool
+  input: ImGuiDragDropFlags flags
+
+bool IsItemClicked(ImGuiMouseButton mouse_button = 0)
+  return: bool
+  input: ImGuiMouseButton mouse_button
+
+ImDrawList* GetBackgroundDrawList(ImGuiViewport* viewport = NULL)
+  return: ImDrawList*
+  input: ImGuiViewport* viewport
+
+void SetStateStorage(ImGuiStorage* storage)
+  input: ImGuiStorage* storage
+
+void ColorConvertRGBtoHSV(float r, float g, float b, float& out_h, float& out_s, float& out_v)
+  input: float r
+  input: float g
+  input: float b
+  input: float& out_h
+  input: float& out_s
+  input: float& out_v
+
+bool IsKeyDown(ImGuiKey key)
+  return: bool
+  input: ImGuiKey key
+
+bool IsKeyChordPressed(ImGuiKeyChord key_chord)
+  return: bool
+  input: ImGuiKeyChord key_chord
+
+bool Shortcut(ImGuiKeyChord key_chord, ImGuiInputFlags flags = 0)
+  return: bool
+  input: ImGuiKeyChord key_chord
+  input: ImGuiInputFlags flags
+
+bool IsMousePosValid(const ImVec2* mouse_pos = NULL)
+  return: bool
+  input: const ImVec2* mouse_pos
+
+void SetMouseCursor(ImGuiMouseCursor cursor_type)
+  input: ImGuiMouseCursor cursor_type
+
+void SetAllocatorFunctions(ImGuiMemAllocFunc alloc_func, ImGuiMemFreeFunc free_func, void* user_data = NULL)
+  input: ImGuiMemAllocFunc alloc_func
+  input: ImGuiMemFreeFunc free_func
+  input: void* user_data
+
+void GetAllocatorFunctions(ImGuiMemAllocFunc* p_alloc_func, ImGuiMemFreeFunc* p_free_func, void** p_user_data)
+  output: ImGuiMemAllocFunc* p_alloc_func
+  output: ImGuiMemFreeFunc* p_free_func
+  output: void** p_user_data

@@ -6,6 +6,8 @@ struct AppContext;
 #include <spdlog/spdlog.h>
 #include <entt/entt.hpp>
 #include <imgui.h>
+#include "core/factories/node_factory.hpp"
+
 namespace core
 {
     // MainFactory that aggregates sub-factories and coordinates creation
@@ -16,6 +18,8 @@ namespace core
 
         // High-level creation method
         void createAll();
+
+        std::unique_ptr<NodeFactory> nodeFactory;
 
     private:
         AppContext *ctx;

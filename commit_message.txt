@@ -1,31 +1,22 @@
-Refactor imgui-node-editor integration: local subdirectory & FetchContent
+Fix X11 multi-monitor mouse coordinates and implement node factory
 
-- Moved FetchContent logic for imgui-node-editor to third_party/imgui-node-editor/CMakeLists.txt
-- Now uses add_subdirectory for consistent third-party management (like imgui, fmod)
-- Automatically fetches source if missing, or uses local copy
-- Keeps top-level CMakeLists.txt clean and robust
-Refactor toolbar UI, docking, and workflow; document ImGui docking limitations
+- Fix: X11 multi-monitor coordinate handling for unfocused windows
+  - Added conservative coordinate correction in render_imgui_designer_window.hpp
+  - Only overrides invalid ImGui coordinates when mouse is within window bounds
+  - Prevents "mouse focus all over the place" issues in multi-screen setups
 
-Full project sync: commit all pending changes (331 files)
+- Fix: NodeFactory implementation for visual node creation
+  - Implemented createBlockByName() to actually instantiate node objects
+  - Added unique NodeId generation using atomic counter
+  - BeginComboNode now properly created and added to node editor
 
-- Staged and committed all outstanding changes in the repository.
-- This commit brings the working directory fully up to date with all modifications, additions, and deletions.
-- See git diff for details on individual file changes.
+- Fix: Toolbar button functionality restored
+  - Button clicks now create and display nodes in ImGui Node Editor
+  - Resolved issue where nodes weren't appearing despite successful clicks
 
-Fix: Remove empty namespace block and enforce include order in visual_window.cpp
+- Update: Re-enabled toolbar search autofocus after testing
+- Update: Enhanced logging for coordinate debugging and node creation
 
-- Removed redundant empty namespace block at the top of visual_window.cpp.
-- Moved all #include directives to the very top of the file, before any namespace or code, for compliance with project rules.
-- No functional changes.
-
-Also updated assistant workflow rules to explicitly forbid empty/redundant namespace blocks and require all includes at the very top of each file.
-
-Fix toolbar search autofocus and input handling
-
-- Change: Focus toolbar search input only on mouse-release inside toolbar (avoid stealing clicks)
-- Change: Remove automatic multi-monitor window repositioning
-- Tweak: Constrained BeginCombo node control widths to 220px to avoid very wide nodes
-- Add: Diagnostic logging for GLFW vs ImGui input states
-
-These changes prevent the InputText from stealing clicks and help diagnose
-input mismatches across monitor setups. See NOTES.md for rationale.
+These changes restore full functionality to the visual programming interface,
+ensuring reliable mouse interaction across X11 multi-monitor configurations
+and proper node instantiation in the node editor.

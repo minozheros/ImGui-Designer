@@ -1,9 +1,12 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct InvisibleButtonParams {
-    std::string str_id;
-    const ImVec2& size;
-    ImGuiButtonFlags flags;
+    ParameterBase<const char*> str_id = ParameterBase<const char*>("str_id", ParameterType::INPUT);
+    ParameterBase<const ImVec2&> size = ParameterBase<const ImVec2&>("size", ParameterType::INPUT);
+    ParameterBase<ImGuiButtonFlags> flags = ParameterBase<ImGuiButtonFlags>("flags", ParameterType::INPUT);
+    ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
+
+    InvisibleButtonParams() = default;
 };

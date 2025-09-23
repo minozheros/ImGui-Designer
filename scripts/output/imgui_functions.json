@@ -1175,12 +1175,12 @@
         "name": "label"
       },
       {
-        "type": "unsigned",
-        "name": "int"
+        "type": "unsigned int*",
+        "name": "flags"
       },
       {
-        "type": "unsigned",
-        "name": "int"
+        "type": "unsigned int",
+        "name": "flags_value"
       }
     ]
   },
@@ -1281,10 +1281,6 @@
         "name": "current_item"
       },
       {
-        "type": "const char*",
-        "name": "const"
-      },
-      {
         "type": "int",
         "name": "items_count"
       },
@@ -1360,10 +1356,6 @@
       },
       {
         "type": "float",
-        "name": "v"
-      },
-      {
-        "type": "float",
         "name": "v_speed"
       },
       {
@@ -1394,10 +1386,6 @@
       },
       {
         "type": "float",
-        "name": "v"
-      },
-      {
-        "type": "float",
         "name": "v_speed"
       },
       {
@@ -1425,10 +1413,6 @@
       {
         "type": "const char*",
         "name": "label"
-      },
-      {
-        "type": "float",
-        "name": "v"
       },
       {
         "type": "float",
@@ -1537,10 +1521,6 @@
         "name": "label"
       },
       {
-        "type": "int",
-        "name": "v"
-      },
-      {
         "type": "float",
         "name": "v_speed"
       },
@@ -1571,10 +1551,6 @@
         "name": "label"
       },
       {
-        "type": "int",
-        "name": "v"
-      },
-      {
         "type": "float",
         "name": "v_speed"
       },
@@ -1603,10 +1579,6 @@
       {
         "type": "const char*",
         "name": "label"
-      },
-      {
-        "type": "int",
-        "name": "v"
       },
       {
         "type": "float",
@@ -1792,10 +1764,6 @@
       },
       {
         "type": "float",
-        "name": "v"
-      },
-      {
-        "type": "float",
         "name": "v_min"
       },
       {
@@ -1822,10 +1790,6 @@
       },
       {
         "type": "float",
-        "name": "v"
-      },
-      {
-        "type": "float",
         "name": "v_min"
       },
       {
@@ -1849,10 +1813,6 @@
       {
         "type": "const char*",
         "name": "label"
-      },
-      {
-        "type": "float",
-        "name": "v"
       },
       {
         "type": "float",
@@ -1942,10 +1902,6 @@
       },
       {
         "type": "int",
-        "name": "v"
-      },
-      {
-        "type": "int",
         "name": "v_min"
       },
       {
@@ -1972,10 +1928,6 @@
       },
       {
         "type": "int",
-        "name": "v"
-      },
-      {
-        "type": "int",
         "name": "v_min"
       },
       {
@@ -1999,10 +1951,6 @@
       {
         "type": "const char*",
         "name": "label"
-      },
-      {
-        "type": "int",
-        "name": "v"
       },
       {
         "type": "int",
@@ -2303,10 +2251,6 @@
         "name": "label"
       },
       {
-        "type": "float",
-        "name": "v"
-      },
-      {
         "type": "const char*",
         "name": "format"
       },
@@ -2325,10 +2269,6 @@
         "name": "label"
       },
       {
-        "type": "float",
-        "name": "v"
-      },
-      {
         "type": "const char*",
         "name": "format"
       },
@@ -2345,10 +2285,6 @@
       {
         "type": "const char*",
         "name": "label"
-      },
-      {
-        "type": "float",
-        "name": "v"
       },
       {
         "type": "const char*",
@@ -2395,10 +2331,6 @@
         "name": "label"
       },
       {
-        "type": "int",
-        "name": "v"
-      },
-      {
         "type": "ImGuiInputTextFlags",
         "name": "flags"
       }
@@ -2413,10 +2345,6 @@
         "name": "label"
       },
       {
-        "type": "int",
-        "name": "v"
-      },
-      {
         "type": "ImGuiInputTextFlags",
         "name": "flags"
       }
@@ -2429,10 +2357,6 @@
       {
         "type": "const char*",
         "name": "label"
-      },
-      {
-        "type": "int",
-        "name": "v"
       },
       {
         "type": "ImGuiInputTextFlags",
@@ -2551,10 +2475,6 @@
         "name": "label"
       },
       {
-        "type": "float",
-        "name": "col"
-      },
-      {
         "type": "ImGuiColorEditFlags",
         "name": "flags"
       }
@@ -2567,10 +2487,6 @@
       {
         "type": "const char*",
         "name": "label"
-      },
-      {
-        "type": "float",
-        "name": "col"
       },
       {
         "type": "ImGuiColorEditFlags",
@@ -2587,10 +2503,6 @@
         "name": "label"
       },
       {
-        "type": "float",
-        "name": "col"
-      },
-      {
         "type": "ImGuiColorEditFlags",
         "name": "flags"
       }
@@ -2603,10 +2515,6 @@
       {
         "type": "const char*",
         "name": "label"
-      },
-      {
-        "type": "float",
-        "name": "col"
       },
       {
         "type": "ImGuiColorEditFlags",
@@ -2794,10 +2702,6 @@
         "name": "current_item"
       },
       {
-        "type": "const char*",
-        "name": "const"
-      },
-      {
         "type": "int",
         "name": "items_count"
       },
@@ -2844,8 +2748,8 @@
         "name": "prefix"
       },
       {
-        "type": "unsigned",
-        "name": "int"
+        "type": "unsigned int",
+        "name": "v"
       }
     ]
   },

@@ -1,7 +1,10 @@
 #pragma once
 #include <imgui.h>
+#include <core/types/base/parameter_base.hpp>
 
 struct TableSetupScrollFreezeParams {
-    int cols;
-    int rows;
+    ParameterBase<int> cols = ParameterBase<int>("cols", ParameterType::INPUT);
+    ParameterBase<int> rows = ParameterBase<int>("rows", ParameterType::INPUT);
+
+    TableSetupScrollFreezeParams() = default;
 };

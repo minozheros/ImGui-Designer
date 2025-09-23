@@ -1,8 +1,11 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct TextLinkOpenURLParams {
-    std::string label;
-    std::string url;
+    ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
+    ParameterBase<const char*> url = ParameterBase<const char*>("url", ParameterType::INPUT);
+    ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
+
+    TextLinkOpenURLParams() = default;
 };

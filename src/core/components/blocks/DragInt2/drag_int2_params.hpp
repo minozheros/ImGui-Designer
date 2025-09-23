@@ -1,13 +1,15 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct DragInt2Params {
-    std::string label;
-    int v;
-    float v_speed;
-    int v_min;
-    int v_max;
-    std::string format;
-    ImGuiSliderFlags flags;
+    ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
+    ParameterBase<float> v_speed = ParameterBase<float>("v_speed", ParameterType::INPUT);
+    ParameterBase<int> v_min = ParameterBase<int>("v_min", ParameterType::INPUT);
+    ParameterBase<int> v_max = ParameterBase<int>("v_max", ParameterType::INPUT);
+    ParameterBase<const char*> format = ParameterBase<const char*>("format", ParameterType::INPUT);
+    ParameterBase<ImGuiSliderFlags> flags = ParameterBase<ImGuiSliderFlags>("flags", ParameterType::INPUT);
+    ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
+
+    DragInt2Params() = default;
 };

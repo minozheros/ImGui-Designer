@@ -1,12 +1,15 @@
 #pragma once
 #include <imgui.h>
-#include <string>
+#include <core/types/base/parameter_base.hpp>
 
 struct SliderAngleParams {
-    std::string label;
-    float* v_rad;
-    float v_degrees_min;
-    float v_degrees_max;
-    std::string format;
-    ImGuiSliderFlags flags;
+    ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
+    ParameterBase<float*> v_rad = ParameterBase<float*>("v_rad", ParameterType::INPUT);
+    ParameterBase<float> v_degrees_min = ParameterBase<float>("v_degrees_min", ParameterType::INPUT);
+    ParameterBase<float> v_degrees_max = ParameterBase<float>("v_degrees_max", ParameterType::INPUT);
+    ParameterBase<const char*> format = ParameterBase<const char*>("format", ParameterType::INPUT);
+    ParameterBase<ImGuiSliderFlags> flags = ParameterBase<ImGuiSliderFlags>("flags", ParameterType::INPUT);
+    ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
+
+    SliderAngleParams() = default;
 };
