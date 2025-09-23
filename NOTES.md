@@ -85,7 +85,7 @@ This section documents the main directories and their intended purposes to clari
 - This applies to both manual and automated edits.
 - The commit message will reflect the nature of the changes (e.g., feature, fix, refactor, config update, etc.).
 - This ensures every working state is restorable and all progress is tracked.
-
+ 
 Add new folders or files to this list as the project evolves to keep the structure clear and maintainable.
 
 # Code Generators in CMake
