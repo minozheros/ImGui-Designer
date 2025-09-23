@@ -1,3 +1,11 @@
+Update generator, base types, and includes for ImGui node parameter automation.
+ - Generator scripts now emit parameter structs inheriting from IParameterParamsBase.
+ - ParameterBase<T> refactored to inherit from new IParameterBase for heterogeneous vector support.
+ - Regenerated all parameter structs and node_params_map.hpp.
+ - Build validated successfully.
+ - Includes checked and adjusted for vector and base type usage.
+ - All changes follow project conventions and encapsulation rules.
+ - See NOTES.md for design decisions and details.
 Add vector<IParameterBase*> aggregation to generated blocks
 Generator now emits a std::vector<core::IParameterBase*> member for each block
 Constructor populates vector with all block parameters
