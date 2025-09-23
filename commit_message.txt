@@ -1,0 +1,4 @@
+# This file is used for automated git commit messages.
+# Edit or overwrite this file before each commit as needed.
+
+Automated commit: initial message placeholder.
