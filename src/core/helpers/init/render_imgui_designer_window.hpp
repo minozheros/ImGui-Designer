@@ -140,10 +140,10 @@ namespace core
         if (dock_id_left != 0)
         {
             ImGuiDockNode *node = ImGui::DockBuilderGetNode(dock_id_left);
-            if (node && node->Size.x < 200.0f)
+            if (node && node->Size.x < 325.0f)
             {
-                node->Size.x = 200.0f;
-                node->SizeRef.x = 200.0f;
+                node->Size.x = 325.0f;
+                node->SizeRef.x = 325.0f;
             }
         }
 
@@ -163,14 +163,14 @@ namespace core
             toolbarSize = win->Size;
             hasToolbarRect = true;
         }
-        if (hasToolbarRect && toolbarSize.x < 200.0f)
+        if (hasToolbarRect && toolbarSize.x < 325.0f)
         {
-            ImGui::SetNextWindowPos(ImVec2(toolbarPos.x + (200.0f - toolbarSize.x) + 10.0f, toolbarPos.y));
-            ImGui::SetNextWindowSize(ImVec2(200.0f, toolbarSize.y));
+            ImGui::SetNextWindowPos(ImVec2(toolbarPos.x + (325.0f - toolbarSize.x) + 10.0f, toolbarPos.y));
+            ImGui::SetNextWindowSize(ImVec2(325.0f, toolbarSize.y));
         }
         else
         {
-            ImGui::SetNextWindowSizeConstraints(ImVec2(200.0f, 0.0f), ImVec2(FLT_MAX, FLT_MAX));
+            ImGui::SetNextWindowSizeConstraints(ImVec2(325.0f, 0.0f), ImVec2(FLT_MAX, FLT_MAX));
         }
         ImGui::Begin("Toolbar");
         if (ctx.toolbarPanel)

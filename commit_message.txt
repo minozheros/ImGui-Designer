@@ -1,1 +1,5 @@
-Refine BeginComboNode layout: remove parameter controls, implement side-by-side input/output positioning with dynamic width calculation based on content, and stabilize node sizing
+Add vector<IParameterBase*> aggregation to generated blocks
+Generator now emits a std::vector<core::IParameterBase*> member for each block
+Constructor populates vector with all block parameters
+Prepares for heterogeneous parameter handling
+Follows encapsulation and code organization rules
