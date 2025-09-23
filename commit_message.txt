@@ -1,6 +1,8 @@
-Align BeginComboNode outputs to right edge of node
+Refactor BeginComboNode to use column layout for constrained width
 
-- Position outputs section to align with right edge of node using ImGui::SetCursorPosX()
-- Calculate node width and position right group at node_width - right_group_width
-- Maintain visual separation between inputs (left) and outputs (right)
-- Improve node layout consistency and visual balance
+- Replace cursor positioning with ImGui::Columns() for proper width control
+- Left column (120px): Inputs with bullet indicators
+- Right column (100px): Outputs with bullet indicators  
+- Total node width constrained to ~220px instead of expanding dynamically
+- Maintain visual separation while preventing excessive node width
+- Use ImGui::Columns(1) to reset for parameter controls section

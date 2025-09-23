@@ -46,10 +46,12 @@ namespace core
         // Node header
         ImGui::Text("BeginCombo");
 
-        // Create two columns: left for inputs, right for outputs
-        ImGui::BeginGroup();
+        // Use columns for proper left/right layout without expanding node width
+        ImGui::Columns(2, "NodeLayout", false);
+        ImGui::SetColumnWidth(0, 120.0f); // Fixed width for left column (inputs)
+        ImGui::SetColumnWidth(1, 100.0f); // Fixed width for right column (outputs)
 
-        // Left side - Inputs
+        // Left column - Inputs
         ImGui::Text("Inputs:");
 
         // Label input pin with visual indicator
@@ -73,14 +75,8 @@ namespace core
         ImGui::Text("Flags");
         ed::EndPin();
 
-        ImGui::EndGroup();
-
-        // Right side - Outputs (aligned to right edge of node)
-        float nodeWidth = ImGui::GetWindowContentRegionMax().x;
-        float rightGroupWidth = 80.0f; // Estimated width for "Outputs:" + "Return" + bullet
-        ImGui::SetCursorPosX(nodeWidth - rightGroupWidth);
-        ImGui::BeginGroup();
-
+        // Right column - Outputs
+        ImGui::NextColumn();
         ImGui::Text("Outputs:");
 
         // Output pin for return value
@@ -90,7 +86,7 @@ namespace core
         ImGui::Bullet(); // Visual circle indicator
         ed::EndPin();
 
-        ImGui::EndGroup();
+        ImGui::Columns(1); // Reset to single column
 
         // Parameter controls in the center/bottom
         ImGui::Separator();
