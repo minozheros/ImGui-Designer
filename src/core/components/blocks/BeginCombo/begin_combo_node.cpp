@@ -43,24 +43,57 @@ namespace core
         spdlog::info("BeginComboNode::draw called, id: {}", id_.Get());
         ed::BeginNode(id_);
 
+        // Node header
         ImGui::Text("BeginCombo");
 
-        // Label input pin
+        // Create two columns: left for inputs, right for outputs
+        ImGui::BeginGroup();
+        
+        // Left side - Inputs
+        ImGui::Text("Inputs:");
+        
+        // Label input pin with visual indicator
         ed::BeginPin(inputPinLabel_, ed::PinKind::Input);
+        ImGui::Bullet(); // Visual circle indicator
+        ImGui::SameLine();
         ImGui::Text("Label");
         ed::EndPin();
 
-        // Preview input pin
+        // Preview input pin with visual indicator
         ed::BeginPin(inputPinPreview_, ed::PinKind::Input);
+        ImGui::Bullet(); // Visual circle indicator
+        ImGui::SameLine();
         ImGui::Text("Preview");
         ed::EndPin();
 
-        // Flags input pin
+        // Flags input pin with visual indicator
         ed::BeginPin(inputPinFlags_, ed::PinKind::Input);
+        ImGui::Bullet(); // Visual circle indicator
+        ImGui::SameLine();
         ImGui::Text("Flags");
         ed::EndPin();
+        
+        ImGui::EndGroup();
+        
+        // Right side - Outputs
+        ImGui::SameLine();
+        ImGui::BeginGroup();
+        
+        ImGui::Text("Outputs:");
+        
+        // Output pin for return value
+        ed::BeginPin(outputPinReturn_, ed::PinKind::Output);
+        ImGui::Text("Return");
+        ImGui::SameLine();
+        ImGui::Bullet(); // Visual circle indicator
+        ed::EndPin();
+        
+        ImGui::EndGroup();
 
-        // Parameter controls
+        // Parameter controls in the center/bottom
+        ImGui::Separator();
+        ImGui::Text("Parameters:");
+
         std::array<char, kMaxLabelLen> labelBuf{};
         std::array<char, kMaxPreviewLen> previewBuf{};
         if (params_.label.value.value)
@@ -68,7 +101,7 @@ namespace core
         if (params_.preview_value.value.value)
             std::strncpy(previewBuf.data(), params_.preview_value.value.value, kMaxPreviewLen - 1);
 
-        ImGui::PushItemWidth(220.0f);
+        ImGui::PushItemWidth(200.0f);
         if (ImGui::InputText("Label", labelBuf.data(), kMaxLabelLen))
         {
             params_.label.value.value = labelBuf.data();
@@ -86,11 +119,6 @@ namespace core
             setInput("flags", params_.flags.value.value);
         }
         ImGui::PopItemWidth();
-
-        // Output pin for return value
-        ed::BeginPin(outputPinReturn_, ed::PinKind::Output);
-        ImGui::Text("Return");
-        ed::EndPin();
 
         ed::EndNode();
     }

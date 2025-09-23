@@ -1,22 +1,13 @@
-Fix X11 multi-monitor mouse coordinates and implement node factory
+Refactor BeginComboNode layout for better visual design
 
-- Fix: X11 multi-monitor coordinate handling for unfocused windows
-  - Added conservative coordinate correction in render_imgui_designer_window.hpp
-  - Only overrides invalid ImGui coordinates when mouse is within window bounds
-  - Prevents "mouse focus all over the place" issues in multi-screen setups
+- Restructure BeginComboNode to have clear left/right separation:
+  - Left side: Inputs with bullet indicators and labels
+  - Right side: Outputs with bullet indicators
+  - Bottom: Parameter controls
 
-- Fix: NodeFactory implementation for visual node creation
-  - Implemented createBlockByName() to actually instantiate node objects
-  - Added unique NodeId generation using atomic counter
-  - BeginComboNode now properly created and added to node editor
+- Add visual bullet indicators for all pins to show connection points
+- Improve node readability and data flow visualization
+- Maintain all existing functionality while improving UI layout
 
-- Fix: Toolbar button functionality restored
-  - Button clicks now create and display nodes in ImGui Node Editor
-  - Resolved issue where nodes weren't appearing despite successful clicks
-
-- Update: Re-enabled toolbar search autofocus after testing
-- Update: Enhanced logging for coordinate debugging and node creation
-
-These changes restore full functionality to the visual programming interface,
-ensuring reliable mouse interaction across X11 multi-monitor configurations
-and proper node instantiation in the node editor.
+This serves as the reference implementation for automated node generation,
+showing proper pin placement, visual indicators, and organized layout.
