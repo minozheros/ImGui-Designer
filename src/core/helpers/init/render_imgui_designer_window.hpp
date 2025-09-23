@@ -7,6 +7,7 @@
 #include <spdlog/spdlog.h>
 #include <GLFW/glfw3.h>
 #include "app/helpers/app_context.hpp"
+#include "core/components/toolbar_panel.hpp"
 namespace core
 {
     int RenderDesignerWindow(AppContext &ctx, ImGuiContext *imguiCtx, GLFWwindow *window)
@@ -33,6 +34,7 @@ namespace core
         ImGui::PopStyleVar(3);
 
         ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+        static ImGuiID dock_id_left = 0;
         if (ImGui::DockBuilderGetNode(dockspace_id) == nullptr)
         {
             ImGui::DockBuilderRemoveNode(dockspace_id); // clear any previous layout
@@ -50,7 +52,7 @@ namespace core
 
             // Split: left (toolbar), main, bottom
             ImGuiID dock_main_id = dockspace_id;
-            ImGuiID dock_id_left = ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Left, 0.15f, nullptr, &dock_main_id);
+            dock_id_left = ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Left, 0.15f, nullptr, &dock_main_id);
             ImGuiID dock_id_bottom = ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Down, 0.20f, nullptr, &dock_main_id);
 
             // Dock windows
@@ -61,13 +63,44 @@ namespace core
             ImGui::DockBuilderFinish(dockspace_id);
         }
 
+        // ImGui internal workaround: enforce minimum dock node width for toolbar
+        if (dock_id_left != 0)
+        {
+            ImGuiDockNode *node = ImGui::DockBuilderGetNode(dock_id_left);
+            if (node && node->Size.x < 200.0f)
+            {
+                node->Size.x = 200.0f;
+                node->SizeRef.x = 200.0f;
+            }
+        }
+
         ImGui::DockSpace(dockspace_id, ImVec2(0, 0), ImGuiDockNodeFlags_PassthruCentralNode);
 
         ImGui::End();
 
         // Then, in your UI code, create windows with matching names:
+        static core::ToolbarPanel toolbarPanel;
+        // Workaround: If the toolbar is too narrow, move and resize it to prevent clipping
+        ImVec2 toolbarPos, toolbarSize;
+        bool hasToolbarRect = false;
+        if (ImGui::FindWindowByName("Toolbar"))
+        {
+            ImGuiWindow *win = ImGui::FindWindowByName("Toolbar");
+            toolbarPos = win->Pos;
+            toolbarSize = win->Size;
+            hasToolbarRect = true;
+        }
+        if (hasToolbarRect && toolbarSize.x < 200.0f)
+        {
+            ImGui::SetNextWindowPos(ImVec2(toolbarPos.x + (200.0f - toolbarSize.x) + 10.0f, toolbarPos.y));
+            ImGui::SetNextWindowSize(ImVec2(200.0f, toolbarSize.y));
+        }
+        else
+        {
+            ImGui::SetNextWindowSizeConstraints(ImVec2(200.0f, 0.0f), ImVec2(FLT_MAX, FLT_MAX));
+        }
         ImGui::Begin("Toolbar");
-        // ... toolbar content ...
+        toolbarPanel.render();
         ImGui::End();
 
         ImGui::Begin("BottomBar");

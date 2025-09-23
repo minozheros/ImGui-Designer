@@ -1,4 +1,12 @@
 # This file is used for automated git commit messages.
 # Edit or overwrite this file before each commit as needed.
 
-Automated commit: initial message placeholder.
+
+Refactor toolbar UI, docking, and workflow; document ImGui docking limitations
+
+- Encapsulated toolbar logic in ToolbarPanel class and improved search/filter UX
+- Enforced minimum toolbar width and improved label/input layout
+- Added logging for toolbar width changes
+- Attempted multiple workarounds for ImGui docking minimum size/undocking issues
+- Reverted to default docking behavior after testing restrictions and standalone window
+- Documented ImGui docking limitations and workflow in project notes

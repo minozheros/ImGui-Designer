@@ -48,6 +48,9 @@ This section documents the main directories and their intended purposes to clari
 
 ## Conventions
 ## Implementation Philosophy
+### Adding New Functionality
+
+Before adding new functionality (code, UI, or features), always search the codebase to find the most appropriate place for it. This helps avoid duplication, ensures maintainability, and keeps related logic together. If in doubt, prefer extending or reusing existing components over creating new ones. Document any non-obvious placement decisions in this file.
 
 ### C++ Member and Include Organization
 
@@ -69,6 +72,13 @@ This section documents the main directories and their intended purposes to clari
 ## Git Commit Workflow
 
 ## Build Success Marker (Automation)
+
+## Commit Message File Workflow
+
+- All automated or semi-automated git commits use the file `commit_message.txt` in the project root.
+- Before each commit, the assistant or user updates this file with a detailed commit message.
+- The commit is then created using `git commit -F commit_message.txt`.
+- This approach ensures consistent, explicit commit messages and simplifies approval in environments that require it.
 
 - After every successful build of the main target, CMake creates a file named `build_succeeded.marker` in the build directory.
 - This marker file is used by automation tools to detect when a build has completed successfully and to trigger post-build actions (such as automatic git commits).
@@ -160,8 +170,62 @@ ImGui Designer is a visual creator for ImGui-based UIs. The goal is to enable us
 
 ## Quick How-Tos
 
--
 
+## UI/Component Encapsulation Rule (added 23. September 2025)
+
+### Rule
+All ImGui UI/component logic (including panels, toolbars, search boxes, and any reusable widget) **must be encapsulated in dedicated C++ classes**. Do not place UI logic inline in window functions or in global/static functions. Each UI component should have its own class, with a clear interface and a `render()` method (or similar) for drawing its contents.
+
+**Rationale:**
+- Improves maintainability and testability
+- Makes UI code modular and reusable
+- Keeps window functions clean and focused on layout
+- Eases onboarding for new contributors
+
+### Minimal Example
+```cpp
+// src/core/components/ToolbarPanel.hpp
+#pragma once
+#define IMGUI_DEFINE_MATH_OPERATORS
+#include <imgui.h>
+#include <imgui_internal.h>
+#include <string>
+#include <vector>
+
+class ToolbarPanel {
+  std::string nodeSearch;
+  char searchBuffer[128] = "";
+  std::vector<std::string> allNodes;
+public:
+  ToolbarPanel() : allNodes{"Add", "Subtract", "Multiply"} {}
+  void render() {
+    if (ImGui::InputText("Search nodes", searchBuffer, IM_ARRAYSIZE(searchBuffer), ImGuiInputTextFlags_CallbackResize)) {
+      nodeSearch = searchBuffer;
+    }
+    for (const auto& nodeName : allNodes) {
+      if (nodeSearch.empty() || nodeName.find(nodeSearch) != std::string::npos) {
+        if (ImGui::Button(nodeName.c_str())) {
+          // Handle node selection
+        }
+      }
+    }
+  }
+};
+```
+
+**Usage in window code:**
+```cpp
+static ToolbarPanel toolbar;
+ImGui::Begin("Toolbar");
+toolbar.render();
+ImGui::End();
+```
+
+### Enforcement
+- All new UI/component logic must follow this rule.
+- Refactor legacy code as time permits.
+
+---
 
 ---
 

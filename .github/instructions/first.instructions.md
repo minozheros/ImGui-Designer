@@ -1,3 +1,15 @@
+# Commit Message Workflow
+
+For all automated or semi-automated git commits, use the file `commit_message.txt` in the project root:
+
+- Before each commit, update the contents of `commit_message.txt` with a clear, detailed message describing the changes.
+- Use the command `git commit -F commit_message.txt` to create the commit. This ensures the message is always up to date and explicit.
+- This workflow standardizes commit messages, streamlines approval, and keeps project history clear.
+
+# UI/Component Encapsulation Rule
+
+All UI/component logic (including panels, toolbars, widgets, etc.) **must be encapsulated in dedicated C++ classes** as described in the "UI/Component Encapsulation Rule" section of `NOTES.md`. Do not place UI logic inline in window functions. Always refer to `NOTES.md` for the latest rule and example.
+
 # ImGui Designer
 
 **Project Notes:**
