@@ -1,13 +1,11 @@
-Refactor BeginComboNode layout for better visual design
+Refine BeginComboNode layout: centered title, right-aligned outputs, external bullets
 
-- Restructure BeginComboNode to have clear left/right separation:
-  - Left side: Inputs with bullet indicators and labels
-  - Right side: Outputs with bullet indicators
-  - Bottom: Parameter controls
+- Center the node title horizontally using cursor positioning
+- Align output section to the right edge of the node
+- Position input bullets on the left (outside) and output bullets on the right (outside)
+- Create clear visual flow: inputs → node → outputs
+- Improve overall node aesthetics and connection point visibility
 
-- Add visual bullet indicators for all pins to show connection points
-- Improve node readability and data flow visualization
-- Maintain all existing functionality while improving UI layout
-
-This serves as the reference implementation for automated node generation,
-showing proper pin placement, visual indicators, and organized layout.
+This refined layout establishes the visual standard for node design,
+with centered titles, proper alignment, and external bullet indicators
+for optimal readability and connection clarity.

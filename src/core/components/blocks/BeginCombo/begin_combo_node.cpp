@@ -43,49 +43,52 @@ namespace core
         spdlog::info("BeginComboNode::draw called, id: {}", id_.Get());
         ed::BeginNode(id_);
 
-        // Node header
+        // Center the node title
+        ImGui::SetCursorPosX((ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize("BeginCombo").x) * 0.5f);
         ImGui::Text("BeginCombo");
 
         // Create two columns: left for inputs, right for outputs
         ImGui::BeginGroup();
         
-        // Left side - Inputs
+        // Left side - Inputs with bullets on the outside (left)
         ImGui::Text("Inputs:");
         
-        // Label input pin with visual indicator
+        // Label input pin with bullet on the left
         ed::BeginPin(inputPinLabel_, ed::PinKind::Input);
-        ImGui::Bullet(); // Visual circle indicator
+        ImGui::Bullet(); // Visual circle indicator on the left
         ImGui::SameLine();
         ImGui::Text("Label");
         ed::EndPin();
 
-        // Preview input pin with visual indicator
+        // Preview input pin with bullet on the left
         ed::BeginPin(inputPinPreview_, ed::PinKind::Input);
-        ImGui::Bullet(); // Visual circle indicator
+        ImGui::Bullet(); // Visual circle indicator on the left
         ImGui::SameLine();
         ImGui::Text("Preview");
         ed::EndPin();
 
-        // Flags input pin with visual indicator
+        // Flags input pin with bullet on the left
         ed::BeginPin(inputPinFlags_, ed::PinKind::Input);
-        ImGui::Bullet(); // Visual circle indicator
+        ImGui::Bullet(); // Visual circle indicator on the left
         ImGui::SameLine();
         ImGui::Text("Flags");
         ed::EndPin();
         
         ImGui::EndGroup();
         
-        // Right side - Outputs
+        // Right side - Outputs aligned to the right with bullets on the outside (right)
         ImGui::SameLine();
+        float rightColumnWidth = 80.0f; // Fixed width for right column
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - rightColumnWidth);
         ImGui::BeginGroup();
         
         ImGui::Text("Outputs:");
         
-        // Output pin for return value
+        // Output pin for return value with bullet on the right
         ed::BeginPin(outputPinReturn_, ed::PinKind::Output);
         ImGui::Text("Return");
         ImGui::SameLine();
-        ImGui::Bullet(); // Visual circle indicator
+        ImGui::Bullet(); // Visual circle indicator on the right
         ed::EndPin();
         
         ImGui::EndGroup();
