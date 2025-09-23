@@ -17,7 +17,15 @@ namespace
 BeginComboNode::BeginComboNode(ed::NodeId id, const BeginComboParams &params)
     : id_(id), params_(params),
       inputPinId_(makePinId(id, 1)),
-      outputPinId_(makePinId(id, 2)) {}
+      outputPinId_(makePinId(id, 2))
+{
+    spdlog::info("BeginComboNode constructed, id: {}", id_.Get());
+}
+
+BeginComboNode::~BeginComboNode()
+{
+    spdlog::info("BeginComboNode destroyed, id: {}", id_.Get());
+}
 
 void BeginComboNode::draw()
 {

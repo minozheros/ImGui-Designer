@@ -16,12 +16,37 @@ namespace core
         VisualWindow *gVisualWindow = ctx.visualWindow.get();
 
         glfwMakeContextCurrent(window);
+        // Log GLFW input state before beginning ImGui frame
+        if (window)
+        {
+            int win_focused = glfwGetWindowAttrib(window, GLFW_FOCUSED);
+            int win_hovered = glfwGetWindowAttrib(window, GLFW_HOVERED);
+            double cx = 0.0, cy = 0.0;
+            glfwGetCursorPos(window, &cx, &cy);
+            spdlog::info("GLFW state: focused={}, hovered={}, cursorPos=({}, {})", win_focused, win_hovered, cx, cy);
+        }
         ImGui::SetCurrentContext(imguiCtx);
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        // After ImGui new frame, log ImGui IO state for comparison with GLFW
+        ImGuiIO &io = ImGui::GetIO();
+        spdlog::info("ImGui IO: MousePos=({}, {}), MouseDown[0]={}, MouseDownDuration[0]={}, WantCaptureMouse={}", io.MousePos.x, io.MousePos.y, io.MouseDown[0], io.MouseDownDuration[0], io.WantCaptureMouse);
+        if (window)
+        {
+            int wx = 0, wy = 0, ww = 0, wh = 0;
+            glfwGetWindowPos(window, &wx, &wy);
+            glfwGetWindowSize(window, &ww, &wh);
+            spdlog::info("GLFW window pos/size: pos=({}, {}), size=({}, {})", wx, wy, ww, wh);
+            double cx = 0.0, cy = 0.0;
+            glfwGetCursorPos(window, &cx, &cy);
+            spdlog::info("Cursor global pos=({}, {}), local pos relative to window=({}, {})", cx, cy, cx - wx, cy - wy);
+        }
+
         spdlog::debug("Rendering Designer screen");
+        spdlog::debug("RenderDesignerWindow: incoming imguiCtx={}, ImGui::GetCurrentContext()={}", (void *)imguiCtx, (void *)ImGui::GetCurrentContext());
+        spdlog::info("RenderDesignerWindow: imguiCtx pointer={}, ImGui::GetCurrentContext()={}", (void *)imguiCtx, (void *)ImGui::GetCurrentContext());
 
         // Fill the main viewport with the dockspace host window, removing all padding and constraints
         ImGuiViewport *viewport = ImGui::GetMainViewport();
@@ -82,7 +107,7 @@ namespace core
         ImGui::End();
 
         // Then, in your UI code, create windows with matching names:
-        static core::ToolbarPanel toolbarPanel{ctx};
+        // Use persistent ToolbarPanel from AppContext
         // Workaround: If the toolbar is too narrow, move and resize it to prevent clipping
         ImVec2 toolbarPos, toolbarSize;
         bool hasToolbarRect = false;
@@ -103,7 +128,10 @@ namespace core
             ImGui::SetNextWindowSizeConstraints(ImVec2(200.0f, 0.0f), ImVec2(FLT_MAX, FLT_MAX));
         }
         ImGui::Begin("Toolbar");
-        toolbarPanel.render();
+        if (ctx.toolbarPanel)
+        {
+            ctx.toolbarPanel->render();
+        }
         ImGui::End();
 
         ImGui::Begin("BottomBar");

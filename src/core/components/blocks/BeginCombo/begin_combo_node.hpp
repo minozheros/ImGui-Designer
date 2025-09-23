@@ -15,6 +15,7 @@ class BeginComboNode : public VisualBlock
 {
 public:
     BeginComboNode(ed::NodeId id, const BeginComboParams &params);
+    ~BeginComboNode();
 
     void draw();
     void render() override { draw(); }

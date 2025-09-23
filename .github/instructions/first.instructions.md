@@ -19,6 +19,7 @@
 - After every file edit, review for:
   - Redundant/duplicate code or sections
   - All `#include` directives grouped at the very top of the file, before any namespace or code
+  - All required `#include` directives for any types, functions, or macros used in the file are present (no missing includes)
   - No empty or redundant namespace blocks (e.g., `namespace foo {}`)
   - Proper function/class placement and organization
   - Consistent formatting and project style
@@ -40,11 +41,12 @@
 
 7. **Coding Standards:**
 
+- All classes and non-trivial functions must be split into header (`.hpp`) and source (`.cpp`) files. Only trivial one-liners or templates may be header-only. No implementation logic in headers except for inline, trivial, or template code.
 - Use C++23, modern C++ best practices, and the C++ Standard Library.
 - Use ImGui, nlohmann/json, and spdlog as documented.
 - Use short includes (e.g., `#include "enums/VisualBlockTypes.hpp"`).
 - Follow established folder structure for enums, interfaces, and types.
-- Files in `src/` are auto-added to CMakeLists.txt.
+  - All `.cpp` files in `src/` are automatically included in the build by CMake. You do not need to manually update CMakeLists.txt when adding new source files to `src/`.
 
 8. **Change Management:**
 
@@ -55,6 +57,7 @@
 
 9. **Interaction & Suggestions:**
 
+- Before making any code change, perform an extensive search of the codebase to find the most appropriate and maintainable location for new code, extensions, or modifications. Avoid duplication and ensure maintainability by reusing or extending existing components where possible. Document any non-obvious placement decisions.
 - Break down complex tasks into steps and explain reasoning.
 - Offer multiple solutions or viewpoints when appropriate.
 - Seek clarity if a question is unclear.

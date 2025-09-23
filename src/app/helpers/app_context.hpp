@@ -2,6 +2,7 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
 // External dependencies
 #include "core/components/visual_window.hpp"
+#include "core/components/toolbar_panel.hpp"
 #include <entt/entt.hpp>
 #include <imgui.h>
 #include <memory>
@@ -13,7 +14,7 @@
 
 struct AppContext
 {
-    public:
+public:
     entt::dispatcher dispatcher;
     std::shared_ptr<core::Preferences> preferences;
     // SDL_Renderer *renderer = nullptr;
@@ -21,10 +22,9 @@ struct AppContext
     ImGuiContext *designerCtx = nullptr;
     std::unique_ptr<core::Factories> factories = nullptr;
     std::unique_ptr<core::VisualWindow> visualWindow;
+    std::unique_ptr<core::ToolbarPanel> toolbarPanel;
 
-    AppContext()
-        : visualWindow(std::make_unique<core::VisualWindow>()) {}
+    AppContext() = default;
+
     ~AppContext() = default;
-
-    
 };

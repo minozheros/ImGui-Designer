@@ -8,11 +8,15 @@
 #include <vector>
 #include <cstring>
 #include <implot.h>
+#include <spdlog/spdlog.h>
 
 class VisualBlock
 {
 public:
-    virtual ~VisualBlock() = default;
+    virtual ~VisualBlock()
+    {
+        spdlog::info("VisualBlock destroyed: {}", typeid(*this).name());
+    }
     virtual void render() = 0;
     virtual ImVec2 getPreferredSize(const char *name = nullptr, const char *value = nullptr, int numInputs = 0, int numOutputs = 0) const;
     virtual void setInput(const std::string &name, std::any value);

@@ -1,3 +1,4 @@
+#include <spdlog/spdlog.h>
 
 #pragma once
 #include <imgui_node_editor.h>
@@ -22,11 +23,14 @@ namespace core
 
         void addBlock(std::unique_ptr<VisualBlock> block)
         {
+            spdlog::info("VisualWindow::addBlock called. Block count before: {}", blocks.size());
             blocks.push_back(std::move(block));
+            spdlog::info("Block count after: {}", blocks.size());
         }
 
         void render()
         {
+            spdlog::info("VisualWindow::render called. Block count: {}", blocks.size());
             ed::SetCurrentEditor(editorContext);
             ed::Begin("MainNodeEditor");
             for (auto &block : blocks)
@@ -36,7 +40,11 @@ namespace core
             ed::End();
         }
 
-        void clear() { blocks.clear(); }
+        void clear()
+        {
+            spdlog::info("VisualWindow::clear called. Clearing {} blocks.", blocks.size());
+            blocks.clear();
+        }
 
     private:
         ed::EditorContext *editorContext;

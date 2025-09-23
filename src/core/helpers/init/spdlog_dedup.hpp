@@ -3,6 +3,7 @@
 #include <spdlog/fmt/ostr.h>
 #include <spdlog/sinks/dup_filter_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/cfg/env.h>
 #include <chrono>
 #include <memory>
@@ -19,8 +20,10 @@ namespace SpdlogDedupGlobal
         spdlog::cfg::load_env_levels();
         auto dedup_sink = std::make_shared<spdlog::sinks::dup_filter_sink_mt>(std::chrono::seconds(25)); // Suppress repeats for 25 seconds
         auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-        auto logger = std::make_shared<spdlog::logger>("global_logger", spdlog::sinks_init_list{dedup_sink, console_sink});
+        auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("build/ImGui-Designer.log", true);
+        auto logger = std::make_shared<spdlog::logger>("global_logger", spdlog::sinks_init_list{dedup_sink, console_sink, file_sink});
         logger->set_pattern("[%l] %v"); // Only log level and message, no timestamp
         spdlog::set_default_logger(logger);
+        spdlog::flush_on(spdlog::level::info);
     }
 }

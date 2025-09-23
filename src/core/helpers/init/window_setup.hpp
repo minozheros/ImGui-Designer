@@ -23,15 +23,7 @@ namespace core
             throw std::runtime_error("Failed to create GLFW window");
         }
 
-        // Move window to second monitor if available
-        int monitor_count = 0;
-        GLFWmonitor **monitors = glfwGetMonitors(&monitor_count);
-        if (monitor_count > 1 && monitors)
-        {
-            int xpos = 0, ypos = 0;
-            glfwGetMonitorPos(monitors[1], &xpos, &ypos);
-            glfwSetWindowPos(window, xpos, ypos);
-        }
+        // NOTE: removed automatic repositioning to secondary monitor — keep window on default monitor
 
         glfwMakeContextCurrent(window);
         glfwSwapInterval(1); // Enable vsync
