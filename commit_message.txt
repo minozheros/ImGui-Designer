@@ -1,11 +1,6 @@
-Refine BeginComboNode layout: centered title, right-aligned outputs, external bullets
+Align BeginComboNode outputs to right edge of node
 
-- Center the node title horizontally using cursor positioning
-- Align output section to the right edge of the node
-- Position input bullets on the left (outside) and output bullets on the right (outside)
-- Create clear visual flow: inputs → node → outputs
-- Improve overall node aesthetics and connection point visibility
-
-This refined layout establishes the visual standard for node design,
-with centered titles, proper alignment, and external bullet indicators
-for optimal readability and connection clarity.
+- Position outputs section to align with right edge of node using ImGui::SetCursorPosX()
+- Calculate node width and position right group at node_width - right_group_width
+- Maintain visual separation between inputs (left) and outputs (right)
+- Improve node layout consistency and visual balance
