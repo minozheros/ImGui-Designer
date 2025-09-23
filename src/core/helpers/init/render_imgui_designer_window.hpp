@@ -75,7 +75,10 @@ namespace core
         ImGui::End();
 
         ImGui::Begin("MainArea");
-        // ... main workspace content ...
+        if (ctx.getVisualWindow())
+        {
+            ctx.getVisualWindow()->render();
+        }
         ImGui::End();
 
         ImGui::Render();

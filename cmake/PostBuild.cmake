@@ -1,3 +1,9 @@
+# Mark successful build for automation tools
+add_custom_command(
+	TARGET ImGui-Designer POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_BINARY_DIR}/build_succeeded.marker
+	COMMENT "Marking successful build"
+)
 
 
 configure_file(${CMAKE_SOURCE_DIR}/src/app/preferences/config.json ${CMAKE_BINARY_DIR}/bin/config/config.json COPYONLY)

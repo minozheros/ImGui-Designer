@@ -47,6 +47,17 @@ This section documents the main directories and their intended purposes to clari
 - `.clang-tidy` — Linting and static analysis configuration
 
 ## Conventions
+## Implementation Philosophy
+
+### C++ Member and Include Organization
+
+- Member variables should be declared inside the struct/class definition, grouped with related context data.
+- Constructors should initialize all member variables, preferably using initializer lists.
+- Getter/setter methods should be defined within the struct/class for encapsulation.
+- `#include` directives for project headers should be placed after `#pragma once` in header files, following standard C++ conventions.
+- Code, features, and examples should be implemented in a way that is robust, extendable, and suitable for production use—not just as minimal or illustrative demos.
+- Favor solutions that are immediately usable and can be built upon as the project grows.
+- Design components and data structures with future extensibility and integration in mind.
 
 - Source code: Place new features in `src/core/` or `src/app/` as appropriate.
 - Tests: Add new test files to `tests/` and register in CMake if needed.
@@ -56,6 +67,19 @@ This section documents the main directories and their intended purposes to clari
 
 
 ## Git Commit Workflow
+
+## Build Success Marker (Automation)
+
+- After every successful build of the main target, CMake creates a file named `build_succeeded.marker` in the build directory.
+- This marker file is used by automation tools to detect when a build has completed successfully and to trigger post-build actions (such as automatic git commits).
+- The marker is created by a post-build step in `cmake/PostBuild.cmake` using:
+  ```cmake
+  add_custom_command(
+      TARGET ImGui-Designer POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_BINARY_DIR}/build_succeeded.marker
+      COMMENT "Marking successful build"
+  )
+  ```
 
 - After every successful build, a git commit is automatically created with a meaningful message summarizing the changes.
 - This applies to both manual and automated edits.

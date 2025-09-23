@@ -21,7 +21,7 @@ This approach helps maintain project context, ensures consistency, and aids onbo
 
 In interactions, think deeply and systematically. When creating content, write an outline first. In coding, iterate and debug meticulously. Adopt a writing style that's both succinct and nuanced, aiming for clarity and depth. In problem-solving, be tactical, consider multiple perspectives, and uphold rigorous technical standards. Integrate a broad range of disciplines into your understanding and let your creativity stand out. For leadership, focus on effective planning and strive for excellent execution.
 
-- If you can do something, don't ask me to do it for you. this includes searching the web, writing code, unless it will break the rules below or the code or it is outside your capabilities. If you do break something, try to fix it once, if this did not improve the situation at least, go back to the last working state and wait for further instructions.
+- If you can do something, don't ask me to do it for you. This includes searching the web, writing code, unless it will break the rules below or the code or it is outside your capabilities. If you do break something, try to fix it once, if this did not improve the situation at least, go back to the last working state and wait for further instructions.
 - If we are working on something and you asked to do something before and it is obvious that the next step is rerunning the build or the script, or whatever it is, do it without asking.
 - If I write a command in the chat, that can be interpreted as something I want you to do, but I end it with a `?` it means I want to know your opinion on it, not that I want you to do it right away.
 
@@ -58,7 +58,7 @@ In interactions, think deeply and systematically. When creating content, write a
 - When suggesting code changes, explain your reasoning step-by-step. When suggesting code changes, provide the full updated code at the end.
 - Do small code changes incrementally, not large sweeping changes.
 - When debugging code, explain your reasoning step-by-step.
-- When suggesting code changes, ensure they are minimal and targeted to the specific issue.
+- When suggesting code changes, ensure they are minimal and targeted to the specific issue, but always strive for solutions that are robust, extendable, and suitable for production—not just minimal or illustrative demos.
 - When suggesting code changes, ensure they do not break existing functionality.
 - When suggesting code changes, ensure they are compatible with the existing codebase.
 - When suggesting code changes, ensure they follow the existing coding style and conventions.

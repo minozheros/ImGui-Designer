@@ -1,6 +1,7 @@
 #pragma once
 #define IMGUI_DEFINE_MATH_OPERATORS
 // External dependencies
+#include "core/components/visual_window.hpp"
 #include <entt/entt.hpp>
 #include <imgui.h>
 #include <memory>
@@ -20,6 +21,11 @@ struct AppContext
     ImGuiContext *designerCtx = nullptr;
     ImGuiContext *previewCtx = nullptr;
     std::unique_ptr<core::Factories> factories = nullptr;
-    AppContext() = default;
+    std::unique_ptr<VisualWindow> visualWindow;
+
+    AppContext()
+        : visualWindow(std::make_unique<VisualWindow>()) {}
     ~AppContext() = default;
+
+    VisualWindow *getVisualWindow() { return visualWindow.get(); }
 };
