@@ -1,7 +1,13 @@
+Refactor imgui-node-editor integration: local subdirectory & FetchContent
+
+- Moved FetchContent logic for imgui-node-editor to third_party/imgui-node-editor/CMakeLists.txt
+- Now uses add_subdirectory for consistent third-party management (like imgui, fmod)
+- Automatically fetches source if missing, or uses local copy
+- Keeps top-level CMakeLists.txt clean and robust
 Refactor toolbar UI, docking, and workflow; document ImGui docking limitations
 
-Add !c command rule to agent instructions
+Full project sync: commit all pending changes (331 files)
 
-- Added a section to .github/instructions/first.instructions.md defining the !c command as the trigger for the agent to create a commit.
-- The agent will now stage all relevant files, update commit_message.txt with a clear message, and use git commit -F commit_message.txt when !c is issued.
-- If the user provides a message, it will be used; otherwise, the agent will generate a concise, descriptive message.
+- Staged and committed all outstanding changes in the repository.
+- This commit brings the working directory fully up to date with all modifications, additions, and deletions.
+- See git diff for details on individual file changes.

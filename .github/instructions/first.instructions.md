@@ -1,14 +1,13 @@
-# Commit Message Workflow
+# Commit Workflow and !c Command
 
-# Special Commands for Agent
+For all automated or semi-automated git commits (including when the user issues `!c`):
 
-- `!c` (exclamation-c): When the user writes `!c`, it is a command for the agent to create a commit with the current changes. The agent should stage all relevant files, update `commit_message.txt` with a clear, detailed message describing the changes, and use `git commit -F commit_message.txt` to create the commit. If the user provides a message, use it; otherwise, generate a concise, descriptive message.
-
-For all automated or semi-automated git commits, use the file `commit_message.txt` in the project root:
-
-- Before each commit, update the contents of `commit_message.txt` with a clear, detailed message describing the changes.
+- Always stage and commit all pending changes in the repository, not just the files you edited.
+- Before each commit, update the contents of `commit_message.txt` with a clear, detailed message describing the changes. The message must summarize the scope (e.g., number of files, major types of changes, and any noteworthy details).
+- If the user provides a message, use it; otherwise, generate a concise, descriptive message summarizing all changes.
 - Use the command `git commit -F commit_message.txt` to create the commit. This ensures the message is always up to date and explicit.
 - This workflow standardizes commit messages, streamlines approval, and keeps project history clear.
+- `!c` (exclamation-c): When the user writes `!c`, it is a command for the agent to create a commit with the current changes, following all steps above.
 
 # UI/Component Encapsulation Rule
 
@@ -34,6 +33,16 @@ This approach helps maintain project context, ensures consistency, and aids onbo
 ## applyTo: "\*\*"
 
 # Instructions
+
+- Always ensure there is no redundant information or duplicate content in any created or edited files. Avoid repeated functions, classes, or sections. When generating or editing files, check for and remove any unnecessary copies or overlaps.
+
+- After editing or generating a file, always review it for:
+  - Redundant or duplicated content (functions, classes, sections, etc.)
+  - All `#include` directives grouped together at the very start of the file, in the correct order (defines, then standard, then third-party, then project includes)
+  - Proper placement and organization of functions and classes (no accidental duplication, misplaced code, or out-of-order sections)
+  - Consistent formatting and adherence to project style
+  - Removal of any leftover or obsolete code
+    This review must be performed automatically after every file change to ensure code quality and maintainability.
 
 In interactions, think deeply and systematically. When creating content, write an outline first. In coding, iterate and debug meticulously. Adopt a writing style that's both succinct and nuanced, aiming for clarity and depth. In problem-solving, be tactical, consider multiple perspectives, and uphold rigorous technical standards. Integrate a broad range of disciplines into your understanding and let your creativity stand out. For leadership, focus on effective planning and strive for excellent execution.
 

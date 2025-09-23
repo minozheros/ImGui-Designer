@@ -142,6 +142,8 @@ add_subdirectory(third_party/fmod third_party/fmod_build)
 add_subdirectory(third_party/imgui third_party/imgui_build)
 # ImPlot is now included as a subdirectory in third_party/implot
 add_subdirectory(third_party/implot)
+# imgui-node-editor is now included as a subdirectory in third_party/imgui-node-editor
+add_subdirectory(third_party/imgui-node-editor)
 
 
 # =============================
@@ -194,6 +196,7 @@ target_include_directories(ImGui-Designer_includes INTERFACE
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/src/core/types
     ${implot_SOURCE_DIR}
+    ${imgui-node-editor_SOURCE_DIR}
 )
 
 target_link_libraries(ImGui-Designer PRIVATE ImGui-Designer_includes)
@@ -231,6 +234,7 @@ target_link_libraries(ImGui-Designer PRIVATE
     stb
     implot
     X11::X11
+    imgui-node-editor
 )
 
 
@@ -251,6 +255,7 @@ target_link_libraries(ImGui-Designer_tests PRIVATE
     stb
     implot
     X11::X11
+    imgui-node-editor
 )
 
 
