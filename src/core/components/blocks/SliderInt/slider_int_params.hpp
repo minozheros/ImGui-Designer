@@ -1,7 +1,10 @@
 #pragma once
 #include <imgui.h>
+#include <vector>
 #include <core/types/base/parameter_base.hpp>
 
+namespace core
+{
 struct SliderIntParams {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<int*> v = ParameterBase<int*>("v", ParameterType::INPUT);
@@ -11,5 +14,15 @@ struct SliderIntParams {
     ParameterBase<ImGuiSliderFlags> flags = ParameterBase<ImGuiSliderFlags>("flags", ParameterType::INPUT);
     ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
 
-    SliderIntParams() = default;
+    std::vector<core::IParameterBase*> params;
+    SliderIntParams() {
+        params.push_back(&label);
+        params.push_back(&v);
+        params.push_back(&v_min);
+        params.push_back(&v_max);
+        params.push_back(&format);
+        params.push_back(&flags);
+        params.push_back(&return_value);
+    }
 };
+}

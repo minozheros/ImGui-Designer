@@ -1,11 +1,20 @@
 #pragma once
 #include <imgui.h>
+#include <vector>
 #include <core/types/base/parameter_base.hpp>
 
+namespace core
+{
 struct TabItemButtonParams {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<ImGuiTabItemFlags> flags = ParameterBase<ImGuiTabItemFlags>("flags", ParameterType::INPUT);
     ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
 
-    TabItemButtonParams() = default;
+    std::vector<core::IParameterBase*> params;
+    TabItemButtonParams() {
+        params.push_back(&label);
+        params.push_back(&flags);
+        params.push_back(&return_value);
+    }
 };
+}

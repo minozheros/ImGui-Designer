@@ -1,10 +1,16 @@
 #pragma once
 #include <imgui.h>
+#include <vector>
 #include <core/types/base/parameter_base.hpp>
 
+namespace core
+{
 struct EndChildParams {
     // No parameters
 
 
-    EndChildParams() = default;
+    std::vector<core::IParameterBase*> params;
+    EndChildParams() {
+    }
 };
+}

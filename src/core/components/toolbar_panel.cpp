@@ -5,10 +5,16 @@
 namespace core
 {
 
+#include "core/types/maps/node_factory_map.hpp"
     ToolbarPanel::ToolbarPanel(AppContext &appCtx)
-        : allNodes{"BeginCombo"}, appContext(appCtx)
+        : appContext(appCtx)
     {
-        spdlog::info("ToolbarPanel constructed");
+        allNodes.reserve(NODE_CLASS_MAP.size());
+        for (const auto &pair : NODE_CLASS_MAP)
+        {
+            allNodes.push_back(pair.first);
+        }
+        spdlog::info("ToolbarPanel constructed with {} nodes", allNodes.size());
     }
 
     void ToolbarPanel::render()

@@ -1,9 +1,16 @@
 #pragma once
 #include <imgui.h>
+#include <vector>
 #include <core/types/base/parameter_base.hpp>
 
+namespace core
+{
 struct TableGetColumnIndexParams {
     ParameterBase<int> return_value = ParameterBase<int>("return_value", ParameterType::RETURN);
 
-    TableGetColumnIndexParams() = default;
+    std::vector<core::IParameterBase*> params;
+    TableGetColumnIndexParams() {
+        params.push_back(&return_value);
+    }
 };
+}

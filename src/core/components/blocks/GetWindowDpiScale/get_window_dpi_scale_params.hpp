@@ -1,9 +1,16 @@
 #pragma once
 #include <imgui.h>
+#include <vector>
 #include <core/types/base/parameter_base.hpp>
 
+namespace core
+{
 struct GetWindowDpiScaleParams {
     ParameterBase<float> return_value = ParameterBase<float>("return_value", ParameterType::RETURN);
 
-    GetWindowDpiScaleParams() = default;
+    std::vector<core::IParameterBase*> params;
+    GetWindowDpiScaleParams() {
+        params.push_back(&return_value);
+    }
 };
+}

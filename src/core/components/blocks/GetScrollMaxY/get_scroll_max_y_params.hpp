@@ -1,9 +1,16 @@
 #pragma once
 #include <imgui.h>
+#include <vector>
 #include <core/types/base/parameter_base.hpp>
 
+namespace core
+{
 struct GetScrollMaxYParams {
     ParameterBase<float> return_value = ParameterBase<float>("return_value", ParameterType::RETURN);
 
-    GetScrollMaxYParams() = default;
+    std::vector<core::IParameterBase*> params;
+    GetScrollMaxYParams() {
+        params.push_back(&return_value);
+    }
 };
+}

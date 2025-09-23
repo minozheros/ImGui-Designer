@@ -1,11 +1,20 @@
 #pragma once
 #include <imgui.h>
+#include <vector>
 #include <core/types/base/parameter_base.hpp>
 
+namespace core
+{
 struct TextLinkOpenURLParams {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<const char*> url = ParameterBase<const char*>("url", ParameterType::INPUT);
     ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
 
-    TextLinkOpenURLParams() = default;
+    std::vector<core::IParameterBase*> params;
+    TextLinkOpenURLParams() {
+        params.push_back(&label);
+        params.push_back(&url);
+        params.push_back(&return_value);
+    }
 };
+}

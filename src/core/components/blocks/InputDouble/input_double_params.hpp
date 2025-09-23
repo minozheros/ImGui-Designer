@@ -1,7 +1,10 @@
 #pragma once
 #include <imgui.h>
+#include <vector>
 #include <core/types/base/parameter_base.hpp>
 
+namespace core
+{
 struct InputDoubleParams {
     ParameterBase<const char*> label = ParameterBase<const char*>("label", ParameterType::INPUT);
     ParameterBase<double*> v = ParameterBase<double*>("v", ParameterType::INPUT);
@@ -11,5 +14,15 @@ struct InputDoubleParams {
     ParameterBase<ImGuiInputTextFlags> flags = ParameterBase<ImGuiInputTextFlags>("flags", ParameterType::INPUT);
     ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
 
-    InputDoubleParams() = default;
+    std::vector<core::IParameterBase*> params;
+    InputDoubleParams() {
+        params.push_back(&label);
+        params.push_back(&v);
+        params.push_back(&step);
+        params.push_back(&step_fast);
+        params.push_back(&format);
+        params.push_back(&flags);
+        params.push_back(&return_value);
+    }
 };
+}

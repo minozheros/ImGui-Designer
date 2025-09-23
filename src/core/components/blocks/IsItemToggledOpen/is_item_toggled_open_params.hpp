@@ -1,9 +1,16 @@
 #pragma once
 #include <imgui.h>
+#include <vector>
 #include <core/types/base/parameter_base.hpp>
 
+namespace core
+{
 struct IsItemToggledOpenParams {
     ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
 
-    IsItemToggledOpenParams() = default;
+    std::vector<core::IParameterBase*> params;
+    IsItemToggledOpenParams() {
+        params.push_back(&return_value);
+    }
 };
+}

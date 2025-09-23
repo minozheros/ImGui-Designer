@@ -1,9 +1,16 @@
 #pragma once
 #include <imgui.h>
+#include <vector>
 #include <core/types/base/parameter_base.hpp>
 
+namespace core
+{
 struct IsWindowAppearingParams {
     ParameterBase<bool> return_value = ParameterBase<bool>("return_value", ParameterType::RETURN);
 
-    IsWindowAppearingParams() = default;
+    std::vector<core::IParameterBase*> params;
+    IsWindowAppearingParams() {
+        params.push_back(&return_value);
+    }
 };
+}

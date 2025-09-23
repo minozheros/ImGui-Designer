@@ -1,10 +1,18 @@
 #pragma once
 #include <imgui.h>
+#include <vector>
 #include <core/types/base/parameter_base.hpp>
 
+namespace core
+{
 struct PushStyleVarYParams {
     ParameterBase<ImGuiStyleVar> idx = ParameterBase<ImGuiStyleVar>("idx", ParameterType::INPUT);
     ParameterBase<float> val_y = ParameterBase<float>("val_y", ParameterType::INPUT);
 
-    PushStyleVarYParams() = default;
+    std::vector<core::IParameterBase*> params;
+    PushStyleVarYParams() {
+        params.push_back(&idx);
+        params.push_back(&val_y);
+    }
 };
+}

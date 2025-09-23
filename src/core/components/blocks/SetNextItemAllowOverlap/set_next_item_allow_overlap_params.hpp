@@ -1,10 +1,16 @@
 #pragma once
 #include <imgui.h>
+#include <vector>
 #include <core/types/base/parameter_base.hpp>
 
+namespace core
+{
 struct SetNextItemAllowOverlapParams {
     // No parameters
 
 
-    SetNextItemAllowOverlapParams() = default;
+    std::vector<core::IParameterBase*> params;
+    SetNextItemAllowOverlapParams() {
+    }
 };
+}

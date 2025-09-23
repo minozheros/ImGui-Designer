@@ -20,7 +20,12 @@ def write_param_struct(func, dir_path):
     struct = struct_name(func['name'])
     params = func.get('params', [])
     field_lines = []
-    includes = ["#pragma once", "#include <imgui.h>", "#include <core/types/base/parameter_base.hpp>"]
+    includes = [
+        "#pragma once",
+        "#include <imgui.h>",
+        "#include <vector>",
+        "#include <core/types/base/parameter_base.hpp>"
+    ]
     # Add return value if not void
     ret_type = func.get('return_type', 'void').strip()
     # ParameterType mapping
@@ -42,8 +47,18 @@ def write_param_struct(func, dir_path):
     # Add return value field if not void
     if ret_type != 'void':
         field_lines.append(f"    ParameterBase<{ret_type}> return_value = ParameterBase<{ret_type}>(\"return_value\", ParameterType::RETURN);")
+    # Build vector aggregator
+    vector_lines = ["    std::vector<core::IParameterBase*> params;\n",
+                    f"    {struct}() {{\n"]
+    for p in params:
+        _, n = cpp_type(p)
+        vector_lines.append(f"        params.push_back(&{n});\n")
+    if ret_type != 'void':
+        vector_lines.append(f"        params.push_back(&return_value);\n")
+    vector_lines.append("    }\n")
+
     fields = '\n'.join(field_lines) if field_lines else '    // No parameters\n'
-    code = '\n'.join(includes) + f"\n\nstruct {struct} {{\n{fields}\n\n    {struct}() = default;\n}};\n"
+    code = '\n'.join(includes) + f"\n\nnamespace core\n{{\nstruct {struct} {{\n{fields}\n\n" + ''.join(vector_lines) + f"}};\n}}\n"
     # File name: <function_name>_params.hpp, snake_case
     def camel_to_snake(name):
         import re

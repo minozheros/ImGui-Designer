@@ -1,10 +1,18 @@
 #pragma once
 #include <imgui.h>
+#include <vector>
 #include <core/types/base/parameter_base.hpp>
 
+namespace core
+{
 struct GetColumnOffsetParams {
     ParameterBase<int> column_index = ParameterBase<int>("column_index", ParameterType::INPUT);
     ParameterBase<float> return_value = ParameterBase<float>("return_value", ParameterType::RETURN);
 
-    GetColumnOffsetParams() = default;
+    std::vector<core::IParameterBase*> params;
+    GetColumnOffsetParams() {
+        params.push_back(&column_index);
+        params.push_back(&return_value);
+    }
 };
+}
