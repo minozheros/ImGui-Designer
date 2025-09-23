@@ -1,24 +1,46 @@
+
 #pragma once
-#include "core/components/base/visual_block.hpp"
+#include <imgui_node_editor.h>
 #include <vector>
 #include <memory>
+#include "core/components/base/visual_block.hpp"
 
-class VisualWindow
+namespace ed = ax::NodeEditor;
+
+namespace core
 {
-public:
-    void addBlock(std::unique_ptr<VisualBlock> block)
+    class VisualWindow
     {
-        blocks.push_back(std::move(block));
-    }
-    void render()
-    {
-        for (auto &block : blocks)
-        {
-            block->render();
-        }
-    }
-    void clear() { blocks.clear(); }
+    public:
+        VisualWindow()
+            : editorContext(ed::CreateEditor()) {}
 
-private:
-    std::vector<std::unique_ptr<VisualBlock>> blocks;
-};
+        ~VisualWindow()
+        {
+            ed::DestroyEditor(editorContext);
+        }
+
+        void addBlock(std::unique_ptr<VisualBlock> block)
+        {
+            blocks.push_back(std::move(block));
+        }
+
+        void render()
+        {
+            ed::SetCurrentEditor(editorContext);
+            ed::Begin("MainNodeEditor");
+            for (auto &block : blocks)
+            {
+                block->render();
+            }
+            ed::End();
+        }
+
+        void clear() { blocks.clear(); }
+
+    private:
+        ed::EditorContext *editorContext;
+        std::vector<std::unique_ptr<VisualBlock>> blocks;
+    };
+
+}

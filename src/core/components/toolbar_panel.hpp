@@ -1,3 +1,7 @@
+#include "core/components/visual_window.hpp"
+
+// Extern global pointer for toolbar access
+
 #include <spdlog/spdlog.h>
 #pragma once
 #define IMGUI_DEFINE_MATH_OPERATORS
@@ -5,18 +9,24 @@
 #include <imgui_internal.h>
 #include <string>
 #include <vector>
+#include "core/components/blocks/BeginCombo/begin_combo_node.hpp"
+#include "core/components/blocks/BeginCombo/begin_combo_params.hpp"
+#include "app/helpers/app_context.hpp"
 
 namespace core
 {
+    
+
     class ToolbarPanel
     {
         std::string nodeSearch;
         char searchBuffer[128] = "";
         std::vector<std::string> allNodes;
+        AppContext &appContext;
 
     public:
-        ToolbarPanel()
-            : allNodes{"Add", "Subtract", "Multiply", "Divide", "Sin", "Cos", "Log", "Exp", "Clamp", "Lerp", "UI_Button", "UI_Slider", "Input_Int", "Output_Float"} {}
+        ToolbarPanel(AppContext &appCtx)
+            : allNodes{"BeginCombo"}, appContext(appCtx) {}
 
         // Helper: lowercase a string
         static std::string toLower(const std::string &s)
@@ -92,7 +102,19 @@ namespace core
                 {
                     if (ImGui::Button(nodeName.c_str(), ImVec2(buttonWidth, 0)))
                     {
-                        // TODO: Handle node selection/creation
+                        // Instantiate and add BeginComboNode to the editor
+                        // (Assume VisualWindow is accessible as a singleton or via context)
+                        VisualWindow *gVisualWindow = appContext.visualWindow.get();
+                        if (gVisualWindow && nodeName == "BeginCombo")
+                        {
+                            static int nextId = 1;
+                            BeginComboParams params;
+                            params.label = "Label";
+                            params.preview_value = "Preview";
+                            params.flags = 0;
+                            auto node = std::make_unique<BeginComboNode>(ed::NodeId(nextId++), params);
+                            gVisualWindow->addBlock(std::move(node));
+                        }
                     }
                 }
             }

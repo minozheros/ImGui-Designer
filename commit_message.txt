@@ -11,3 +11,11 @@ Full project sync: commit all pending changes (331 files)
 - Staged and committed all outstanding changes in the repository.
 - This commit brings the working directory fully up to date with all modifications, additions, and deletions.
 - See git diff for details on individual file changes.
+
+Fix: Remove empty namespace block and enforce include order in visual_window.cpp
+
+- Removed redundant empty namespace block at the top of visual_window.cpp.
+- Moved all #include directives to the very top of the file, before any namespace or code, for compliance with project rules.
+- No functional changes.
+
+Also updated assistant workflow rules to explicitly forbid empty/redundant namespace blocks and require all includes at the very top of each file.

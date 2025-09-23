@@ -12,6 +12,9 @@ namespace core
 {
     int RenderDesignerWindow(AppContext &ctx, ImGuiContext *imguiCtx, GLFWwindow *window)
     {
+        // Ensure global pointer is set for toolbar node addition
+        VisualWindow *gVisualWindow = ctx.visualWindow.get();
+
         glfwMakeContextCurrent(window);
         ImGui::SetCurrentContext(imguiCtx);
         ImGui_ImplOpenGL3_NewFrame();
@@ -79,7 +82,7 @@ namespace core
         ImGui::End();
 
         // Then, in your UI code, create windows with matching names:
-        static core::ToolbarPanel toolbarPanel;
+        static core::ToolbarPanel toolbarPanel{ctx};
         // Workaround: If the toolbar is too narrow, move and resize it to prevent clipping
         ImVec2 toolbarPos, toolbarSize;
         bool hasToolbarRect = false;
@@ -108,9 +111,9 @@ namespace core
         ImGui::End();
 
         ImGui::Begin("MainArea");
-        if (ctx.getVisualWindow())
+        if (ctx.visualWindow)
         {
-            ctx.getVisualWindow()->render();
+            ctx.visualWindow->render();
         }
         ImGui::End();
 

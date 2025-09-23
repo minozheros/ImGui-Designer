@@ -13,19 +13,18 @@
 
 struct AppContext
 {
+    public:
     entt::dispatcher dispatcher;
     std::shared_ptr<core::Preferences> preferences;
     // SDL_Renderer *renderer = nullptr;
     GLFWwindow *designerWindow = nullptr;
-    GLFWwindow *previewWindow = nullptr;
     ImGuiContext *designerCtx = nullptr;
-    ImGuiContext *previewCtx = nullptr;
     std::unique_ptr<core::Factories> factories = nullptr;
-    std::unique_ptr<VisualWindow> visualWindow;
+    std::unique_ptr<core::VisualWindow> visualWindow;
 
     AppContext()
-        : visualWindow(std::make_unique<VisualWindow>()) {}
+        : visualWindow(std::make_unique<core::VisualWindow>()) {}
     ~AppContext() = default;
 
-    VisualWindow *getVisualWindow() { return visualWindow.get(); }
+    
 };

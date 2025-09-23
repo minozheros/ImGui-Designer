@@ -1,3 +1,12 @@
+# Workflow Rule: Periodic Rereading of Project Rules (added 23. September 2025)
+
+To ensure strict compliance and avoid context drift, the assistant must reread all project rules and instructions (from `.github/instructions/first.instructions.md`, `NOTES.md`, and any other policy files) after every 3 code or file changes, or before starting any new major feature or refactor. This rereading will be handled automatically as part of the workflow, without extra comments or notifications, so the process remains seamless and unobtrusive. This guarantees that all actions remain aligned with the latest requirements and conventions.
+
+**Rationale:**
+- Prevents forgetting or drifting from project rules during long or complex sessions
+- Ensures all code and workflow changes remain compliant
+- Aids onboarding and consistency for all contributors
+
 # Project Structure Overview (as of 23. September 2025)
 
 
