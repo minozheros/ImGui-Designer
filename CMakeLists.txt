@@ -3,6 +3,22 @@
 cmake_minimum_required(VERSION 3.11)
 project(ImGui-Designer LANGUAGES CXX)
 
+# Warn users about proper CMake usage
+if(NOT CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_CURRENT_BINARY_DIR AND NOT CMAKE_DISABLE_SOURCE_CHANGES)
+    message(WARNING
+        "\nPlease use CMake to configure and build this project.\n"
+        "Do NOT run 'make' directly from the source directory.\n\n"
+        "Recommended workflow:\n"
+        "  mkdir build && cd build\n"
+        "  cmake ..\n"
+        "  make\n\n"
+        "Or use the provided build script:\n"
+        "  ./build.sh\n\n"
+        "Or use CMake's portable build command:\n"
+        "  cmake --build build\n"
+    )
+endif()
+
 set(CMAKE_CXX_STANDARD 23)
 
 # Enable testing
@@ -91,19 +107,14 @@ add_library(stb INTERFACE)
 target_include_directories(stb INTERFACE ${stb_SOURCE_DIR})
 
 
-
-
-
 # --- SDL & Graphics ---
-set(GLFW_BUILD_X11 ON CACHE BOOL "Build GLFW with X11 support")
-set(GLFW_BUILD_WAYLAND OFF CACHE BOOL "Build GLFW with Wayland support")
-
 FetchContent_Declare(
-    glfw
-    GIT_REPOSITORY https://github.com/glfw/glfw.git
-    GIT_TAG        3.4 # or latest stable
+    SDL3
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+    GIT_TAG        release-3.2.0 # or latest stable
 )
-FetchContent_MakeAvailable(glfw)
+FetchContent_MakeAvailable(SDL3)
+
 find_package(OpenGL REQUIRED)
 
 
@@ -167,8 +178,6 @@ add_executable(ImGui-Designer_tests
     ${SRC_FILES}   
 )
 
-find_package(X11 REQUIRED)
-
 # =============================
 # Shared Include Directories
 # =============================
@@ -187,7 +196,7 @@ target_include_directories(ImGui-Designer_includes INTERFACE
     ${fmod_SOURCE_DIR}/api/core/include
     ${fmt_SOURCE_DIR}/include
     ${gpiod_SOURCE_DIR}/include
-    ${glfw_SOURCE_DIR}/include
+    ${SDL3_SOURCE_DIR}/include
     ${imgui_SOURCE_DIR}
     ${OpenGL_INCLUDE_DIR}
     ${spdlog_SOURCE_DIR}/include
@@ -196,7 +205,7 @@ target_include_directories(ImGui-Designer_includes INTERFACE
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/src/core/types
     ${implot_SOURCE_DIR}
-    ${imgui-node-editor_SOURCE_DIR}
+    ${imguinodeeditor_SOURCE_DIR}
 )
 
 target_link_libraries(ImGui-Designer PRIVATE ImGui-Designer_includes)
@@ -224,7 +233,7 @@ target_link_libraries(ImGui-Designer PRIVATE
     fmod
     fmt::fmt
     gpiod
-    glfw
+    SDL3::SDL3
     imgui
     magic_enum::magic_enum
     nlohmann_json::nlohmann_json
@@ -233,8 +242,7 @@ target_link_libraries(ImGui-Designer PRIVATE
     spdlog::spdlog
     stb
     implot
-    X11::X11
-    imgui-node-editor
+    imguinodeeditor
 )
 
 
@@ -245,7 +253,7 @@ target_link_libraries(ImGui-Designer_tests PRIVATE
     fmod
     fmt::fmt
     gpiod
-    glfw
+    SDL3::SDL3
     imgui
     magic_enum::magic_enum
     nlohmann_json::nlohmann_json
@@ -254,8 +262,7 @@ target_link_libraries(ImGui-Designer_tests PRIVATE
     spdlog::spdlog
     stb
     implot
-    X11::X11
-    imgui-node-editor
+    imguinodeeditor
 )
 
 

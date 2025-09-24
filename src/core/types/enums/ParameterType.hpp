@@ -1,10 +1,8 @@
 #pragma once
-namespace core
+
+enum class ParameterType
 {
-    enum class ParameterType
-    {
-        INPUT,
-        OUTPUT,
-        RETURN
-    };
-} // namespace core
+    INPUT,
+    OUTPUT,
+    RETURN
+};

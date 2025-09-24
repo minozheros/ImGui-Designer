@@ -1,4 +1,4 @@
-#include "core/components/base/visual_block.hpp"
+#include "core/components/base/VisualBlock.hpp"
 #include <algorithm>
 #include <imgui.h>
 

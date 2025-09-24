@@ -15,6 +15,12 @@ Makefile
 *.app
 *.dSYM/
 
+# CMake generated files
+CTestTestfile.cmake
+DartConfiguration.tcl
+install_manifest.txt
+*.cmake
+
 # IDE and editor files
 .vscode/
 .idea/
@@ -38,4 +44,7 @@ _deps/
 *.user
 *.bak
 *.tmp
+
+# Generated files
+src/generated/
 

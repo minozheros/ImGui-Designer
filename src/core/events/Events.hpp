@@ -1,8 +1,10 @@
 #pragma once
 #include <spdlog/spdlog.h>
 #include <atomic>
+
 namespace core
 {
+
     // Global running flag (should be defined in main.cpp)
     extern std::atomic<bool> running;
 
@@ -24,4 +26,5 @@ namespace core
     {
         spdlog::info("QuitEvent received! Application will exit.");
     }
-}
+
+} // namespace core

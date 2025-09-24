@@ -1,43 +1,33 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
-#include <GLFW/glfw3.h>
+#include <SDL3/SDL.h>
 #include "imgui.h"
 #include "imgui_internal.h"
-#include "imgui_impl_glfw.h"
+#include "imgui_impl_sdl3.h"
 #include "imgui_impl_opengl3.h"
 #include "RuntimeObjectSystem/RuntimeObjectSystem.h"
 #include <spdlog/spdlog.h>
 #include <entt/entt.hpp>
 
-#include "core/events/events.hpp"
-#include "core/types/internal/system_architecture.hpp"
+#include "core/events/Events.hpp"
+#include "core/types/internal/SystemArchitecture.hpp"
 #include <csignal>
 #include <cstdint>
 #include <atomic>
 
 #include <memory>
-#include "core/helpers/init/spdlog_dedup.hpp"
+#include "ui/rendering/SpdlogDedup.hpp"
 #include <magic_enum.hpp>
-#include "core/helpers/init/window_setup.hpp"
 
-#include "core/helpers/init/render_imgui_designer_window.hpp"
-#include "core/helpers/init/init_imgui_context.hpp"
-#include "core/helpers/init/window_destruction.hpp"
-#include "core/components/visual_window.hpp"
+#include "ui/rendering/RenderImGuiDesignerWindow.hpp"
+#include "ui/rendering/InitImGuiContext.hpp"
+#include "ui/rendering/WindowDestruction.hpp"
+#include "ui/components/VisualWindow.hpp"
+#include "ui/docking/DockingManager.hpp"
 #include <atomic>
 
-std::atomic<bool> core::running{true};
-
-// Debug: wrapper to log raw GLFW mouse button events and chain previous callback
-static GLFWmousebuttonfun g_prev_mouse_button_cb = nullptr;
-static void debug_mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
+namespace core
 {
-    spdlog::info("DebugMouseCB: button={}, action={}, mods={}", button, action, mods);
-
-    // Manually call ImGui's mouse button handling since we disabled auto-callbacks
-    ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
-
-    if (g_prev_mouse_button_cb)
-        g_prev_mouse_button_cb(window, button, action, mods);
+    std::atomic<bool> running{true};
 }
 
 int main(int argc, char *argv[])
@@ -45,9 +35,17 @@ int main(int argc, char *argv[])
     RuntimeObjectSystem rccppSystem;
     rccppSystem.Initialise(nullptr, nullptr);
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    // Initialize SDL
+    if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS))
+    {
+        spdlog::error("Failed to initialize SDL: {}", SDL_GetError());
+        return -1;
+    }
+
+    // Set OpenGL attributes
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
     SpdlogDedupGlobal::setup_global_logger();
 
@@ -62,7 +60,7 @@ int main(int argc, char *argv[])
     {
         spdlog::info("Loading preferences from: {}", configPath);
     }
-    auto preferences = std::make_shared<core::Preferences>(configPath);
+    auto preferences = std::make_shared<Preferences>(configPath);
 
     auto level = preferences->safe_get({"logging", "level"}, std::string("info"));
 
@@ -73,22 +71,35 @@ int main(int argc, char *argv[])
     // Register all visual blocks for the node editor sidebar
     // extern void registerAllVisualBlocks();
     // registerAllVisualBlocks();
-    ctx.factories = std::make_unique<core::Factories>(&ctx);
+    ctx.factories = std::make_unique<Factories>(&ctx);
     ctx.preferences = preferences;
-    ctx.visualWindow = std::make_unique<core::VisualWindow>();
-    ctx.toolbarPanel = std::make_unique<core::ToolbarPanel>(ctx);
+    ctx.visualWindow = std::make_unique<VisualWindow>();
+    ctx.toolbarPanel = std::make_unique<ToolbarPanel>(ctx);
+    ctx.dockingManager = std::make_unique<DockingManager>();
     auto &dispatcher = ctx.dispatcher;
     dispatcher.sink<core::QuitEvent<>>().connect<&core::on_quit>();
 
     spdlog::debug("Setting up windows and renderers");
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-    glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
-    glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
-    glfwWindowHint(GLFW_FOCUSED, GLFW_TRUE); // Ensure window gets focus
-    ctx.designerWindow = core::setup_glfw_window_and_opengl_context(800, 600, "ImGui-Designer");
+    ctx.designerWindow = SDL_CreateWindow("ImGui-Designer", 800, 600, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_MAXIMIZED);
+    if (!ctx.designerWindow)
+    {
+        spdlog::error("Failed to create SDL window: {}", SDL_GetError());
+        SDL_Quit();
+        return -1;
+    }
 
-    // Explicitly focus the window after creation
-    glfwFocusWindow(ctx.designerWindow);
+    // Create OpenGL context
+    ctx.glContext = SDL_GL_CreateContext(ctx.designerWindow);
+    if (!ctx.glContext)
+    {
+        spdlog::error("Failed to create OpenGL context: {}", SDL_GetError());
+        SDL_DestroyWindow(ctx.designerWindow);
+        SDL_Quit();
+        return -1;
+    }
+
+    // Make context current
+    SDL_GL_MakeCurrent(ctx.designerWindow, ctx.glContext);
 
     spdlog::debug("Windows and renderers set up successfully");
 
@@ -96,41 +107,41 @@ int main(int argc, char *argv[])
     spdlog::debug("Initializing ImGui context");
     IMGUI_CHECKVERSION();
 
-    if (core::InitImGuiContext(ctx.designerCtx, ctx.designerWindow) != 0)
+    if (InitImGuiContext(ctx.designerCtx, ctx.designerWindow) != 0)
     {
         spdlog::error("Failed to initialize main ImGui context");
+        SDL_GL_DestroyContext(ctx.glContext);
+        SDL_DestroyWindow(ctx.designerWindow);
+        SDL_Quit();
         return -1;
     }
-    // Install GLFW callbacks manually since we disabled auto-installation in ImGui init
-    // Install debug mouse callback (chain previous if any)
-    g_prev_mouse_button_cb = glfwSetMouseButtonCallback(ctx.designerWindow, debug_mouse_button_callback);
-
-    // Install other ImGui callbacks manually
-    glfwSetScrollCallback(ctx.designerWindow, ImGui_ImplGlfw_ScrollCallback);
-    glfwSetKeyCallback(ctx.designerWindow, ImGui_ImplGlfw_KeyCallback);
-    glfwSetCharCallback(ctx.designerWindow, ImGui_ImplGlfw_CharCallback);
-    glfwSetCursorPosCallback(ctx.designerWindow, ImGui_ImplGlfw_CursorPosCallback);
-    glfwSetCursorEnterCallback(ctx.designerWindow, ImGui_ImplGlfw_CursorEnterCallback);
-    glfwSetWindowFocusCallback(ctx.designerWindow, ImGui_ImplGlfw_WindowFocusCallback);
     spdlog::debug("ImGui context initialized successfully");
     const int target_fps = ctx.preferences->safe_get({"performance", "target_fps"}, 25);
     const double frame_delay = 1.0 / target_fps;
     spdlog::debug("Entering main loop");
-    while (!glfwWindowShouldClose(ctx.designerWindow) && core::running)
+    while (core::running)
     {
-        double frame_start = glfwGetTime();
+        double frame_start = SDL_GetTicksNS() / 1000000000.0;
 
-        glfwPollEvents();
+        SDL_Event event;
+        while (SDL_PollEvent(&event))
+        {
+            ImGui_ImplSDL3_ProcessEvent(&event);
+            if (event.type == SDL_EVENT_QUIT)
+            {
+                core::running = false;
+            }
+        }
 
         // RENDER MAIN CTX (now also calls draw actions)
-        core::RenderDesignerWindow(ctx, ctx.designerCtx, ctx.designerWindow);
+        RenderDesignerWindow(ctx, ctx.designerCtx, ctx.designerWindow);
 
         rccppSystem.GetFileChangeNotifier()->Update(0.0f);
-        double frame_end = glfwGetTime();
+        double frame_end = SDL_GetTicksNS() / 1000000000.0;
         double elapsed = frame_end - frame_start;
         if (elapsed < frame_delay)
         {
-            std::this_thread::sleep_for(std::chrono::duration<double>(frame_delay - elapsed));
+            SDL_DelayNS(static_cast<Uint64>((frame_delay - elapsed) * 1000000000.0));
         }
     }
 
@@ -138,7 +149,7 @@ int main(int argc, char *argv[])
     dispatcher.trigger<core::QuitEvent<>>();
 
     spdlog::debug("Destroying windows and renderers");
-    if (core::WindowDestruction(ctx.designerCtx, ctx.designerWindow) != 0)
+    if (WindowDestruction(ctx.designerCtx, ctx.designerWindow, ctx.glContext) != 0)
     {
         spdlog::error("Failed to destroy designer window and renderer");
         return -1;

@@ -1,8 +1,8 @@
 #pragma once
-#include "internal/system_architecture.hpp"
-namespace core
-{
+#include "core/types/internal/SystemArchitecture.hpp"
 
+namespace SystemArchitectureUtils
+{
         // Detects and returns the current CPU architecture
         inline SystemArchitecture getArchitecture()
         {

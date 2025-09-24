@@ -6,8 +6,8 @@ add_custom_command(
 )
 
 
-configure_file(${CMAKE_SOURCE_DIR}/src/app/preferences/config.json ${CMAKE_BINARY_DIR}/bin/config/config.json COPYONLY)
-configure_file(${CMAKE_SOURCE_DIR}/src/app/preferences/theme.json ${CMAKE_BINARY_DIR}/bin/config/theme.json COPYONLY)
+configure_file(${CMAKE_SOURCE_DIR}/src/app/config/config.json ${CMAKE_BINARY_DIR}/bin/config/config.json COPYONLY)
+configure_file(${CMAKE_SOURCE_DIR}/src/app/config/theme.json ${CMAKE_BINARY_DIR}/bin/config/theme.json COPYONLY)
 
 # Create fonts directory and copy all font files
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/bin/fonts)

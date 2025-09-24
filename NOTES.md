@@ -1,13 +1,28 @@
-# Workflow Rule: Periodic Rereading of Project Rules (added 23. September 2025)
+# Project Notes
+
+## 📋 IMPORTANT: Read First
+
+**Before reading this file, please read `.github/instructions/first.instructions.md`** - it contains essential project rules, workflow guidelines, and coding standards that must be followed.
+
+**Note:** If there is any conflicting information between this file and `first.instructions.md`, `first.instructions.md` takes precedence.
+
+## Workflow Rule: P- `src/app/` — Application-specific logic and user configuration
+
+- `config/` — User configuration files (config.json, theme.json)
+- `context/` — Application context and state management
+
+- `src/core/` — Reusable components and utilities
+  - `helpers/preferences/` — Reusable Preferences class for JSON config managementereading of Project Rules (added 23. September 2025)
 
 To ensure strict compliance and avoid context drift, the assistant must reread all project rules and instructions (from `.github/instructions/first.instructions.md`, `NOTES.md`, and any other policy files) after every 3 code or file changes, or before starting any new major feature or refactor. This rereading will be handled automatically as part of the workflow, without extra comments or notifications, so the process remains seamless and unobtrusive. This guarantees that all actions remain aligned with the latest requirements and conventions.
 
 **Rationale:**
+
 - Prevents forgetting or drifting from project rules during long or complex sessions
 - Ensures all code and workflow changes remain compliant
 - Aids onboarding and consistency for all contributors
 
-# Project Structure Overview (as of 23. September 2025)
+## Project Structure Overview (as of 23. September 2025)
 
 
 This section documents the main directories and their intended purposes to clarify where information, code, and assets should be placed. Update as the project evolves.
@@ -38,6 +53,8 @@ This section documents the main directories and their intended purposes to clari
   - `extract_imgui_api_information.py`, `generate_blocks_yaml.py`, etc. — Specialized codegen and checks
   - `output/` — Generated JSON and coverage reports
 - `fonts/` — Font files (e.g., `arial.ttf`, `Quartz.ttf`, `forkawesome-webfont.ttf`)
+- `examples/` — Code examples and templates demonstrating project patterns and best practices
+  - `interfaces/` — Interface design patterns and templates
 - `third_party/` — External dependencies (not tracked by package manager)
   - `imgui/`, `implot/`, `fmod/` — Source or CMake integration for third-party libraries
   - `README.txt` — Notes on third-party usage
@@ -56,7 +73,9 @@ This section documents the main directories and their intended purposes to clari
 - `.clang-tidy` — Linting and static analysis configuration
 
 ## Conventions
+
 ## Implementation Philosophy
+
 ### Adding New Functionality
 
 Before adding new functionality (code, UI, or features), always search the codebase to find the most appropriate place for it. This helps avoid duplication, ensures maintainability, and keeps related logic together. If in doubt, prefer extending or reusing existing components over creating new ones. Document any non-obvious placement decisions in this file.
@@ -92,13 +111,14 @@ Before adding new functionality (code, UI, or features), always search the codeb
 - After every successful build of the main target, CMake creates a file named `build_succeeded.marker` in the build directory.
 - This marker file is used by automation tools to detect when a build has completed successfully and to trigger post-build actions (such as automatic git commits).
 - The marker is created by a post-build step in `cmake/PostBuild.cmake` using:
-  ```cmake
-  add_custom_command(
-      TARGET ImGui-Designer POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_BINARY_DIR}/build_succeeded.marker
-      COMMENT "Marking successful build"
-  )
-  ```
+
+```cmake
+add_custom_command(
+    TARGET ImGui-Designer POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_BINARY_DIR}/build_succeeded.marker
+    COMMENT "Marking successful build"
+)
+```
 
 - After every successful build, a git commit is automatically created with a meaningful message summarizing the changes.
 - This applies to both manual and automated edits.
@@ -106,8 +126,6 @@ Before adding new functionality (code, UI, or features), always search the codeb
 - This ensures every working state is restorable and all progress is tracked.
  
 Add new folders or files to this list as the project evolves to keep the structure clear and maintainable.
-
-# Code Generators in CMake
 
 ## Code Generators in CMake
 
@@ -119,13 +137,57 @@ This allows you to add new code generation or preprocessing steps simply by addi
 
 To add a new generator, create `cmake/generators/GenerateFoo.cmake` and it will be picked up automatically on the next CMake configure.
 
+### Available Build Targets
+
+- `cmake --build build` - Build the main executable
+- `cmake --build build --target ImGui-Designer_tests` - Build and run tests
+- `cmake --build build --target clean_generated` - **Removes all auto-generated files** from the code generation process (JSON files, header files, marker files, etc.)
+- `cmake --build build --target imgui_api_info` - Extracts ImGui API information from header files and generates JSON data files
+- `cmake --build build --target imgui_param_structs` - Generates C++ parameter structs for ImGui functions
+- `cmake --build build --target node_factory_map` - Generates the node factory mapping header
+- `cmake --build build --target node_params_map` - Generates the node parameters mapping header
+
+## Build Instructions
+
+This project uses CMake as its build system. **Do not use `make` directly** - always use CMake commands.
+
+### Initial Setup
+
+```bash
+# Create build directory
+mkdir build
+cd build
+
+# Configure with CMake
+cmake ..
+
+# Build the project
+cmake --build . --parallel
+```
+
+### Development Workflow
+
+```bash
+# Clean generated files and rebuild from scratch
+cmake --build build --target clean_generated
+cmake --build build --parallel
+
+# Run tests
+cmake --build build --target ImGui-Designer_tests
+ctest --test-dir build
+```
+
+Use `cmake --build build --target clean_generated` to clean up all generated files before regenerating them or for a fresh build.
+
+## Generated Files
+
+**Do not edit generated files manually!** Instead, edit the respective scripts to reflect the needed changes. Generated files include:
+
+- Parameter structs in `build/generated/params/`
+- Node parameter maps in `build/generated/maps/`
+- JSON data files in `scripts/output/`
+
 ## ImGui Designer – Project Notes
-
-This file is for recording noteworthy information, design decisions, gotchas, and ideas as the project evolves. Use it as a memory aid and to help onboard new contributors.
-
----
-
-## Project Intent
 
 ImGui Designer is a visual creator for ImGui-based UIs. The goal is to enable users to build ImGui interfaces visually using a node/block editor, with a live preview window showing the actual ImGui output. The system generates C++ code from the visual graph and uses rccpp for on-the-fly compilation and hot-reload, allowing instant feedback and rapid prototyping. Users can export or save the generated code for integration into other projects, making ImGui Designer a powerful tool for UI development, prototyping, and code generation.
 
@@ -147,14 +209,20 @@ ImGui Designer is a visual creator for ImGui-based UIs. The goal is to enable us
 
 ### Naming Conventions
 
-- **Files:** Use `snake_case` (e.g., `this_is_a_filename.txt`).
-- **Classes/Structs:** Use `UpperCamelCase` (a.k.a. PascalCase), e.g., `TopDownHelper`.
+- **Files:** Use `PascalCase` (e.g., `MyClass.hpp`, `VisualBlockTypes.hpp`).
+- **Classes/Structs:** Use `PascalCase` (e.g., `MyClass`, `VisualBlockTypes`).
+- **Functions and variables:** Use `camelCase` (e.g., `myFunction`, `visualBlockTypes`).
+- **Constants and macros:** Use `UPPER_SNAKE_CASE` (e.g., `MAX_BUFFER_SIZE`, `DEFAULT_COLOR`).
 
 
 
 ## Design Decisions
 
--
+**Config File Organization (24. September 2025):**
+
+- `src/core/helpers/preferences/` contains the reusable `Preferences` class
+- `src/app/config/` contains user configuration files loaded by the application
+- No duplicate config files - each location serves a distinct purpose
 
 
 ## Gotchas & Caveats
@@ -183,15 +251,18 @@ ImGui Designer is a visual creator for ImGui-based UIs. The goal is to enable us
 ## UI/Component Encapsulation Rule (added 23. September 2025)
 
 ### Rule
+
 All ImGui UI/component logic (including panels, toolbars, search boxes, and any reusable widget) **must be encapsulated in dedicated C++ classes**. Do not place UI logic inline in window functions or in global/static functions. Each UI component should have its own class, with a clear interface and a `render()` method (or similar) for drawing its contents.
 
 **Rationale:**
+
 - Improves maintainability and testability
 - Makes UI code modular and reusable
 - Keeps window functions clean and focused on layout
 - Eases onboarding for new contributors
 
 ### Minimal Example
+
 ```cpp
 // src/core/components/ToolbarPanel.hpp
 #pragma once
@@ -223,6 +294,7 @@ public:
 ```
 
 **Usage in window code:**
+
 ```cpp
 static ToolbarPanel toolbar;
 ImGui::Begin("Toolbar");
@@ -231,6 +303,7 @@ ImGui::End();
 ```
 
 ### Enforcement
+
 - All new UI/component logic must follow this rule.
 - Refactor legacy code as time permits.
 

@@ -1,7 +1,6 @@
 #pragma once
 #include <stdexcept>
 #include <functional>
-namespace core
 {
     // Templated Value component with min, max, default, overflow/underflow detection
 
@@ -19,9 +18,8 @@ namespace core
         Handler onOverflow = nullptr;
         Handler onUnderflow = nullptr;
 
-        Value() {
-            value = T();
-        }
+        Value() = default;
+        
         
         Value(T minV, T maxV , T defV,
               Handler overflowHandler = nullptr,
