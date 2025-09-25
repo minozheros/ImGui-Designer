@@ -1,0 +1,183 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://example.com/schemas/FeatureSet.schema.json",
+    "title": "FeatureSet",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "id": {
+            "type": "string",
+            "minLength": 3
+        },
+        "name": {
+            "type": "string"
+        },
+        "version": {
+            "type": "string"
+        },
+        "license": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "provides": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "minItems": 1
+        },
+        "requires": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "default": []
+        },
+        "conflicts": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "default": []
+        },
+        "libraries": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "version": {
+                        "type": "string"
+                    },
+                    "repo": {
+                        "type": "string"
+                    },
+                    "commit": {
+                        "type": "string"
+                    },
+                    "sha256": {
+                        "type": "string"
+                    }
+                },
+                "oneOf": [
+                    {
+                        "required": [
+                            "id",
+                            "version"
+                        ]
+                    },
+                    {
+                        "required": [
+                            "repo",
+                            "commit"
+                        ]
+                    }
+                ]
+            },
+            "default": []
+        },
+        "compatibility": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "platforms": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "compilers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "codegen": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "cmake": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "template": {
+                                "type": "string"
+                            },
+                            "into": {
+                                "type": "string"
+                            },
+                            "mode": {
+                                "type": "string",
+                                "enum": [
+                                    "patch",
+                                    "append",
+                                    "create"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "template",
+                            "into",
+                            "mode"
+                        ]
+                    },
+                    "default": []
+                },
+                "sources": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "template": {
+                                "type": "string"
+                            },
+                            "into": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "template",
+                            "into"
+                        ]
+                    },
+                    "default": []
+                },
+                "config": {
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            }
+        },
+        "tests": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "compile_smoke": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "ctest_regex": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "required": [
+        "id",
+        "version",
+        "provides"
+    ]
+}

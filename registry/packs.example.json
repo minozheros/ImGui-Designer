@@ -1,0 +1,40 @@
+{
+    "$schema": "../schemas/PackIndex.schema.json",
+    "version": "1",
+    "updatedAt": "2025-09-25T00:00:00Z",
+    "entries": [
+        {
+            "id": "featureset.imgui_sdl3_opengl_docking",
+            "kind": "featureset",
+            "repo": "owner/awesome-cpp-designer-packs",
+            "ref": "v0.1.0",
+            "path": "featuresets/imgui_sdl3_opengl_docking",
+            "dest": "imgui_sdl3_opengl_docking",
+            "trust": "official",
+            "license": "MIT",
+            "description": "Baseline ImGui + SDL3 + OpenGL with docking"
+        },
+        {
+            "id": "package.imgui_sdl3_quickstart",
+            "kind": "package",
+            "repo": "owner/awesome-cpp-designer-packs",
+            "ref": "v0.1.0",
+            "path": "packages/imgui_sdl3_quickstart",
+            "dest": "imgui_sdl3_quickstart",
+            "trust": "official",
+            "license": "MIT",
+            "description": "Opinionated starter with main.cpp"
+        },
+        {
+            "id": "tutorial.imgui_sdl3",
+            "kind": "tutorial",
+            "repo": "owner/awesome-cpp-designer-packs",
+            "ref": "v0.1.0",
+            "path": "tutorials/imgui_sdl3",
+            "dest": "imgui_sdl3",
+            "trust": "verified",
+            "license": "MIT",
+            "description": "Beginner tutorial series for SDL3 + ImGui"
+        }
+    ]
+}

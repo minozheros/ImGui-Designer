@@ -1,0 +1,89 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://example.com/schemas/Package.schema.json",
+    "title": "Package",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "id": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "version": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "featuresets": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "minItems": 1
+        },
+        "scaffold": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "sources": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "template": {
+                                "type": "string"
+                            },
+                            "into": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "template",
+                            "into"
+                        ],
+                        "additionalProperties": false
+                    },
+                    "default": []
+                },
+                "structure": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "path": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "path"
+                        ],
+                        "additionalProperties": false
+                    },
+                    "default": []
+                }
+            }
+        },
+        "policy": {
+            "type": "object",
+            "additionalProperties": true
+        },
+        "constraints": {
+            "type": "object",
+            "additionalProperties": true
+        },
+        "readme": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "id",
+        "version",
+        "featuresets"
+    ]
+}

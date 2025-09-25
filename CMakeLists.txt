@@ -30,6 +30,19 @@ add_library(project_warnings INTERFACE)
 include(cmake/CompilerWarnings.cmake)
 set_project_warnings(project_warnings)
 
+# --- Packs (FeatureSets/Packages/Tutorials) fetch integration ---
+option(IMGUIDESIGNER_FETCH_STANDARD_PACKS "Fetch standard packs from registry/packs.example.json" OFF)
+include(cmake/PackFetch.cmake)
+if(IMGUIDESIGNER_FETCH_STANDARD_PACKS)
+    add_pack_fetch_target(fetch_packs "${CMAKE_SOURCE_DIR}/registry/packs.example.json")
+endif()
+option(IMGUIDESIGNER_FETCH_OFFICIAL_PACKS "Fetch official packs from registry/packs.official.json" OFF)
+if(IMGUIDESIGNER_FETCH_OFFICIAL_PACKS)
+    add_pack_fetch_target(fetch_official_packs "${CMAKE_SOURCE_DIR}/registry/packs.official.json")
+endif()
+include(cmake/ManifestValidation.cmake)
+option(IMGUIDESIGNER_VALIDATE_ON_BUILD "Run manifest validation as part of build" ON)
+
 
 
 # =============================
@@ -108,12 +121,51 @@ target_include_directories(stb INTERFACE ${stb_SOURCE_DIR})
 
 
 # --- SDL & Graphics ---
-FetchContent_Declare(
-    SDL3
-    GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
-    GIT_TAG        release-3.2.0 # or latest stable
-)
-FetchContent_MakeAvailable(SDL3)
+## Prefer system-installed SDL3 if available to avoid network fetches; fallback to FetchContent.
+## When fetching SDL3, disable PipeWire backend to avoid build breakage with certain PipeWire headers.
+option(IMGUIDESIGNER_DISABLE_SDL_PIPEWIRE "Disable SDL3 PipeWire backend when building bundled SDL3" ON)
+option(IMGUIDESIGNER_SDL_ALSA_ONLY "When building bundled SDL3, prefer ALSA and disable other audio backends (PulseAudio, JACK, SNDIO, OSS)" ON)
+set(USE_FETCHED_SDL3 OFF)
+find_package(SDL3 CONFIG QUIET)
+if(NOT SDL3_FOUND)
+    include(FindPkgConfig)
+    pkg_check_modules(SDL3 QUIET sdl3)
+    if(SDL3_FOUND)
+        # Create an imported target SDL3::SDL3 from pkg-config values
+        add_library(SDL3::SDL3 INTERFACE IMPORTED)
+        target_include_directories(SDL3::SDL3 INTERFACE ${SDL3_INCLUDE_DIRS})
+        target_link_libraries(SDL3::SDL3 INTERFACE ${SDL3_LINK_LIBRARIES})
+    else()
+        # Fallback to fetching SDL3
+        FetchContent_Declare(
+            SDL3
+            GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+            GIT_TAG        release-3.2.0 # keep pinned to a known-good tag
+        )
+        # Apply SDL3 configuration knobs BEFORE making it available
+        if(IMGUIDESIGNER_DISABLE_SDL_PIPEWIRE)
+            # Turn off PipeWire backends in the SDL3 subbuild to avoid API mismatches on some distros
+            set(SDL_PIPEWIRE OFF CACHE BOOL "Disable PipeWire backend in SDL3" FORCE)
+            set(SDL_PIPEWIRE_SHARED OFF CACHE BOOL "Disable shared PipeWire in SDL3" FORCE)
+        endif()
+        if(IMGUIDESIGNER_SDL_ALSA_ONLY)
+            # Force ALSA on and other audio backends off for a leaner, ALSA-focused build
+            set(SDL_ALSA ON CACHE BOOL "Enable ALSA backend in SDL3" FORCE)
+            set(SDL_ALSA_SHARED ON CACHE BOOL "Enable ALSA shared in SDL3" FORCE)
+            set(SDL_PULSEAUDIO OFF CACHE BOOL "Disable PulseAudio backend in SDL3" FORCE)
+            set(SDL_PULSEAUDIO_SHARED OFF CACHE BOOL "Disable PulseAudio shared in SDL3" FORCE)
+            set(SDL_JACK OFF CACHE BOOL "Disable JACK backend in SDL3" FORCE)
+            set(SDL_JACK_SHARED OFF CACHE BOOL "Disable JACK shared in SDL3" FORCE)
+            set(SDL_SNDIO OFF CACHE BOOL "Disable SNDIO backend in SDL3" FORCE)
+            set(SDL_SNDIO_SHARED OFF CACHE BOOL "Disable SNDIO shared in SDL3" FORCE)
+            set(SDL_OSS OFF CACHE BOOL "Disable OSS backend in SDL3" FORCE)
+        endif()
+        # We do not need to install SDL when used as a subproject
+        set(SDL_INSTALL OFF CACHE BOOL "Disable SDL3 install step" FORCE)
+        FetchContent_MakeAvailable(SDL3)
+        set(USE_FETCHED_SDL3 ON)
+    endif()
+endif()
 
 find_package(OpenGL REQUIRED)
 
@@ -163,7 +215,7 @@ add_subdirectory(third_party/imgui-node-editor)
 # =============================
 # Source Files & Executables
 # =============================
-file(GLOB_RECURSE SRC_FILES src/*.cpp src/*.hpp)
+file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS src/*.cpp src/*.hpp)
 list(REMOVE_ITEM SRC_FILES ${CMAKE_SOURCE_DIR}/src/main.cpp)
 file(GLOB TEST_SOURCES tests/test_*.cpp)
 
@@ -196,7 +248,9 @@ target_include_directories(ImGui-Designer_includes INTERFACE
     ${fmod_SOURCE_DIR}/api/core/include
     ${fmt_SOURCE_DIR}/include
     ${gpiod_SOURCE_DIR}/include
-    ${SDL3_SOURCE_DIR}/include
+    # SDL3 include directories
+    $<$<BOOL:${USE_FETCHED_SDL3}>:${SDL3_SOURCE_DIR}/include>
+    $<$<NOT:$<BOOL:${USE_FETCHED_SDL3}>>:${SDL3_INCLUDE_DIRS}>
     ${imgui_SOURCE_DIR}
     ${OpenGL_INCLUDE_DIR}
     ${spdlog_SOURCE_DIR}/include
@@ -288,3 +342,8 @@ file(GLOB GENERATOR_SCRIPTS "${CMAKE_SOURCE_DIR}/cmake/generators/*.cmake")
 foreach(GEN_SCRIPT ${GENERATOR_SCRIPTS})
     include(${GEN_SCRIPT})
 endforeach()
+
+if(IMGUIDESIGNER_VALIDATE_ON_BUILD)
+    add_dependencies(ImGui-Designer validate_manifests)
+    add_dependencies(ImGui-Designer_tests validate_manifests)
+endif()

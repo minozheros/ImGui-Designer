@@ -1,0 +1,79 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://example.com/schemas/LibraryRegistry.schema.json",
+    "title": "LibraryRegistry",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "version": {
+            "type": "string"
+        },
+        "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "libraries": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "repo": {
+                        "type": "string"
+                    },
+                    "homepage": {
+                        "type": "string"
+                    },
+                    "license": {
+                        "type": "string"
+                    },
+                    "official": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "verified": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "recommended": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "tag": {
+                                    "type": "string"
+                                },
+                                "commit": {
+                                    "type": "string"
+                                },
+                                "sha256": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "tag"
+                            ]
+                        },
+                        "default": []
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "repo"
+                ]
+            }
+        }
+    },
+    "required": [
+        "version",
+        "libraries"
+    ]
+}

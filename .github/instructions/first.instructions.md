@@ -188,3 +188,56 @@
 12. **Generated Files**
 
 - Do not edit manually, but edit the respective scripts to reflect the needed changes!
+
+### Recommended Defaults and Expansion Guidance (Flexible, Easy-to-Extend)
+
+Use these as our “house style” when proposing solutions or adding dependencies. When alternatives make sense, explain trade-offs with a short rationale.
+
+1. Codegen templating (packs)
+
+- Default: Logic-less templates in packs (Mustache-style). They’re easy to learn, review, and fork—ideal for community packs.
+- If native C++ templating is needed: prefer Inja (C++/header-only, integrates with nlohmann::json we already use). Alternative: mstch/kainjow::mustache. Avoid hand-built string concatenation for anything non-trivial.
+- Contracts: Keep templates small and composable; pass explicit data models, not raw app types. Enforce output style via templates, not hard-coded in C++.
+
+2. Pack install strategy (deterministic and reusable)
+
+- Default: Hybrid mode
+  - Project-local materialization (for reproducibility) + global content-addressed cache per XDG (
+    ~/.cache/imgui-designer/packs/<owner>/<repo>/<ref>/<sha256>/).
+  - Materialize via symlink by default; fall back to copy on unsupported FS.
+- CI: Always materialize locally from cache and verify sha256; avoid global installs.
+
+3. Native downloader (future C++)
+
+- Keep Python fetcher as the reference path for now (simple, battle-tested in CI).
+- If/when adding C++ HTTP:
+  - HTTP: libcurl (widely used) or cpr (thin C++ wrapper around libcurl). Pin versions.
+  - Archive: minizip or libzip. Verify sha256 before extraction; sanitize paths.
+  - Hashing: use a small, portable SHA-256 (e.g., bundled) or OpenSSL if already present.
+  - Always validate against index pin (ref + sha256) before accept.
+
+4. Schema evolution and validation
+
+- Keep $schema on all manifests; validate in CI (jsonschema).
+- Favor additive, backward-compatible changes; deprecate instead of breaking.
+- Encode capabilities (e.g., codegen.cxx, symbols.class) so packs can declare requirements.
+
+5. Security and trust
+
+- Default sources via curated indexes only; require pinned refs for official/verified packs and enforce sha256.
+- Treat system/global locations as read-only data sources; never auto-elevate or write outside project without explicit user action.
+
+6. Library selection guidance
+
+- Prefer: widely-used, permissive license (MIT/BSD/Apache-2.0), minimal transitive deps, active maintenance.
+- Existing stack: fmt, spdlog, nlohmann::json, EnTT, Catch2, ImGui/ImPlot/imgui-node-editor—stick with these unless a clear benefit.
+- New deps: document rationale, alternatives, and removal plan if abandoned upstream.
+
+7. Testing codegen and packs
+
+- Golden tests for codegen output (Catch2): compare generated files to checked-in fixtures.
+- Validate manifests and lockfiles in CI for all PRs; fail on drift or missing pins.
+
+8. First-run behavior
+
+- If no packs installed: prompt to install the official Standard Core pack; otherwise focus Toolbar by default. Never auto-switch tabs after startup.

@@ -1,0 +1,39 @@
+{
+    "$schema": "../../schemas/Package.schema.json",
+    "id": "package.imgui_sdl3_quickstart",
+    "name": "ImGui SDL3 Quickstart",
+    "version": "0.1.0",
+    "description": "Minimal opinionated stack for starting with ImGui using SDL3 and OpenGL with docking.",
+    "featuresets": [
+        "featureset.imgui_sdl3_opengl_docking"
+    ],
+    "scaffold": {
+        "structure": [
+            {
+                "path": "src/"
+            },
+            {
+                "path": "src/app/"
+            },
+            {
+                "path": "src/ui/"
+            }
+        ],
+        "sources": [
+            {
+                "template": "templates/src/main_quickstart.in.cpp",
+                "into": "src/main.cpp"
+            }
+        ]
+    },
+    "policy": {
+        "allowCommunityLibs": false
+    },
+    "constraints": {
+        "compiler": [
+            "gcc-13+",
+            "clang-16+"
+        ]
+    },
+    "readme": "packages/imgui_sdl3_quickstart/README.md"
+}

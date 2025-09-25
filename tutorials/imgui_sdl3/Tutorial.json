@@ -1,0 +1,38 @@
+{
+    "$schema": "../../schemas/Tutorial.schema.json",
+    "id": "tutorial.imgui_sdl3",
+    "name": "ImGui with SDL3 Fundamentals",
+    "version": "0.1.0",
+    "track": "beginner",
+    "prereqs": [],
+    "uses": {
+        "featuresets": [
+            "featureset.imgui_sdl3_opengl_docking"
+        ],
+        "packages": [
+            "package.imgui_sdl3_quickstart"
+        ]
+    },
+    "lessons": [
+        {
+            "id": "01-setup",
+            "title": "Project setup and first window",
+            "apply": {
+                "templates": [
+                    {
+                        "template": "templates/tutorials/imgui_sdl3/01-setup/main.in.cpp",
+                        "into": "src/main.cpp",
+                        "mode": "create"
+                    }
+                ]
+            },
+            "checks": {
+                "compile_smoke": true
+            },
+            "hints": [
+                "Use the Quickstart package if you want a pre-configured main.cpp",
+                "Docking can be toggled via ImGuiConfigFlags_DockingEnable"
+            ]
+        }
+    ]
+}

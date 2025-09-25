@@ -1,0 +1,89 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://example.com/schemas/PackIndex.schema.json",
+    "title": "PackIndex",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "version": {
+            "type": "string"
+        },
+        "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "entries": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "kind": {
+                        "type": "string",
+                        "enum": [
+                            "featureset",
+                            "package",
+                            "tutorial"
+                        ]
+                    },
+                    "repo": {
+                        "type": "string",
+                        "description": "GitHub repo in 'owner/repo' or full https URL"
+                    },
+                    "ref": {
+                        "type": "string",
+                        "description": "tag, branch, or commit"
+                    },
+                    "path": {
+                        "type": "string",
+                        "description": "Path within the repo to the pack root folder"
+                    },
+                    "dest": {
+                        "type": "string",
+                        "description": "Optional destination folder name under local kind directory"
+                    },
+                    "trust": {
+                        "type": "string",
+                        "enum": [
+                            "official",
+                            "verified",
+                            "community"
+                        ],
+                        "default": "community"
+                    },
+                    "license": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "default": true
+                    },
+                    "sha256": {
+                        "type": "string",
+                        "description": "Optional expected checksum of the downloaded archive"
+                    }
+                },
+                "required": [
+                    "id",
+                    "kind",
+                    "repo",
+                    "ref",
+                    "path"
+                ]
+            }
+        }
+    },
+    "required": [
+        "version",
+        "entries"
+    ]
+}

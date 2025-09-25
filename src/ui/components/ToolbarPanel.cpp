@@ -58,14 +58,15 @@ void ToolbarPanel::render()
             nodeSearch = searchBuffer;
         }
     }
-    // Auto-focus logic remains unchanged
+    // Auto-focus logic: only when Toolbar tab/window is focused (active tab)
     ImVec2 mouse = ImGui::GetIO().MousePos;
     ImRect childRect(ImGui::GetWindowPos(), ImVec2(ImGui::GetWindowPos().x + focusAreaWidth, ImGui::GetWindowPos().y + ImGui::GetWindowSize().y));
     static bool searchAutoFocused = false;
     static bool mouseWasInside = false;
     auto &io = ImGui::GetIO();
     bool inside = childRect.Contains(mouse);
-    bool canAutofocus = true;
+    bool toolbarActive = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
+    bool canAutofocus = toolbarActive;
     if (inside && canAutofocus)
     {
         if (!mouseWasInside && !io.MouseDown[0] && !searchAutoFocused)
@@ -82,7 +83,7 @@ void ToolbarPanel::render()
             }
         }
     }
-    else if (!inside)
+    else if (!inside || !toolbarActive)
     {
         searchAutoFocused = false;
     }

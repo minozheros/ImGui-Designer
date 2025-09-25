@@ -1,0 +1,64 @@
+{
+    "$schema": "../../schemas/FeatureSet.schema.json",
+    "id": "featureset.imgui_sdl3_opengl_docking",
+    "name": "ImGui + SDL3 + OpenGL + Docking",
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Baseline ImGui stack using SDL3 backend, OpenGL renderer, and docking enabled.",
+    "provides": [
+        "imgui",
+        "sdl3",
+        "opengl",
+        "docking"
+    ],
+    "requires": [],
+    "conflicts": [],
+    "libraries": [
+        {
+            "id": "official.imgui",
+            "version": "v1.91.0"
+        },
+        {
+            "id": "official.sdl3",
+            "version": "release-3.2.0"
+        }
+    ],
+    "compatibility": {
+        "platforms": [
+            "linux",
+            "windows",
+            "macos"
+        ],
+        "compilers": [
+            "gcc-13+",
+            "clang-16+"
+        ]
+    },
+    "codegen": {
+        "cmake": [
+            {
+                "template": "templates/cmake/imgui_sdl3_opengl.cmake.in",
+                "into": "cmake/FeatureSets.cmake",
+                "mode": "append"
+            }
+        ],
+        "sources": [
+            {
+                "template": "templates/src/InitImGuiContext.in.hpp",
+                "into": "src/ui/rendering/InitImGuiContext.hpp"
+            },
+            {
+                "template": "templates/src/WindowDestruction.in.hpp",
+                "into": "src/ui/rendering/WindowDestruction.hpp"
+            }
+        ],
+        "config": {
+            "imgui": {
+                "docking": true
+            }
+        }
+    },
+    "tests": {
+        "compile_smoke": true
+    }
+}

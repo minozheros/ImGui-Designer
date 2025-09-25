@@ -1,0 +1,65 @@
+{
+    "version": "1",
+    "updatedAt": "2025-01-01T00:00:00Z",
+    "libraries": [
+        {
+            "id": "official.imgui",
+            "name": "Dear ImGui",
+            "repo": "https://github.com/ocornut/imgui",
+            "homepage": "https://github.com/ocornut/imgui",
+            "license": "MIT",
+            "official": true,
+            "verified": true,
+            "recommended": [
+                {
+                    "tag": "v1.91.0"
+                },
+                {
+                    "tag": "v1.90.8"
+                }
+            ]
+        },
+        {
+            "id": "official.imguinodeeditor",
+            "name": "imgui-node-editor",
+            "repo": "https://github.com/thedmd/imgui-node-editor",
+            "homepage": "https://github.com/thedmd/imgui-node-editor",
+            "license": "MIT",
+            "official": false,
+            "verified": true,
+            "recommended": [
+                {
+                    "tag": "v0.9.6"
+                }
+            ]
+        },
+        {
+            "id": "official.sdl3",
+            "name": "SDL3",
+            "repo": "https://github.com/libsdl-org/SDL",
+            "homepage": "https://libsdl.org/",
+            "license": "zlib",
+            "official": true,
+            "verified": true,
+            "recommended": [
+                {
+                    "tag": "release-3.2.0"
+                }
+            ]
+        },
+        {
+            "id": "community.implot",
+            "name": "ImPlot",
+            "repo": "https://github.com/epezent/implot",
+            "homepage": "https://github.com/epezent/implot",
+            "license": "MIT",
+            "official": false,
+            "verified": true,
+            "recommended": [
+                {
+                    "tag": "v0.16"
+                }
+            ]
+        }
+    ]
+}

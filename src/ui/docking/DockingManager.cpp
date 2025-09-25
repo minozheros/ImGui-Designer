@@ -44,11 +44,28 @@ void DockingManager::setupDockspace()
         ImGuiID dock_id_bottom = ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Down, 0.20f, nullptr, &dock_main_id);
 
         // Dock windows
+        // Toolbar area (left): make Pack Manager and Pack Viewer tabs next to Toolbar
         ImGui::DockBuilderDockWindow("Toolbar", dock_id_left);
+        ImGui::DockBuilderDockWindow("Pack Manager", dock_id_left);
+        ImGui::DockBuilderDockWindow("Pack Viewer", dock_id_left);
+
+        // Bottom bar and main designer canvas in the remaining regions
         ImGui::DockBuilderDockWindow("BottomBar", dock_id_bottom);
-        ImGui::DockBuilderDockWindow("MainArea", dock_main_id);
+        ImGui::DockBuilderDockWindow("Designer", dock_main_id);
 
         ImGui::DockBuilderFinish(dockspace_id);
+    }
+    else
+    {
+        // If a layout already exists (from ini), ensure Pack Manager and Pack Viewer are docked
+        // as tabs with the Toolbar by locating the Toolbar's dock node.
+        ImGuiWindow *toolbarWindow = ImGui::FindWindowByName("Toolbar");
+        if (toolbarWindow && toolbarWindow->DockNode)
+        {
+            ImGuiID toolbarDockId = toolbarWindow->DockNode->ID;
+            ImGui::DockBuilderDockWindow("Pack Manager", toolbarDockId);
+            ImGui::DockBuilderDockWindow("Pack Viewer", toolbarDockId);
+        }
     }
 
     // ImGui internal workaround: enforce minimum dock node width for toolbar

@@ -1,16 +1,57 @@
-Update generator, base types, and includes for ImGui node parameter automation.
- - Generator scripts now emit parameter structs inheriting from IParameterParamsBase.
- - ParameterBase<T> refactored to inherit from new IParameterBase for heterogeneous vector support.
- - Regenerated all parameter structs and node_params_map.hpp.
- - Build validated successfully.
- - Includes checked and adjusted for vector and base type usage.
- - All changes follow project conventions and encapsulation rules.
- - See NOTES.md for design decisions and details.
-Add vector<IParameterBase*> aggregation to generated blocks
-Generator now emits a std::vector<core::IParameterBase*> member for each block
-Constructor populates vector with all block parameters
-Regenerate parameter structs and fix bracket output in generator script.
-Parameter structs now inherit from core::IParameterParamsBase.
-All generated code follows project conventions and rules from .github/instructions/first.instructions.md.
-Manual edits to interfaces and map files have been respected.
-Includes are grouped at the top, code is formatted consistently, and no redundant brackets remain in generated files.
+Build: Prefer system SDL3; bundled SDL3 uses ALSA-only by default; disable PipeWire to fix build on PipeWire-mismatched systems
+
+Summary
+- Stabilize builds and align audio backends with ALSA-only setups.
+- Add top menu bar, layout persistence, and last-left-tab restore.
+- Introduce pack schemas, registries, and validation workflow.
+- Improve docking UX (left tabs) and toolbar focus behavior.
+
+Build / CMake
+- Prefer system-installed SDL3 (find_package/pkg-config). Fetch SDL3 only if not found.
+- When fetching SDL3 as a subproject:
+	- Disable PipeWire: SDL_PIPEWIRE=OFF, SDL_PIPEWIRE_SHARED=OFF (default ON via IMGUIDESIGNER_DISABLE_SDL_PIPEWIRE).
+	- ALSA-only default: enable ALSA (+shared) and disable PulseAudio, JACK, SNDIO, OSS (IMGUIDESIGNER_SDL_ALSA_ONLY=ON).
+	- Disable SDL_INSTALL to keep the subproject lean.
+- Conditional SDL3 include dirs (source include vs system include) based on USE_FETCHED_SDL3.
+- Keep OpenGL and other deps unchanged; maintain CONFIGURE_DEPENDS GLOB for sources.
+
+UI / UX
+- Add MainMenuBar (File/View/Settings/Help):
+	- File→Quit dispatches quit event.
+	- View→Save/Load/Reset layout via LayoutStore.
+	- Settings→Show Bottom Bar toggle persisted to preferences.
+- Persist and restore last selected left dock tab (Toolbar, Pack Manager, Pack Viewer) via AppStateStore.
+- Default focus: Toolbar unless no packs; first run prompts to install Standard Core pack.
+- Move Pack Manager and Pack Viewer tabs next to Toolbar on the left; set minimum dock width; re-dock on existing layouts.
+- Toolbar search only autofocuses when Toolbar tab is focused (no focus stealing).
+
+State / Persistence
+- Add AppStateStore (registry/app_state.json) for last-left-tab.
+- Add LayoutStore to save/load/reset ImGui layout (registry/layout.ini); const-safe SaveIniSettingsToMemory usage.
+- Wire stores into AppContext and render loop; bottom bar visibility now respects a persisted preference.
+
+Packs / Schemas / CI
+- Add JSON Schemas: FeatureSet, Package, Tutorial, LibraryRegistry, PackIndex.
+- Add example and official registries (packs.example.json, packs.official.json) and libraries.example.json.
+- Add Python tools: fetch_packs.py and validate_manifests.py; integrate validation as a build step and CI workflow (.github/workflows/validate-manifests.yml).
+- Update PackIndexLoader to load and present packs in Pack Manager/Viewer.
+
+Code / Files touched (high level)
+- CMakeLists.txt (SDL3 strategy, ALSA-only and PipeWire toggles, conditional includes).
+- src/ui/rendering/RenderImGuiDesignerWindow.hpp (menu integration; tab persistence; first-run logic; bottom bar toggle).
+- src/ui/components/MainMenuBar.{hpp,cpp} (new).
+- src/app/state/{AppStateStore,LayoutStore}.{hpp,cpp} (new) + AppContext wiring and main.cpp setup.
+- src/ui/panels/* (PackManagerPanel, PackViewerPanel, FirstRunModal) and ToolbarPanel focus behavior.
+- src/ui/docking/DockingManager.cpp (left tabs placement and sizing).
+- schemas/*, registry/*, featuresets/*, packages/*, tutorials/* (manifests and examples).
+- .github/workflows/validate-manifests.yml (CI validation).
+- NodeEditor.json and CONTRIBUTING_MANIFESTS.md adjustments.
+
+Validation
+- Reconfigure+Build: successful; ImGui-Designer and tests built cleanly.
+- build/build.log captured; no PipeWire compile errors.
+- Behavior validated manually: menu appears; layout actions functional; last-left-tab persists; first-run prompt shown when no packs.
+
+Notes
+- System SDL3 remains untouched; bundled SDL3 receives ALSA-only and no-PipeWire defaults to match typical ALSA environments and avoid fragile PipeWire headers.
+- Options IMGUIDESIGNER_DISABLE_SDL_PIPEWIRE and IMGUIDESIGNER_SDL_ALSA_ONLY can be toggled if needed.

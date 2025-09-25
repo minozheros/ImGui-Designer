@@ -1,0 +1,146 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://example.com/schemas/Tutorial.schema.json",
+    "title": "Tutorial",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "id": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "version": {
+            "type": "string"
+        },
+        "track": {
+            "type": "string",
+            "enum": [
+                "beginner",
+                "intermediate",
+                "advanced"
+            ]
+        },
+        "prereqs": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "default": []
+        },
+        "uses": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "featuresets": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": []
+                },
+                "packages": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": []
+                }
+            }
+        },
+        "lessons": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "apply": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "templates": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "template": {
+                                            "type": "string"
+                                        },
+                                        "into": {
+                                            "type": "string"
+                                        },
+                                        "mode": {
+                                            "type": "string",
+                                            "enum": [
+                                                "create",
+                                                "patch",
+                                                "append"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "template",
+                                        "into"
+                                    ],
+                                    "additionalProperties": false
+                                },
+                                "default": []
+                            },
+                            "patches": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "default": []
+                            }
+                        }
+                    },
+                    "checks": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "compile_smoke": {
+                                "type": "boolean",
+                                "default": false
+                            },
+                            "tests": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "default": []
+                            }
+                        }
+                    },
+                    "hints": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": []
+                    }
+                },
+                "required": [
+                    "id",
+                    "title"
+                ]
+            }
+        }
+    },
+    "required": [
+        "id",
+        "version",
+        "lessons"
+    ]
+}

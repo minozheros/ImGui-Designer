@@ -6,6 +6,10 @@
 #include <imgui_impl_sdl3.h>
 #include <spdlog/spdlog.h>
 #include <SDL3/SDL.h>
+#include <nlohmann/json.hpp>
+#include <fstream>
+#include <filesystem>
+#include <string>
 #include "app/context/AppContext.hpp"
 #include "ui/components/ToolbarPanel.hpp"
 #include "X11MouseFix.hpp"
@@ -34,6 +38,12 @@ int RenderDesignerWindow(AppContext &ctx, ImGuiContext *imguiCtx, SDL_Window *wi
     ImGui_ImplSDL3_NewFrame();
 
     ImGui::NewFrame();
+
+    // Top menu bar
+    if (ctx.mainMenuBar)
+    {
+        ctx.mainMenuBar->render();
+    }
 
     // SDL3 handles multi-monitor coordinate issues automatically
 
@@ -64,23 +74,173 @@ int RenderDesignerWindow(AppContext &ctx, ImGuiContext *imguiCtx, SDL_Window *wi
         ctx.dockingManager->applyToolbarWorkarounds();
     }
 
+    // Decide initial focused tab in the left dock (Toolbar vs Pack Manager vs Pack Viewer)
+    // Order of precedence (applied once):
+    // 1) User's last saved choice from app_state.json
+    // 2) If none saved and no ImGui ini: Toolbar by default, unless no packs installed -> Pack Manager
+    static bool didSetInitialFocus = false;
+    static bool noPacksInstalled = false;
+    static bool hasImGuiIni = false;
+    static bool iniChecked = false;
+    static bool loadedSavedLeftTab = false;
+    static std::string savedLeftTab;
+    if (!iniChecked)
+    {
+        const ImGuiIO &io2 = ImGui::GetIO();
+        if (io2.IniFilename && *io2.IniFilename)
+        {
+            hasImGuiIni = std::filesystem::exists(std::filesystem::path(io2.IniFilename));
+        }
+        else
+        {
+            hasImGuiIni = false;
+        }
+        iniChecked = true;
+    }
+    if (!didSetInitialFocus)
+    {
+        // Determine if packs are installed by checking registry/packs.lock.json for entries
+        try
+        {
+            std::ifstream lf("registry/packs.lock.json");
+            if (lf.is_open())
+            {
+                nlohmann::json j;
+                lf >> j;
+                if (j.contains("entries") && j["entries"].is_array() && !j["entries"].empty())
+                    noPacksInstalled = false;
+                else
+                    noPacksInstalled = true;
+            }
+            else
+            {
+                noPacksInstalled = true;
+            }
+        }
+        catch (...)
+        {
+            noPacksInstalled = true;
+        }
+        // Load project-saved last-left-tab once
+        if (!loadedSavedLeftTab)
+        {
+            auto t = ctx.stateStore.loadLastLeftTab();
+            if (t.has_value())
+                savedLeftTab = *t;
+            loadedSavedLeftTab = true;
+        }
+    }
+
+    // Resolve which window should receive initial focus (applied once before its Begin)
+    bool focusToolbar = false;
+    bool focusPackManager = false;
+    bool focusPackViewer = false;
+    if (!didSetInitialFocus)
+    {
+        if (!savedLeftTab.empty())
+        {
+            if (savedLeftTab == "Toolbar")
+                focusToolbar = true;
+            else if (savedLeftTab == "Pack Manager")
+                focusPackManager = true;
+            else if (savedLeftTab == "Pack Viewer")
+                focusPackViewer = true;
+        }
+        else if (!hasImGuiIni)
+        {
+            // Use default heuristic only when no saved preference and no preset ini
+            if (noPacksInstalled)
+                focusPackManager = true;
+            else
+                focusToolbar = true;
+        }
+    }
+
+    if (focusToolbar)
+    {
+        ImGui::SetNextWindowFocus();
+    }
     ImGui::Begin("Toolbar");
+    const bool toolbarWasFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
     if (ctx.toolbarPanel)
     {
-        // ctx.toolbarPanel->render();
+        ctx.toolbarPanel->render();
     }
     ImGui::End();
 
-    ImGui::Begin("BottomBar");
-    // ... bottom bar content ...
-    ImGui::End();
+    // Optional bottom bar visibility controlled via preferences
+    {
+        bool showBottomBar = ctx.preferences ? ctx.preferences->safe_get({"ui", "show_bottom_bar"}, true) : true;
+        if (showBottomBar)
+        {
+            ImGui::Begin("BottomBar");
+            // ... bottom bar content ...
+            ImGui::End();
+        }
+    }
 
-    ImGui::Begin("MainArea");
+    ImGui::Begin("Designer");
     if (ctx.visualWindow)
     {
-        // ctx.visualWindow->render();
+        ctx.visualWindow->render();
     }
     ImGui::End();
+
+    if (focusPackManager)
+    {
+        ImGui::SetNextWindowFocus();
+    }
+    ImGui::Begin("Pack Manager");
+    const bool packManagerWasFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
+    if (ctx.packManagerPanel)
+    {
+        ctx.packManagerPanel->render();
+    }
+    ImGui::End();
+
+    if (focusPackViewer)
+    {
+        ImGui::SetNextWindowFocus();
+    }
+    ImGui::Begin("Pack Viewer");
+    const bool packViewerWasFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
+    if (ctx.packViewerPanel)
+    {
+        ctx.packViewerPanel->render();
+    }
+    ImGui::End();
+
+    // First-run prompt: if no packs installed, offer to install std_core
+    if (noPacksInstalled && ctx.firstRunModal && !ctx.firstRunModal->isOpen())
+    {
+        ctx.firstRunModal->open();
+    }
+    if (ctx.firstRunModal)
+    {
+        ctx.firstRunModal->render();
+    }
+
+    // Mark focus decision as applied to avoid stealing focus every frame
+    if (!didSetInitialFocus)
+        didSetInitialFocus = true;
+
+    // Persist last selected left tab when it changes based on which tab is focused
+    // Save only on change to minimize file writes
+    if (toolbarWasFocused && savedLeftTab != "Toolbar")
+    {
+        savedLeftTab = "Toolbar";
+        ctx.stateStore.saveLastLeftTab(savedLeftTab);
+    }
+    else if (packManagerWasFocused && savedLeftTab != "Pack Manager")
+    {
+        savedLeftTab = "Pack Manager";
+        ctx.stateStore.saveLastLeftTab(savedLeftTab);
+    }
+    else if (packViewerWasFocused && savedLeftTab != "Pack Viewer")
+    {
+        savedLeftTab = "Pack Viewer";
+        ctx.stateStore.saveLastLeftTab(savedLeftTab);
+    }
 
     ImGui::Render();
     ImGui::EndFrame();

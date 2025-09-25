@@ -1,0 +1,29 @@
+name: Validate Manifests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install optional dependencies
+        run: |
+          python -m pip install --upgrade pip || true
+          pip install jsonschema || true
+
+      - name: Validate manifests
+        run: |
+          python scripts/validate_manifests.py

@@ -75,7 +75,11 @@ int main(int argc, char *argv[])
     ctx.preferences = preferences;
     ctx.visualWindow = std::make_unique<VisualWindow>();
     ctx.toolbarPanel = std::make_unique<ToolbarPanel>(ctx);
+    ctx.packManagerPanel = std::make_unique<ui::panels::PackManagerPanel>();
+    ctx.packViewerPanel = std::make_unique<ui::panels::PackViewerPanel>();
+    ctx.firstRunModal = std::make_unique<ui::panels::FirstRunModal>();
     ctx.dockingManager = std::make_unique<DockingManager>();
+    ctx.mainMenuBar = std::make_unique<ui::components::MainMenuBar>(ctx);
     auto &dispatcher = ctx.dispatcher;
     dispatcher.sink<core::QuitEvent<>>().connect<&core::on_quit>();
 
@@ -116,6 +120,8 @@ int main(int argc, char *argv[])
         return -1;
     }
     spdlog::debug("ImGui context initialized successfully");
+    // Wire context-dependent helpers
+    ctx.layoutStore.setContext(ctx.designerCtx);
     const int target_fps = ctx.preferences->safe_get({"performance", "target_fps"}, 25);
     const double frame_delay = 1.0 / target_fps;
     spdlog::debug("Entering main loop");
