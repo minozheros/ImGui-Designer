@@ -21,16 +21,16 @@ void ToolbarPanel::render()
     spdlog::info("ToolbarPanel::render called");
     static float lastWidth = -1.0f;
     ImVec2 avail = ImGui::GetContentRegionAvail();
-    if (avail.x < 325.0f)
-        avail.x = 325.0f;
+    if (avail.x < 375.0f)
+        avail.x = 375.0f;
     if (avail.x != lastWidth)
     {
         spdlog::info("Toolbar width changed: {} px", avail.x);
         lastWidth = avail.x;
     }
     float focusAreaWidth = avail.x - 2.0f;
-    if (focusAreaWidth < 325.0f)
-        focusAreaWidth = 325.0f;
+    if (focusAreaWidth < 375.0f)
+        focusAreaWidth = 375.0f;
     // Render search bar at the top (always visible)
     ImGui::PushID("ToolbarSearchBox");
     float inputWidth = ImGui::GetContentRegionAvail().x;
