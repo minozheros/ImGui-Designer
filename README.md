@@ -163,6 +163,44 @@ cmake -B build -S . \
   -DIMGUIDESIGNER_SDL_ALSA_ONLY=OFF
 ```
  
+## Runtime Logging Control
+
+You can adjust log verbosity without changing the preferences file via CLI flags or an environment variable. Precedence (highest wins):
+
+1. `--trace`
+2. `--verbose` / `-v`
+3. `--log-level=LEVEL`
+4. `IMGDESIGNER_LOG_LEVEL` environment variable
+5. Preferences value `logging.level` in the config file
+6. Fallback: `info`
+
+Supported levels: `trace, debug, info, warn, error, critical, off`.
+
+Examples:
+
+```bash
+# Most verbose (trace)
+./bin/ImGui-Designer --trace
+
+# Debug verbosity
+./bin/ImGui-Designer -v
+
+# Explicit level
+./bin/ImGui-Designer --log-level=warn
+
+# Using environment variable
+export IMGDESIGNER_LOG_LEVEL=debug
+./bin/ImGui-Designer
+```
+
+Show help (also prints usage lines about logging flags):
+
+```bash
+./bin/ImGui-Designer --help
+```
+
+These controls allow temporary elevation of logging noise (e.g., when pairing with a bug report) without permanently editing configuration.
+
 ## Project Structure
 
 See `NOTES.md` for detailed project structure and development guidelines.

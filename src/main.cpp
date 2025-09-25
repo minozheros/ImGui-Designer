@@ -25,10 +25,41 @@
 #include "ui/docking/DockingManager.hpp"
 #include <atomic>
 #include "i18n/TranslationManager.hpp"
+#include <cstdlib>
+#include <string>
+#include <vector>
+#include <algorithm>
 
 namespace core
 {
     std::atomic<bool> running{true};
+}
+
+namespace
+{
+    void print_usage(const char* argv0)
+    {
+        spdlog::info("Usage: {} [options] [config_path]", argv0);
+        spdlog::info("Options:");
+        spdlog::info("  -v, --verbose           Set log level to debug (overrides preferences)");
+        spdlog::info("      --trace              Set log level to trace (highest verbosity)");
+        spdlog::info("      --log-level=LEVEL    Explicit log level (trace|debug|info|warn|error|critical|off)");
+        spdlog::info("      --help               Show this help and exit");
+        spdlog::info("Environment:");
+        spdlog::info("  IMGDESIGNER_LOG_LEVEL   If set, used as log level unless --log-level/--trace/--verbose provided");
+    }
+
+    std::optional<spdlog::level::level_enum> level_from_string(const std::string& s)
+    {
+        try
+        {
+            return spdlog::level::from_str(s);
+        }
+        catch(...)
+        {
+            return std::nullopt; // from_str can throw for invalid input in some versions
+        }
+    }
 }
 
 int main(int argc, char *argv[])
@@ -52,26 +83,89 @@ int main(int argc, char *argv[])
 
     std::signal(SIGINT, core::signalHandler);
     std::string configPath = "config/config.json";
-    if (argc > 1)
+
+    // --- CLI argument parsing (lightweight) ---
+    // Pre-parse for our flags; allow either options first or after config path.
+    bool flag_verbose = false;
+    bool flag_trace = false;
+    std::optional<std::string> explicit_level; // from --log-level
+    bool show_help = false;
+
+    std::vector<std::string> positional;
+    for (int i = 1; i < argc; ++i)
     {
-        configPath = argv[1];
+        std::string arg = argv[i];
+        if (arg == "-v" || arg == "--verbose") { flag_verbose = true; continue; }
+        if (arg == "--trace") { flag_trace = true; continue; }
+        if (arg.rfind("--log-level=", 0) == 0)
+        {
+            explicit_level = arg.substr(std::string("--log-level=").size());
+            continue;
+        }
+        if (arg == "--help" || arg == "-h") { show_help = true; continue; }
+        if (!arg.empty() && arg[0] == '-')
+        {
+            spdlog::warn("Unknown option '{}' (ignored)", arg);
+            continue;
+        }
+        positional.push_back(arg);
+    }
+
+    if (show_help)
+    {
+        print_usage(argv[0]);
+        SDL_Quit();
+        return 0;
+    }
+
+    if (!positional.empty())
+    {
+        // First positional argument = config path override.
+        configPath = positional.front();
         spdlog::info("Config path overridden by command-line argument: {}", configPath);
     }
     else
     {
         spdlog::info("Loading preferences from: {}", configPath);
     }
+
     auto preferences = std::make_shared<Preferences>(configPath);
 
-    auto level = preferences->safe_get({"logging", "level"}, std::string("info"));
+    // Determine log level precedence:
+    // 1. --trace
+    // 2. --verbose
+    // 3. --log-level=LEVEL
+    // 4. IMGDESIGNER_LOG_LEVEL env var
+    // 5. preferences (logging.level)
+    // 6. fallback 'info'
+    std::string pref_level = preferences->safe_get({"logging", "level"}, std::string("info"));
+    std::string chosen_level_str = pref_level;
 
-    spdlog::set_level(spdlog::level::from_str(level));
-    spdlog::info("Logging level set to {}", level);
+    if (const char* env_lvl = std::getenv("IMGDESIGNER_LOG_LEVEL"))
+    {
+        if (env_lvl[0] != '\0')
+            chosen_level_str = env_lvl;
+    }
+    if (explicit_level)
+        chosen_level_str = *explicit_level;
+    if (flag_verbose)
+        chosen_level_str = "debug";
+    if (flag_trace)
+        chosen_level_str = "trace";
+
+    if (auto lvl = level_from_string(chosen_level_str))
+    {
+        spdlog::set_level(*lvl);
+        spdlog::info("Logging level set to {} (resolved via precedence)", chosen_level_str);
+    }
+    else
+    {
+        spdlog::warn("Invalid log level '{}', defaulting to info", chosen_level_str);
+        spdlog::set_level(spdlog::level::info);
+    }
+
     spdlog::info("Creating AppContext and MainFactory");
     AppContext ctx = AppContext();
-    // Register all visual blocks for the node editor sidebar
-    // extern void registerAllVisualBlocks();
-    // registerAllVisualBlocks();
     ctx.factories = std::make_unique<Factories>(&ctx);
     ctx.preferences = preferences;
     ctx.visualWindow = std::make_unique<VisualWindow>();
