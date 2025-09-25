@@ -77,7 +77,7 @@ cmake --build . --parallel
 ### Available Build Targets
 
 - `cmake --build build` - Build the main executable
-- `cmake --build build --target ImGui-Designer_tests` - Build and run tests
+- `cmake --build build --target ImGui-Designer_tests` - Build and run tests (requires `-DIMGUIDESIGNER_ENABLE_TESTS=ON` at configure time)
 - `cmake --build build --target clean_generated` - Remove all auto-generated files (also: `./build.sh clean-generated`)
 - `cmake --build build --target regenerate_all` - Clean and regenerate all auto-generated files (also: `./build.sh regenerate`)
 - `cmake --build build --target imgui_api_info` - Extract ImGui API information

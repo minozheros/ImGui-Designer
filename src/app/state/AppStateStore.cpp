@@ -6,11 +6,14 @@
 namespace app::state
 {
 
-    static const char *kStatePath = "registry/app_state.json";
+    static const char *kDefaultStatePath = "registry/app_state.json";
+
+    AppStateStore::AppStateStore() : statePath(kDefaultStatePath) {}
+    AppStateStore::AppStateStore(std::string statePath) : statePath(std::move(statePath)) {}
 
     std::optional<std::string> AppStateStore::loadLastLeftTab() const
     {
-        std::ifstream f(kStatePath);
+    std::ifstream f(statePath);
         if (!f.is_open())
             return std::nullopt;
         try
@@ -32,7 +35,7 @@ namespace app::state
         nlohmann::json j;
         // Load existing if present to preserve future fields
         {
-            std::ifstream f(kStatePath);
+            std::ifstream f(statePath);
             if (f.is_open())
             {
                 try
@@ -46,7 +49,7 @@ namespace app::state
             }
         }
         j["lastLeftTab"] = tabName;
-        std::ofstream o(kStatePath);
+        std::ofstream o(statePath);
         o << j.dump(2);
     }
 

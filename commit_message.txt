@@ -1,10 +1,25 @@
-Build: Prefer system SDL3; bundled SDL3 uses ALSA-only by default; disable PipeWire to fix build on PipeWire-mismatched systems
-
-Summary
-- Stabilize builds and align audio backends with ALSA-only setups.
-- Add top menu bar, layout persistence, and last-left-tab restore.
-- Introduce pack schemas, registries, and validation workflow.
-- Improve docking UX (left tabs) and toolbar focus behavior.
+ fix(cmake,build,store): Guard generator test deps + reconfigure path; fix AppStateStore save path; green reconfigures and tests
+ 
+ Summary
+ - Prevent CMake generator from failing when tests are disabled by removing unconditional add_dependencies to ImGui-Designer_tests in GenerateImGuiApiInfo.cmake and moving guarded test deps into CMakeLists.txt (only if tests are enabled and targets exist).
+ - Fix AppStateStore::saveLastLeftTab() to use the instance statePath instead of an undefined kStatePath when merging existing JSON.
+ 
+ Details
+ - cmake/generators/GenerateImGuiApiInfo.cmake:
+	 - Keep add_dependencies for ImGui-Designer on generator targets.
+	 - Remove references to ImGui-Designer_tests to avoid configure-time errors when IMGUIDESIGNER_ENABLE_TESTS=OFF or before tests target is defined.
+ - CMakeLists.txt:
+	 - After target definitions, conditionally add generator deps to ImGui-Designer_tests if IMGUIDESIGNER_ENABLE_TESTS is ON and the generator targets exist.
+ - src/app/state/AppStateStore.cpp:
+	 - Replace stray kStatePath with statePath in saveLastLeftTab() and maintain merge semantics.
+ 
+ Outcomes
+ - Reconfigure-only builds succeed without requiring clean, regardless of tests option.
+ - App and tests build green; ctest passes the existing unit test.
+ - Keeps generator logic robust and future-proof against optional test configurations.
+ 
+ Refs
+ - Addresses the reconfigure failure: "Cannot add target-level dependencies to non-existent target 'ImGui-Designer_tests'".
 
 Build / CMake
 - Prefer system-installed SDL3 (find_package/pkg-config). Fetch SDL3 only if not found.

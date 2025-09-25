@@ -59,7 +59,6 @@ add_custom_target(imgui_api_info
 
 # Make main targets depend on this, so it runs with the build
 add_dependencies(ImGui-Designer imgui_api_info)
-add_dependencies(ImGui-Designer_tests imgui_api_info)
 
 
 # Parameter struct and map generation

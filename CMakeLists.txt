@@ -21,9 +21,13 @@ endif()
 
 set(CMAKE_CXX_STANDARD 23)
 
-# Enable testing
-include(CTest)
-enable_testing()
+option(IMGUIDESIGNER_ENABLE_TESTS "Enable building tests (Catch2)" OFF)
+
+# Enable testing (optional)
+if(IMGUIDESIGNER_ENABLE_TESTS)
+    include(CTest)
+    enable_testing()
+endif()
 
 include(cmake/StandardProjectSettings.cmake)
 add_library(project_warnings INTERFACE)
@@ -68,13 +72,15 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(entt)
 
-# --- Testing ---
-FetchContent_Declare(
-    Catch2
-    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-    GIT_TAG        v3.10.0
-)
-FetchContent_MakeAvailable(Catch2)
+# --- Testing (optional) ---
+if(IMGUIDESIGNER_ENABLE_TESTS)
+    FetchContent_Declare(
+        Catch2
+        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+        GIT_TAG        v3.10.0
+    )
+    FetchContent_MakeAvailable(Catch2)
+endif()
 
 # magic_enum
 FetchContent_Declare(
@@ -228,7 +234,9 @@ add_subdirectory(third_party/imgui-node-editor)
 # =============================
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS src/*.cpp src/*.hpp)
 list(REMOVE_ITEM SRC_FILES ${CMAKE_SOURCE_DIR}/src/main.cpp)
-file(GLOB TEST_SOURCES tests/test_*.cpp)
+if(IMGUIDESIGNER_ENABLE_TESTS)
+    file(GLOB TEST_SOURCES tests/test_*.cpp)
+endif()
 
 
 add_executable(ImGui-Designer
@@ -236,10 +244,12 @@ add_executable(ImGui-Designer
     ${SRC_FILES}
 )
 
-add_executable(ImGui-Designer_tests
-    ${TEST_SOURCES}
-    ${SRC_FILES}   
-)
+if(IMGUIDESIGNER_ENABLE_TESTS)
+    add_executable(ImGui-Designer_tests
+        ${TEST_SOURCES}
+        ${SRC_FILES}   
+    )
+endif()
 
 # =============================
 # Shared Include Directories
@@ -274,7 +284,9 @@ target_include_directories(ImGui-Designer_includes INTERFACE
 )
 
 target_link_libraries(ImGui-Designer PRIVATE ImGui-Designer_includes)
-target_link_libraries(ImGui-Designer_tests PRIVATE ImGui-Designer_includes)
+if(IMGUIDESIGNER_ENABLE_TESTS)
+    target_link_libraries(ImGui-Designer_tests PRIVATE ImGui-Designer_includes)
+endif()
 
 set_target_properties(ImGui-Designer PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
@@ -292,7 +304,6 @@ include(cmake/PostBuild.cmake)
 # =============================
 
 target_link_libraries(ImGui-Designer PRIVATE
-    Catch2::Catch2
     EnTT::EnTT
     OpenGL::GL
     fmod
@@ -311,31 +322,35 @@ target_link_libraries(ImGui-Designer PRIVATE
 )
 
 
-target_link_libraries(ImGui-Designer_tests PRIVATE
-    Catch2::Catch2WithMain
-    EnTT::EnTT
-    OpenGL::GL
-    fmod
-    fmt::fmt
-    gpiod
-    SDL3::SDL3
-    imgui
-    magic_enum::magic_enum
-    nlohmann_json::nlohmann_json
-    rccpp_RuntimeCompiler
-    rccpp_RuntimeObjectSystem
-    spdlog::spdlog
-    stb
-    implot
-    imguinodeeditor
-)
+if(IMGUIDESIGNER_ENABLE_TESTS)
+    target_link_libraries(ImGui-Designer_tests PRIVATE
+        Catch2::Catch2WithMain
+        EnTT::EnTT
+        OpenGL::GL
+        fmod
+        fmt::fmt
+        gpiod
+        SDL3::SDL3
+        imgui
+        magic_enum::magic_enum
+        nlohmann_json::nlohmann_json
+        rccpp_RuntimeCompiler
+        rccpp_RuntimeObjectSystem
+        spdlog::spdlog
+        stb
+        implot
+        imguinodeeditor
+    )
+endif()
 
 
 # =============================
 # Testing Integration
 # =============================
-include(${Catch2_SOURCE_DIR}/extras/Catch.cmake)
-catch_discover_tests(ImGui-Designer_tests)
+if(IMGUIDESIGNER_ENABLE_TESTS)
+    include(${Catch2_SOURCE_DIR}/extras/Catch.cmake)
+    catch_discover_tests(ImGui-Designer_tests)
+endif()
 
 # =============================
 # Code Generators (auto-include all in cmake/generators)
@@ -356,5 +371,25 @@ endforeach()
 
 if(IMGUIDESIGNER_VALIDATE_ON_BUILD)
     add_dependencies(ImGui-Designer validate_manifests)
-    add_dependencies(ImGui-Designer_tests validate_manifests)
+    if(IMGUIDESIGNER_ENABLE_TESTS)
+        add_dependencies(ImGui-Designer_tests validate_manifests)
+    endif()
+endif()
+
+# When tests are enabled, make them depend on the generator targets as well.
+if(IMGUIDESIGNER_ENABLE_TESTS)
+    if(TARGET ImGui-Designer_tests)
+        if(TARGET imgui_api_info)
+            add_dependencies(ImGui-Designer_tests imgui_api_info)
+        endif()
+        if(TARGET imgui_param_structs)
+            add_dependencies(ImGui-Designer_tests imgui_param_structs)
+        endif()
+        if(TARGET node_factory_map)
+            add_dependencies(ImGui-Designer_tests node_factory_map)
+        endif()
+        if(TARGET node_params_map)
+            add_dependencies(ImGui-Designer_tests node_params_map)
+        endif()
+    endif()
 endif()
