@@ -94,6 +94,7 @@ def main() -> int:
         "Tutorial": os.path.join(schemas_dir, "Tutorial.schema.json"),
         "LibraryRegistry": os.path.join(schemas_dir, "LibraryRegistry.schema.json"),
         "PackIndex": os.path.join(schemas_dir, "PackIndex.schema.json"),
+        "LibraryDescriptor": os.path.join(schemas_dir, "LibraryDescriptor.schema.json"),
     }
     schemas: Dict[str, Dict[str, Any]] = {}
     for name, path in schema_files.items():
@@ -119,6 +120,9 @@ def main() -> int:
     validate_dir(os.path.join(root, "featuresets", "*", "FeatureSet.json"), "FeatureSet")
     validate_dir(os.path.join(root, "packages", "*", "Package.json"), "Package")
     validate_dir(os.path.join(root, "tutorials", "*", "Tutorial.json"), "Tutorial")
+
+    # LibraryDescriptor (optional, do not fail absence)
+    validate_dir(os.path.join(root, "libraries", "**", "Library.json"), "LibraryDescriptor")
 
     # Registry files (examples)
     reg_libs = os.path.join(root, "registry", "libraries.example.json")

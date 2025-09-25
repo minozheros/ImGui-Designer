@@ -84,6 +84,78 @@
             },
             "default": []
         },
+        "libraryDescriptors": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "default": []
+        },
+        "descriptorProfiles": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "descriptor",
+                    "profile"
+                ],
+                "properties": {
+                    "descriptor": {
+                        "type": "string"
+                    },
+                    "profile": {
+                        "type": "string"
+                    },
+                    "add": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": []
+                    },
+                    "remove": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": []
+                    }
+                }
+            },
+            "default": []
+        },
+        "blocklist": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "symbols": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": []
+                },
+                "blocks": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": []
+                },
+                "patterns": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": []
+                },
+                "reason": {
+                    "type": "string"
+                }
+            },
+            "default": {}
+        },
         "compatibility": {
             "type": "object",
             "additionalProperties": false,

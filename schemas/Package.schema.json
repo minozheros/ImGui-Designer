@@ -96,6 +96,31 @@
                 }
             },
             "required": ["languages", "paths" ]
+        },
+        "blocklist": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "symbols": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "default": []
+                },
+                "blocks": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "default": []
+                },
+                "patterns": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "default": []
+                },
+                "reason": {
+                    "type": "string"
+                }
+            },
+            "default": {}
         }
     },
     "required": [
