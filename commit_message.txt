@@ -1,44 +1,29 @@
-feat(i18n): introduce basic translation system (en/de) + menu localization + language switcher
+chore(extensibility): add uiAdapters schema and interface scaffolding
 
-Includes follow-up compile fixes: add missing TranslationManager include in MainMenuBar.cpp and update SDL context destruction call to SDL_GL_DestroyContext for SDL3.
+Add `uiAdapters` to `LibraryDescriptor.schema.json` with expanded adapter types:
+ - frameHook, layoutEngine (multi-stage hooks + layout strategies)
+ - optional target + stages array for frame-level adapters
 
-Summary
-Add a lightweight translation infrastructure supporting English and German with extensibility for future translation packs. Localize main menu items, About dialog, and settings toggle. Provide runtime language switching persisted in preferences.
+Introduce initial extensibility interfaces and registry scaffolding (header-only):
+ - IReplaceable, ITypeAdapter, IBlockRenderer, IPanelRenderer, IFrameHook, ILayoutEngine
+ - ReplaceableRegistry<T> and registrySingleton accessor
+ - Forward declarations + registry access helpers
 
-Details
-- src/i18n/TranslationManager.[hpp,cpp]:
-  - Singleton managing language catalogs (JSON). Supports loadLanguage(lang), translate(key), plural(baseKey,count).
-  - Fallback to English if requested language fails.
-  - Simple plural handling (English/German: one vs other) with token replacement {0}.
-- i18n/en.json & i18n/de.json: Base catalogs for core UI strings (menus, about dialog, layout actions, bottom bar toggle, packs plural examples).
-- MainMenuBar.cpp:
-  - Replace hardcoded labels with TR() lookups.
-  - Add Settings->Language submenu (English / Deutsch) persisting selection to preferences (ui.language).
-- main.cpp:
-  - Load preferred language at startup (ui.language, default 'en').
-- schemas/Package.schema.json:
-  - Add optional "translations" block (languages[], paths[]) preparing for future translation packs.
-- src/i18n/PackTranslationHook.hpp:
-  - Placeholder helper to register pack-provided catalogs in future pack installation flow.
+Add `EXTENSIBILITY.md` documenting goals, schema touchpoint, proposed frame stages, roadmap.
 
-Behavioral Changes
-- Users can switch language at runtime; change persists across sessions.
-- Missing keys gracefully fall back to the key itself (with English fallback attempt first).
+No runtime wiring yet; purely structural groundwork for future pluggable components.
 
-Testing
-- Reconfigure/build succeeded; no new warnings beyond existing third-party deprecation in crude_json.h.
-- Manual inspection: translation manager compiled, menu labels now dynamic.
-- Follow-up rebuild after include + SDL destroy fix succeeded (clean build, tests pass).
+docs(extensibility): document planned Customization Pack
 
-Limitations / Future Work
-- No hot reload for catalog edits yet (requires explicit language reselect).
-- No advanced plural categories or gender/context (extend later via CLDR mapping if needed).
-- Pack integration hook present but not wired into installer logic yet.
+Add detailed section covering: objectives, layering precedence (Core < Descriptor < Pack < UserPack < Session), phased rollout, adapter categories, sample user config, schema evolution candidates, safety measures, overlay pack export structure, and success criteria. Markdown lint issues addressed (spacing, tabs, fenced language, angle bracket escaping).
+feat(schema): introduce LibraryDescriptor + blocklist extensions
 
-Follow-Up Ideas
-- Integrate pack translation registration during pack install step.
-- Add CI check ensuring en.json is superset baseline.
-- Expose language choice in first-run modal once translations expand.
+Add LibraryDescriptor schema with symbol inventory, block metadata, profiles, and BLOCKED/HIDDEN status support. Extend FeatureSet and Package schemas to reference descriptors and apply layered blocklists. Update validate_manifests.py to load and validate LibraryDescriptor files (optional) and support new fields.
 
-Refs
-- Implements initial multi-language groundwork (English + German) per user request; enables contributions via future translation packs.
+Includes:
+- schemas/LibraryDescriptor.schema.json (new)
+- schemas/FeatureSet.schema.json (libraryDescriptors, descriptorProfiles, blocklist)
+- schemas/Package.schema.json (blocklist)
+- scripts/validate_manifests.py (descriptor validation hook)
+
+No runtime code yet consumes these; purely structural groundwork.

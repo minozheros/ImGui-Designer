@@ -220,5 +220,29 @@
       }
     },
     "metadata": { "type": "object", "additionalProperties": true }
+    ,
+    "uiAdapters": {
+      "type": "array",
+      "description": "Declarative placeholders for future UI/type/block/panel/frameStage adapters. No runtime behavior implied yet.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "kind", "adapterType"],
+        "properties": {
+          "id": { "type": "string", "description": "Unique adapter identifier within this descriptor." },
+          "kind": { "type": "string", "enum": ["type", "function", "enum", "macro", "constant", "panel", "frameStage", "layout"], "description": "Kind of element this adapter applies to." },
+          "target": { "type": "string", "description": "Qualified symbol or conceptual target (panel id, frame stage, or layout scope). Optional for some adapter types." },
+          "stages": { "type": "array", "items": { "type": "string" }, "default": [], "description": "List of frame stages this adapter hooks into (if adapterType=frameHook)." },
+          "adapterType": { "type": "string", "enum": ["valueRenderer", "blockRenderer", "panelRenderer", "frameHook", "layoutEngine", "custom"], "description": "High-level adapter role classification." },
+          "provides": { "type": "array", "items": { "type": "string" }, "default": [], "description": "Capability tags this adapter provides." },
+          "dependsOn": { "type": "array", "items": { "type": "string" }, "default": [], "description": "Adapter ids this one depends on (ordering / prerequisite)." },
+          "status": { "type": "string", "enum": ["EXPERIMENTAL", "STABLE", "INTERNAL"], "default": "EXPERIMENTAL" },
+          "since": { "type": "string" },
+          "doc": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" }, "default": [] }
+        }
+      },
+      "default": []
+    }
   }
 }
