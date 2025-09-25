@@ -18,14 +18,14 @@ ToolbarPanel::ToolbarPanel(AppContext &appCtx)
 
 void ToolbarPanel::render()
 {
-    spdlog::info("ToolbarPanel::render called");
+    spdlog::debug("ToolbarPanel::render called");
     static float lastWidth = -1.0f;
     ImVec2 avail = ImGui::GetContentRegionAvail();
     if (avail.x < 375.0f)
         avail.x = 375.0f;
     if (avail.x != lastWidth)
     {
-        spdlog::info("Toolbar width changed: {} px", avail.x);
+    spdlog::debug("Toolbar width changed: {} px", avail.x);
         lastWidth = avail.x;
     }
     float focusAreaWidth = avail.x - 2.0f;
@@ -148,7 +148,8 @@ void ToolbarPanel::render()
                     auto &io = ImGui::GetIO();
                     bool mouseDown = io.MouseDown[0];
                     bool wantCapture = io.WantCaptureMouse;
-                    spdlog::info("ToolbarPanel: Button '{}' state -> clicked={}, hovered={}, active={}, itemClicked={}, mouseDown={}, wantCapture={}", nodeName, clicked, hovered, active, itemClicked, mouseDown, wantCapture);
+                    // Demoted from info to debug (per-button per-frame loop spam)
+                    spdlog::debug("ToolbarPanel: Button '{}' state -> clicked={}, hovered={}, active={}, itemClicked={}, mouseDown={}, wantCapture={}", nodeName, clicked, hovered, active, itemClicked, mouseDown, wantCapture);
                     ImVec2 itemMin = ImGui::GetItemRectMin();
                     ImVec2 itemMax = ImGui::GetItemRectMax();
                     ImGuiID itemId = ImGui::GetItemID();
@@ -157,20 +158,24 @@ void ToolbarPanel::render()
                     const char *winName = curWin ? curWin->Name : "(null)";
                     bool winHovered = ImGui::IsWindowHovered();
                     bool winFocused = ImGui::IsWindowFocused();
-                    spdlog::info("ToolbarPanel: ItemRect=({},{})->({},{}) ItemID={} HoveredID={} Window='{}' winHovered={} winFocused={} MousePos=({:.1f},{:.1f})",
+                    // Demoted from info to debug (high-frequency geometry logging)
+                    spdlog::debug("ToolbarPanel: ItemRect=({},{})->({},{}) ItemID={} HoveredID={} Window='{}' winHovered={} winFocused={} MousePos=({:.1f},{:.1f})",
                                  itemMin.x, itemMin.y, itemMax.x, itemMax.y, (unsigned)itemId, (unsigned)hoveredId, winName, winHovered, winFocused, io.MousePos.x, io.MousePos.y);
                     if (clicked)
                     {
-                        spdlog::info("ToolbarPanel: Button '{}' clicked", nodeName);
+                        // Demoted from info to debug (button click events still frequent during session)
+                        spdlog::debug("ToolbarPanel: Button '{}' clicked", nodeName);
                         VisualWindow *gVisualWindow = appContext.visualWindow.get();
-                        spdlog::info("ToolbarPanel: VisualWindow pointer is {}", (gVisualWindow ? "valid" : "null"));
+                        // Demoted from info to debug
+                        spdlog::debug("ToolbarPanel: VisualWindow pointer is {}", (gVisualWindow ? "valid" : "null"));
                         if (gVisualWindow)
                         {
                             auto block = appContext.factories->nodeFactory.get()->createBlockByName(nodeName);
                             if (block)
                             {
                                 const auto &blockRef = *block;
-                                spdlog::info("ToolbarPanel: Created block of type '{}'", typeid(blockRef).name());
+                                // Demoted from info to debug (could occur many times when adding blocks)
+                                spdlog::debug("ToolbarPanel: Created block of type '{}'", typeid(blockRef).name());
                                 gVisualWindow->addBlock(std::move(block));
                             }
                             else
@@ -186,7 +191,8 @@ void ToolbarPanel::render()
                     else
                     {
                         auto &io2 = ImGui::GetIO();
-                        spdlog::info("ToolbarPanel: Click not registered -> MousePos=({:.1f},{:.1f}), MouseDown[0]={}, MouseDownDuration[0]={:.3f}, IsMouseClicked(0)={}, ActiveID={}, HoveredID={}", io2.MousePos.x, io2.MousePos.y, io2.MouseDown[0], io2.MouseDownDuration[0], ImGui::IsMouseClicked(0), ImGui::GetActiveID(), ImGui::GetHoveredID());
+                        // Demoted from info to debug (diagnostic per-frame non-click reporting)
+                        spdlog::debug("ToolbarPanel: Click not registered -> MousePos=({:.1f},{:.1f}), MouseDown[0]={}, MouseDownDuration[0]={:.3f}, IsMouseClicked(0)={}, ActiveID={}, HoveredID={}", io2.MousePos.x, io2.MousePos.y, io2.MouseDown[0], io2.MouseDownDuration[0], ImGui::IsMouseClicked(0), ImGui::GetActiveID(), ImGui::GetHoveredID());
                     }
                     ImGui::PopID();
                 }

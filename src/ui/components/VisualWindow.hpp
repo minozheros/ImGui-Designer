@@ -21,11 +21,11 @@ public:
 
     void addBlock(std::unique_ptr<VisualBlock> block)
     {
-        spdlog::info("VisualWindow::addBlock called. Block count before: {}", blocks.size());
+    spdlog::debug("VisualWindow::addBlock called. Block count before: {}", blocks.size());
         if (block)
         {
             const auto &blockRef = *block;
-            spdlog::info("VisualWindow::addBlock: block type is {}", typeid(blockRef).name());
+            spdlog::debug("VisualWindow::addBlock: block type is {}", typeid(blockRef).name());
         }
         else
         {
@@ -60,19 +60,19 @@ public:
                 ImVec2 pos = ImVec2(center.x - 100.0f + offset.x, center.y - 30.0f + offset.y);
                 ed::SetCurrentEditor(ctx);
                 ed::SetNodePosition(id, pos);
-                spdlog::info("VisualWindow::addBlock: positioned node {} at ({},{})", id.Get(), pos.x, pos.y);
+                spdlog::debug("VisualWindow::addBlock: positioned node {} at ({},{})", id.Get(), pos.x, pos.y);
             }
         }
         catch (...)
         {
             spdlog::warn("VisualWindow::addBlock: exception while positioning node");
         }
-        spdlog::info("Block count after: {}", blocks.size());
+    spdlog::debug("Block count after: {}", blocks.size());
     }
 
     void render()
     {
-        spdlog::info("VisualWindow::render called. Block count: {}", blocks.size());
+    spdlog::debug("VisualWindow::render called. Block count: {}", blocks.size());
         ed::SetCurrentEditor(editorContext);
         ed::Begin("MainNodeEditor");
         for (auto &block : blocks)
@@ -84,7 +84,7 @@ public:
 
     void clear()
     {
-        spdlog::info("VisualWindow::clear called. Clearing {} blocks.", blocks.size());
+    spdlog::debug("VisualWindow::clear called. Clearing {} blocks.", blocks.size());
         blocks.clear();
     }
 

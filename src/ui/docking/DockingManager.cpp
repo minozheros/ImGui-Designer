@@ -29,13 +29,13 @@ void DockingManager::setupDockspace()
         ImGui::DockBuilderAddNode(dockspace_id, ImGuiDockNodeFlags_DockSpace);
 
         ImVec2 dockspace_size = viewport ? viewport->Size : ImVec2(1280, 720);
-        spdlog::info("Viewport size: x={}, y={}", dockspace_size.x, dockspace_size.y);
+    spdlog::debug("Viewport size: x={}, y={}", dockspace_size.x, dockspace_size.y);
         if (dockspace_size.x <= 0.0f || dockspace_size.y <= 0.0f)
         {
             spdlog::warn("Dockspace size invalid (x={}, y={}), using fallback.", dockspace_size.x, dockspace_size.y);
             dockspace_size = ImVec2(1280, 720); // fallback to default size
         }
-        spdlog::info("DockBuilderSetNodeSize using: x={}, y={}", dockspace_size.x, dockspace_size.y);
+    spdlog::debug("DockBuilderSetNodeSize using: x={}, y={}", dockspace_size.x, dockspace_size.y);
         ImGui::DockBuilderSetNodeSize(dockspace_id, dockspace_size);
 
         // Split: left (toolbar), main, bottom
