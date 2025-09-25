@@ -24,6 +24,7 @@
 #include "ui/components/VisualWindow.hpp"
 #include "ui/docking/DockingManager.hpp"
 #include <atomic>
+#include "i18n/TranslationManager.hpp"
 
 namespace core
 {
@@ -82,6 +83,14 @@ int main(int argc, char *argv[])
     ctx.mainMenuBar = std::make_unique<ui::components::MainMenuBar>(ctx);
     auto &dispatcher = ctx.dispatcher;
     dispatcher.sink<core::QuitEvent<>>().connect<&core::on_quit>();
+
+    // Initialize translations (load preferred language; default 'en')
+    std::string prefLang = preferences->safe_get({"ui", "language"}, std::string("en"));
+    if (!TranslationManager::instance().loadLanguage(prefLang))
+    {
+        spdlog::warn("Falling back to English translations");
+        TranslationManager::instance().loadLanguage("en");
+    }
 
     spdlog::debug("Setting up windows and renderers");
     ctx.designerWindow = SDL_CreateWindow("ImGui-Designer", 800, 600, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_MAXIMIZED);
@@ -160,10 +169,8 @@ int main(int argc, char *argv[])
         spdlog::error("Failed to destroy designer window and renderer");
         return -1;
     }
-    else
-    {
-        spdlog::info("Successfully destroyed designer window and renderer");
-    }
-    spdlog::info("Application exited cleanly");
+    SDL_GL_DestroyContext(ctx.glContext);
+    SDL_DestroyWindow(ctx.designerWindow);
+    SDL_Quit();
     return 0;
 }

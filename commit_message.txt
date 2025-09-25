@@ -1,65 +1,44 @@
- fix(cmake,build,store): Guard generator test deps + reconfigure path; fix AppStateStore save path; green reconfigures and tests
- 
- Summary
- - Prevent CMake generator from failing when tests are disabled by removing unconditional add_dependencies to ImGui-Designer_tests in GenerateImGuiApiInfo.cmake and moving guarded test deps into CMakeLists.txt (only if tests are enabled and targets exist).
- - Fix AppStateStore::saveLastLeftTab() to use the instance statePath instead of an undefined kStatePath when merging existing JSON.
- 
- Details
- - cmake/generators/GenerateImGuiApiInfo.cmake:
-	 - Keep add_dependencies for ImGui-Designer on generator targets.
-	 - Remove references to ImGui-Designer_tests to avoid configure-time errors when IMGUIDESIGNER_ENABLE_TESTS=OFF or before tests target is defined.
- - CMakeLists.txt:
-	 - After target definitions, conditionally add generator deps to ImGui-Designer_tests if IMGUIDESIGNER_ENABLE_TESTS is ON and the generator targets exist.
- - src/app/state/AppStateStore.cpp:
-	 - Replace stray kStatePath with statePath in saveLastLeftTab() and maintain merge semantics.
- 
- Outcomes
- - Reconfigure-only builds succeed without requiring clean, regardless of tests option.
- - App and tests build green; ctest passes the existing unit test.
- - Keeps generator logic robust and future-proof against optional test configurations.
- 
- Refs
- - Addresses the reconfigure failure: "Cannot add target-level dependencies to non-existent target 'ImGui-Designer_tests'".
+feat(i18n): introduce basic translation system (en/de) + menu localization + language switcher
 
-fix(ui:first-run): Modal now dismisses properly (Install / Skip) and no longer reopens
+Includes follow-up compile fixes: add missing TranslationManager include in MainMenuBar.cpp and update SDL context destruction call to SDL_GL_DestroyContext for SDL3.
 
 Summary
+Add a lightweight translation infrastructure supporting English and German with extensibility for future translation packs. Localize main menu items, About dialog, and settings toggle. Provide runtime language switching persisted in preferences.
 
 Details
-	- Added dismissed_ / installing_ / installSucceeded_ flags; guarded open() against re-entry.
-	- Rewrote render() to use keepOpen flag and explicit CloseCurrentPopup() on exit paths.
-	- Changed isOpen() semantic to exclude dismissed state; added isDismissed().
-	- Only call open() when !isOpen() && !isDismissed().
+- src/i18n/TranslationManager.[hpp,cpp]:
+  - Singleton managing language catalogs (JSON). Supports loadLanguage(lang), translate(key), plural(baseKey,count).
+  - Fallback to English if requested language fails.
+  - Simple plural handling (English/German: one vs other) with token replacement {0}.
+- i18n/en.json & i18n/de.json: Base catalogs for core UI strings (menus, about dialog, layout actions, bottom bar toggle, packs plural examples).
+- MainMenuBar.cpp:
+  - Replace hardcoded labels with TR() lookups.
+  - Add Settings->Language submenu (English / Deutsch) persisting selection to preferences (ui.language).
+- main.cpp:
+  - Load preferred language at startup (ui.language, default 'en').
+- schemas/Package.schema.json:
+  - Add optional "translations" block (languages[], paths[]) preparing for future translation packs.
+- src/i18n/PackTranslationHook.hpp:
+  - Placeholder helper to register pack-provided catalogs in future pack installation flow.
 
 Behavioral Changes
+- Users can switch language at runtime; change persists across sessions.
+- Missing keys gracefully fall back to the key itself (with English fallback attempt first).
 
-Outcome
+Testing
+- Reconfigure/build succeeded; no new warnings beyond existing third-party deprecation in crude_json.h.
+- Manual inspection: translation manager compiled, menu labels now dynamic.
+- Follow-up rebuild after include + SDL destroy fix succeeded (clean build, tests pass).
 
-Build / CMake
-	- New toggles: IMGUIDESIGNER_USE_BUNDLED_SDL3 (force bundled), IMGUIDESIGNER_SDL_SAFE_ALSA_ONLY (preset for ALSA-only + PipeWire off).
-	- Optional backend flags when bundling: IMGUIDESIGNER_DISABLE_SDL_PIPEWIRE, IMGUIDESIGNER_SDL_ALSA_ONLY.
-	- Defaults are OFF; enable the preset to match ALSA-only builds when needed.
-	- Disable SDL_INSTALL to keep the subproject lean.
+Limitations / Future Work
+- No hot reload for catalog edits yet (requires explicit language reselect).
+- No advanced plural categories or gender/context (extend later via CLDR mapping if needed).
+- Pack integration hook present but not wired into installer logic yet.
 
-UI / UX
-	- File→Quit dispatches quit event.
-	- View→Save/Load/Reset layout via LayoutStore.
-	- Settings→Show Bottom Bar toggle persisted to preferences.
+Follow-Up Ideas
+- Integrate pack translation registration during pack install step.
+- Add CI check ensuring en.json is superset baseline.
+- Expose language choice in first-run modal once translations expand.
 
-State / Persistence
-
-Packs / Schemas / CI
-
-Code / Files touched (high level)
-
-Validation
-
-Docs
-
-Notes
-
-UX: After installing Standard Core or skipping first-run modal, automatically focus Pack Manager
-- Added requestFocusPackManager_ flag in FirstRunModal with accessors.
-- Set flag on successful install, skip, or close after attempted install.
-- Consumed flag in RenderDesignerWindow to focus and persist Pack Manager selection.
-- This guides new users directly to pack management workflow after onboarding decision.
+Refs
+- Implements initial multi-language groundwork (English + German) per user request; enables contributions via future translation packs.

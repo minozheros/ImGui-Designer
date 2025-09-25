@@ -1,6 +1,8 @@
 #include "ui/components/MainMenuBar.hpp"
 #include "app/context/AppContext.hpp"
 #include "app/state/LayoutStore.hpp"
+#include "i18n/TranslationManager.hpp" // TR macro & TranslationManager
+#include "i18n/TranslationManager.hpp" // Provides TR macro and TranslationManager singleton
 
 #include <imgui.h>
 #include <nlohmann/json.hpp>
@@ -16,22 +18,22 @@ namespace ui::components
     {
         if (ImGui::BeginMainMenuBar())
         {
-            if (ImGui::BeginMenu("File"))
+            if (ImGui::BeginMenu(TR("menu.file").c_str()))
             {
                 renderFileMenu();
                 ImGui::EndMenu();
             }
-            if (ImGui::BeginMenu("View"))
+            if (ImGui::BeginMenu(TR("menu.view").c_str()))
             {
                 renderViewMenu();
                 ImGui::EndMenu();
             }
-            if (ImGui::BeginMenu("Settings"))
+            if (ImGui::BeginMenu(TR("menu.settings").c_str()))
             {
                 renderSettingsMenu();
                 ImGui::EndMenu();
             }
-            if (ImGui::BeginMenu("Help"))
+            if (ImGui::BeginMenu(TR("menu.help").c_str()))
             {
                 renderHelpMenu();
                 ImGui::EndMenu();
@@ -42,28 +44,28 @@ namespace ui::components
 
     void MainMenuBar::renderFileMenu()
     {
-        if (ImGui::MenuItem("New", "Ctrl+N"))
+        if (ImGui::MenuItem(TR("menu.file.new").c_str(), "Ctrl+N"))
         {
             // TODO: implement new project/session. Placeholder.
             spdlog::info("File > New invoked");
         }
-        if (ImGui::MenuItem("Open...", "Ctrl+O"))
+        if (ImGui::MenuItem(TR("menu.file.open").c_str(), "Ctrl+O"))
         {
             // TODO: implement file dialog or project open
             spdlog::info("File > Open invoked");
         }
-        if (ImGui::MenuItem("Save", "Ctrl+S"))
+        if (ImGui::MenuItem(TR("menu.file.save").c_str(), "Ctrl+S"))
         {
             // TODO: implement save project/session
             spdlog::info("File > Save invoked");
         }
-        if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
+        if (ImGui::MenuItem(TR("menu.file.save_as").c_str(), "Ctrl+Shift+S"))
         {
             // TODO
             spdlog::info("File > Save As invoked");
         }
         ImGui::Separator();
-        if (ImGui::MenuItem("Quit", "Ctrl+Q"))
+        if (ImGui::MenuItem(TR("menu.file.quit").c_str(), "Ctrl+Q"))
         {
             spdlog::info("File > Quit invoked");
             ctx.dispatcher.trigger<core::QuitEvent<>>();
@@ -73,7 +75,7 @@ namespace ui::components
     void MainMenuBar::renderViewMenu()
     {
         // Layout actions: save/load/reset
-        if (ImGui::MenuItem("Save Layout"))
+        if (ImGui::MenuItem(TR("menu.view.save_layout").c_str()))
         {
             app::state::LayoutStore store(ctx.designerCtx);
             if (store.saveDefaultLayout())
@@ -81,7 +83,7 @@ namespace ui::components
             else
                 spdlog::warn("Failed to save layout");
         }
-        if (ImGui::MenuItem("Load Layout"))
+        if (ImGui::MenuItem(TR("menu.view.load_layout").c_str()))
         {
             app::state::LayoutStore store(ctx.designerCtx);
             if (store.loadDefaultLayout())
@@ -89,7 +91,7 @@ namespace ui::components
             else
                 spdlog::warn("Failed to load layout");
         }
-        if (ImGui::MenuItem("Reset Layout"))
+        if (ImGui::MenuItem(TR("menu.view.reset_layout").c_str()))
         {
             app::state::LayoutStore store(ctx.designerCtx);
             store.resetLayoutToDefault();
@@ -101,7 +103,7 @@ namespace ui::components
     {
         // Simple toggle placeholder: show/hide BottomBar by preference flag
         bool showBottomBar = ctx.preferences ? ctx.preferences->safe_get({"ui", "show_bottom_bar"}, true) : true;
-        if (ImGui::MenuItem("Show Bottom Bar", nullptr, showBottomBar))
+        if (ImGui::MenuItem(TR("menu.settings.show_bottom_bar").c_str(), nullptr, showBottomBar))
         {
             if (ctx.preferences)
             {
@@ -109,17 +111,42 @@ namespace ui::components
                 ctx.preferences->save();
             }
         }
+
+        if (ImGui::BeginMenu(TR("menu.settings.language").c_str()))
+        {
+            std::string current = TranslationManager::instance().currentLanguage();
+            struct Lang { const char *code; const char *label; } langs[] = {
+                {"en", "English"},
+                {"de", "Deutsch"}
+            };
+            for (const auto &l : langs)
+            {
+                bool selected = (current == l.code);
+                if (ImGui::MenuItem(l.label, nullptr, selected))
+                {
+                    if (TranslationManager::instance().loadLanguage(l.code))
+                    {
+                        if (ctx.preferences)
+                        {
+                            ctx.preferences->set("ui", nlohmann::json{{"language", l.code}});
+                            ctx.preferences->save();
+                        }
+                    }
+                }
+            }
+            ImGui::EndMenu();
+        }
     }
 
     void MainMenuBar::renderHelpMenu()
     {
-        if (ImGui::MenuItem("About"))
+        if (ImGui::MenuItem(TR("dialog.about.title").c_str()))
         {
-            ImGui::OpenPopup("About ImGui-Designer");
+            ImGui::OpenPopup(TR("dialog.about.title").c_str());
         }
-        if (ImGui::BeginPopupModal("About ImGui-Designer", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+        if (ImGui::BeginPopupModal(TR("dialog.about.title").c_str(), nullptr, ImGuiWindowFlags_AlwaysAutoResize))
         {
-            ImGui::TextUnformatted("ImGui-Designer\nA node-based UI designer using Dear ImGui.");
+            ImGui::TextUnformatted(TR("dialog.about.body").c_str());
             ImGui::Separator();
             ImGui::TextUnformatted("Build info and versions are available in logs.");
             if (ImGui::Button("Close"))

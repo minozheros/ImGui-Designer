@@ -79,6 +79,23 @@
         },
         "readme": {
             "type": "string"
+        },
+        "translations": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "languages": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "minItems": 1
+                },
+                "paths": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "minItems": 1
+                }
+            },
+            "required": ["languages", "paths" ]
         }
     },
     "required": [
