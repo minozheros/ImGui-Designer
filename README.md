@@ -122,6 +122,47 @@ The extension will automatically use `./build.sh` for building and `./build.sh c
 - Runtime compilation and hot-reload using RCC++
 - Export functionality for integration into other projects
 
+## SDL3 selection and audio backends
+
+The build prefers a system-installed SDL3 when available. If not found, it bundles SDL3.
+
+- System SDL3: we do not alter its configuration; audio backends depend on your distro's SDL3 build (PipeWire, ALSA, PulseAudio, etc.).
+- Bundled SDL3: configurable defaults. For a safe ALSA-only preset (recommended if you hit PipeWire header issues), use `IMGUIDESIGNER_SDL_SAFE_ALSA_ONLY=ON`, which sets:
+  - IMGUIDESIGNER_DISABLE_SDL_PIPEWIRE=ON: disables PipeWire backend in the SDL subbuild.
+  - IMGUIDESIGNER_SDL_ALSA_ONLY=ON: enables ALSA (+shared) and disables PulseAudio, JACK, SNDIO, and OSS.
+
+You can override these defaults at configure time when bundling SDL3:
+
+```bash
+cmake -B build -S . \
+  -DIMGUIDESIGNER_SDL_SAFE_ALSA_ONLY=ON
+```
+
+At runtime, you can force a specific audio driver for either system or bundled SDL:
+
+```bash
+export SDL_AUDIODRIVER=alsa      # force ALSA
+export SDL_AUDIODRIVER=pipewire  # force PipeWire
+```
+
+Advanced:
+
+- Force bundled vs system SDL3:
+
+```bash
+cmake -B build -S . -DIMGUIDESIGNER_USE_BUNDLED_SDL3=ON   # force bundled
+cmake -B build -S . -DIMGUIDESIGNER_USE_BUNDLED_SDL3=OFF  # prefer system (default)
+```
+
+
+- Customize individual audio backends when bundling SDL3:
+
+```bash
+cmake -B build -S . \
+  -DIMGUIDESIGNER_DISABLE_SDL_PIPEWIRE=OFF \
+  -DIMGUIDESIGNER_SDL_ALSA_ONLY=OFF
+```
+ 
 ## Project Structure
 
 See `NOTES.md` for detailed project structure and development guidelines.

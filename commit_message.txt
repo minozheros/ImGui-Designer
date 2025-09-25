@@ -9,8 +9,9 @@ Summary
 Build / CMake
 - Prefer system-installed SDL3 (find_package/pkg-config). Fetch SDL3 only if not found.
 - When fetching SDL3 as a subproject:
-	- Disable PipeWire: SDL_PIPEWIRE=OFF, SDL_PIPEWIRE_SHARED=OFF (default ON via IMGUIDESIGNER_DISABLE_SDL_PIPEWIRE).
-	- ALSA-only default: enable ALSA (+shared) and disable PulseAudio, JACK, SNDIO, OSS (IMGUIDESIGNER_SDL_ALSA_ONLY=ON).
+	- New toggles: IMGUIDESIGNER_USE_BUNDLED_SDL3 (force bundled), IMGUIDESIGNER_SDL_SAFE_ALSA_ONLY (preset for ALSA-only + PipeWire off).
+	- Optional backend flags when bundling: IMGUIDESIGNER_DISABLE_SDL_PIPEWIRE, IMGUIDESIGNER_SDL_ALSA_ONLY.
+	- Defaults are OFF; enable the preset to match ALSA-only builds when needed.
 	- Disable SDL_INSTALL to keep the subproject lean.
 - Conditional SDL3 include dirs (source include vs system include) based on USE_FETCHED_SDL3.
 - Keep OpenGL and other deps unchanged; maintain CONFIGURE_DEPENDS GLOB for sources.
@@ -51,6 +52,9 @@ Validation
 - Reconfigure+Build: successful; ImGui-Designer and tests built cleanly.
 - build/build.log captured; no PipeWire compile errors.
 - Behavior validated manually: menu appears; layout actions functional; last-left-tab persists; first-run prompt shown when no packs.
+
+Docs
+- README: Add section “SDL3 selection and audio backends”, documenting system vs bundled behavior, ALSA-safe preset, per-backend toggles, and SDL_AUDIODRIVER tips.
 
 Notes
 - System SDL3 remains untouched; bundled SDL3 receives ALSA-only and no-PipeWire defaults to match typical ALSA environments and avoid fragile PipeWire headers.

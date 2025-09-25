@@ -121,13 +121,24 @@ target_include_directories(stb INTERFACE ${stb_SOURCE_DIR})
 
 
 # --- SDL & Graphics ---
-## Prefer system-installed SDL3 if available to avoid network fetches; fallback to FetchContent.
+## SDL3 selection: prefer system SDL3 unless explicitly forced; provide a 'safe ALSA-only' preset for bundled SDL.
+option(IMGUIDESIGNER_USE_BUNDLED_SDL3 "Force using bundled SDL3 instead of system SDL3" OFF)
+option(IMGUIDESIGNER_SDL_SAFE_ALSA_ONLY "Preset: ALSA-only with PipeWire disabled for bundled SDL3" OFF)
 ## When fetching SDL3, disable PipeWire backend to avoid build breakage with certain PipeWire headers.
-option(IMGUIDESIGNER_DISABLE_SDL_PIPEWIRE "Disable SDL3 PipeWire backend when building bundled SDL3" ON)
-option(IMGUIDESIGNER_SDL_ALSA_ONLY "When building bundled SDL3, prefer ALSA and disable other audio backends (PulseAudio, JACK, SNDIO, OSS)" ON)
+option(IMGUIDESIGNER_DISABLE_SDL_PIPEWIRE "Disable SDL3 PipeWire backend when building bundled SDL3" OFF)
+option(IMGUIDESIGNER_SDL_ALSA_ONLY "When building bundled SDL3, prefer ALSA and disable other audio backends (PulseAudio, JACK, SNDIO, OSS)" OFF)
+
+# Apply preset if requested
+if(IMGUIDESIGNER_SDL_SAFE_ALSA_ONLY)
+    set(IMGUIDESIGNER_DISABLE_SDL_PIPEWIRE ON CACHE BOOL "" FORCE)
+    set(IMGUIDESIGNER_SDL_ALSA_ONLY ON CACHE BOOL "" FORCE)
+endif()
+
 set(USE_FETCHED_SDL3 OFF)
-find_package(SDL3 CONFIG QUIET)
-if(NOT SDL3_FOUND)
+if(NOT IMGUIDESIGNER_USE_BUNDLED_SDL3)
+    find_package(SDL3 CONFIG QUIET)
+endif()
+if(IMGUIDESIGNER_USE_BUNDLED_SDL3 OR NOT SDL3_FOUND)
     include(FindPkgConfig)
     pkg_check_modules(SDL3 QUIET sdl3)
     if(SDL3_FOUND)
