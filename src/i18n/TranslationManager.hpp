@@ -6,14 +6,15 @@
 #include <optional>
 
 // Lightweight translation manager supporting en + de baseline and extensible catalogs.
-class TranslationManager {
+class TranslationManager
+{
 public:
     static TranslationManager &instance();
 
-    bool loadLanguage(const std::string &lang); // Attempts lang, falls back to en
+    bool loadLanguage(const std::string &lang);          // Attempts lang, falls back to en
     std::string translate(const std::string &key) const; // Returns key if missing
     std::string format(const std::string &key, const std::vector<std::string> &args) const;
-    std::string plural(const std::string &baseKey, int count, const std::vector<std::string> &args = {} ) const;
+    std::string plural(const std::string &baseKey, int count, const std::vector<std::string> &args = {}) const;
 
     // Register additional JSON catalog file for a language (absolute or relative path)
     void addCatalogPath(const std::string &lang, const std::string &path);

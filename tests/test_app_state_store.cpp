@@ -6,7 +6,8 @@
 
 namespace fs = std::filesystem;
 
-TEST_CASE("AppStateStore saves and loads lastLeftTab", "[appstate]") {
+TEST_CASE("AppStateStore saves and loads lastLeftTab", "[appstate]")
+{
     // Create a temporary directory for the test state file
     auto tmp = fs::temp_directory_path() / fs::path("imgui_designer_app_state_test");
     fs::create_directories(tmp);
@@ -33,7 +34,8 @@ TEST_CASE("AppStateStore saves and loads lastLeftTab", "[appstate]") {
     fs::remove_all(tmp);
 }
 
-TEST_CASE("AppStateStore handles malformed JSON gracefully", "[appstate]") {
+TEST_CASE("AppStateStore handles malformed JSON gracefully", "[appstate]")
+{
     auto tmp = fs::temp_directory_path() / fs::path("imgui_designer_app_state_badjson");
     fs::create_directories(tmp);
     auto statePath = (tmp / "app_state.json").string();

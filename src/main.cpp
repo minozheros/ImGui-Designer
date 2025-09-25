@@ -37,7 +37,7 @@ namespace core
 
 namespace
 {
-    void print_usage(const char* argv0)
+    void print_usage(const char *argv0)
     {
         spdlog::info("Usage: {} [options] [config_path]", argv0);
         spdlog::info("Options:");
@@ -49,13 +49,13 @@ namespace
         spdlog::info("  IMGDESIGNER_LOG_LEVEL   If set, used as log level unless --log-level/--trace/--verbose provided");
     }
 
-    std::optional<spdlog::level::level_enum> level_from_string(const std::string& s)
+    std::optional<spdlog::level::level_enum> level_from_string(const std::string &s)
     {
         try
         {
             return spdlog::level::from_str(s);
         }
-        catch(...)
+        catch (...)
         {
             return std::nullopt; // from_str can throw for invalid input in some versions
         }
@@ -95,14 +95,26 @@ int main(int argc, char *argv[])
     for (int i = 1; i < argc; ++i)
     {
         std::string arg = argv[i];
-        if (arg == "-v" || arg == "--verbose") { flag_verbose = true; continue; }
-        if (arg == "--trace") { flag_trace = true; continue; }
+        if (arg == "-v" || arg == "--verbose")
+        {
+            flag_verbose = true;
+            continue;
+        }
+        if (arg == "--trace")
+        {
+            flag_trace = true;
+            continue;
+        }
         if (arg.rfind("--log-level=", 0) == 0)
         {
             explicit_level = arg.substr(std::string("--log-level=").size());
             continue;
         }
-        if (arg == "--help" || arg == "-h") { show_help = true; continue; }
+        if (arg == "--help" || arg == "-h")
+        {
+            show_help = true;
+            continue;
+        }
         if (!arg.empty() && arg[0] == '-')
         {
             spdlog::warn("Unknown option '{}' (ignored)", arg);
@@ -141,7 +153,7 @@ int main(int argc, char *argv[])
     std::string pref_level = preferences->safe_get({"logging", "level"}, std::string("info"));
     std::string chosen_level_str = pref_level;
 
-    if (const char* env_lvl = std::getenv("IMGDESIGNER_LOG_LEVEL"))
+    if (const char *env_lvl = std::getenv("IMGDESIGNER_LOG_LEVEL"))
     {
         if (env_lvl[0] != '\0')
             chosen_level_str = env_lvl;

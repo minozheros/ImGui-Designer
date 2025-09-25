@@ -4,14 +4,16 @@
 #include "IReplaceable.hpp"
 #include <string>
 
-namespace ImGuiDesigner {
+namespace ImGuiDesigner
+{
 
-class IPanelRenderer : public IReplaceable {
-public:
-    ~IPanelRenderer() override = default;
+    class IPanelRenderer : public IReplaceable
+    {
+    public:
+        ~IPanelRenderer() override = default;
 
-    virtual const std::string &panelId() const = 0; // Unique panel id
-    virtual void draw() = 0;                       // Draw panel UI
-};
+        virtual const std::string &panelId() const = 0; // Unique panel id
+        virtual void draw() = 0;                        // Draw panel UI
+    };
 
 } // namespace ImGuiDesigner

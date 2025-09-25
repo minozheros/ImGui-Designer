@@ -19,12 +19,12 @@ public:
     VisualBlock()
     {
         const auto &self = *this;
-    spdlog::debug("VisualBlock constructed: {}", typeid(self).name());
+        spdlog::debug("VisualBlock constructed: {}", typeid(self).name());
     }
     virtual ~VisualBlock()
     {
         const auto &self = *this;
-    spdlog::debug("VisualBlock destroyed: {}", typeid(self).name());
+        spdlog::debug("VisualBlock destroyed: {}", typeid(self).name());
     }
     virtual void render() = 0;
     virtual ImVec2 getPreferredSize(const char *name = nullptr, const char *value = nullptr, int numInputs = 0, int numOutputs = 0) const;

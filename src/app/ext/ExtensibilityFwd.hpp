@@ -5,13 +5,14 @@
 #include <memory>
 #include <string>
 
-namespace ImGuiDesigner {
+namespace ImGuiDesigner
+{
 
-class IReplaceable;
-class ITypeAdapter;
-class IBlockRenderer;
-class IPanelRenderer;
-class IFrameHook;
-class ILayoutEngine;
+    class IReplaceable;
+    class ITypeAdapter;
+    class IBlockRenderer;
+    class IPanelRenderer;
+    class IFrameHook;
+    class ILayoutEngine;
 
 } // namespace ImGuiDesigner

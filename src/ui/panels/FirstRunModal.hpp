@@ -18,12 +18,12 @@ namespace ui::panels
         void clearFocusRequest() { requestFocusPackManager_ = false; }
 
     private:
-        bool open_ = false;          // Currently attempting to show popup
-        bool triedInstall_ = false;  // Whether install attempt happened
-        bool dismissed_ = false;     // User chose Skip / Close (prevents re-open this session)
-        bool installing_ = false;    // Installation in progress (future async hook)
-        bool installSucceeded_ = false; // Installation success flag
-        std::string lastMessage_;    // Last status or error message
+        bool open_ = false;                    // Currently attempting to show popup
+        bool triedInstall_ = false;            // Whether install attempt happened
+        bool dismissed_ = false;               // User chose Skip / Close (prevents re-open this session)
+        bool installing_ = false;              // Installation in progress (future async hook)
+        bool installSucceeded_ = false;        // Installation success flag
+        std::string lastMessage_;              // Last status or error message
         bool requestFocusPackManager_ = false; // Set when we want the left dock to focus Pack Manager after closing
     };
 

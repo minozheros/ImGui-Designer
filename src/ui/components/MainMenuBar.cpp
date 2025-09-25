@@ -115,10 +115,13 @@ namespace ui::components
         if (ImGui::BeginMenu(TR("menu.settings.language").c_str()))
         {
             std::string current = TranslationManager::instance().currentLanguage();
-            struct Lang { const char *code; const char *label; } langs[] = {
+            struct Lang
+            {
+                const char *code;
+                const char *label;
+            } langs[] = {
                 {"en", "English"},
-                {"de", "Deutsch"}
-            };
+                {"de", "Deutsch"}};
             for (const auto &l : langs)
             {
                 bool selected = (current == l.code);

@@ -25,7 +25,7 @@ void ToolbarPanel::render()
         avail.x = 375.0f;
     if (avail.x != lastWidth)
     {
-    spdlog::debug("Toolbar width changed: {} px", avail.x);
+        spdlog::debug("Toolbar width changed: {} px", avail.x);
         lastWidth = avail.x;
     }
     float focusAreaWidth = avail.x - 2.0f;
@@ -160,7 +160,7 @@ void ToolbarPanel::render()
                     bool winFocused = ImGui::IsWindowFocused();
                     // Demoted from info to debug (high-frequency geometry logging)
                     spdlog::debug("ToolbarPanel: ItemRect=({},{})->({},{}) ItemID={} HoveredID={} Window='{}' winHovered={} winFocused={} MousePos=({:.1f},{:.1f})",
-                                 itemMin.x, itemMin.y, itemMax.x, itemMax.y, (unsigned)itemId, (unsigned)hoveredId, winName, winHovered, winFocused, io.MousePos.x, io.MousePos.y);
+                                  itemMin.x, itemMin.y, itemMax.x, itemMax.y, (unsigned)itemId, (unsigned)hoveredId, winName, winHovered, winFocused, io.MousePos.x, io.MousePos.y);
                     if (clicked)
                     {
                         // Demoted from info to debug (button click events still frequent during session)

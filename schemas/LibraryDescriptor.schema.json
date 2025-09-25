@@ -1,248 +1,543 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://example.com/schemas/LibraryDescriptor.schema.json",
-  "title": "LibraryDescriptor",
-  "type": "object",
-  "additionalProperties": false,
-  "required": ["id", "version", "source", "symbols"],
-  "properties": {
-    "$schema": { "type": "string" },
-    "id": { "type": "string" },
-    "name": { "type": "string" },
-    "version": { "type": "string" },
-    "license": { "type": "string" },
-    "generatedAt": { "type": "string" },
-    "source": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["repo", "commit"],
-      "properties": {
-        "repo": { "type": "string" },
-        "commit": { "type": "string" },
-        "tag": { "type": "string" },
-        "sha256": { "type": "string" }
-      }
-    },
-    "capabilities": {
-      "type": "array",
-      "items": { "type": "string" },
-      "default": []
-    },
-    "symbols": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["functions", "types", "enums", "macros", "constants"],
-      "properties": {
-        "functions": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": ["name", "returnType", "parameters"],
-            "properties": {
-              "name": { "type": "string" },
-              "qualified": { "type": "string" },
-              "returnType": { "type": "string" },
-              "parameters": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "required": ["name", "type"],
-                  "properties": {
-                    "name": { "type": "string" },
-                    "type": { "type": "string" },
-                    "default": { "type": "string" }
-                  }
-                },
-                "default": []
-              },
-              "attributes": { "type": "array", "items": { "type": "string" }, "default": [] },
-              "since": { "type": "string" },
-              "deprecated": { "type": "boolean", "default": false }
-            }
-          },
-          "default": []
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://example.com/schemas/LibraryDescriptor.schema.json",
+    "title": "LibraryDescriptor",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "id",
+        "version",
+        "source",
+        "symbols"
+    ],
+    "properties": {
+        "$schema": {
+            "type": "string"
         },
-        "types": {
-          "type": "array",
-          "items": {
+        "id": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "version": {
+            "type": "string"
+        },
+        "license": {
+            "type": "string"
+        },
+        "generatedAt": {
+            "type": "string"
+        },
+        "source": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["name", "kind"],
+            "required": [
+                "repo",
+                "commit"
+            ],
             "properties": {
-              "name": { "type": "string" },
-              "qualified": { "type": "string" },
-              "kind": { "type": "string", "enum": ["struct", "class", "union"] },
-              "fields": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "required": ["name", "type"],
-                  "properties": {
-                    "name": { "type": "string" },
-                    "type": { "type": "string" }
-                  }
+                "repo": {
+                    "type": "string"
                 },
-                "default": []
-              },
-              "bases": { "type": "array", "items": { "type": "string" }, "default": [] },
-              "since": { "type": "string" },
-              "deprecated": { "type": "boolean", "default": false }
+                "commit": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "string"
+                },
+                "sha256": {
+                    "type": "string"
+                }
             }
-          },
+        },
+        "capabilities": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
             "default": []
         },
-        "enums": {
-          "type": "array",
-          "items": {
+        "symbols": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["name", "values"],
+            "required": [
+                "functions",
+                "types",
+                "enums",
+                "macros",
+                "constants"
+            ],
             "properties": {
-              "name": { "type": "string" },
-              "scoped": { "type": "boolean", "default": false },
-              "values": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "required": ["name"],
-                  "properties": {
-                    "name": { "type": "string" },
-                    "value": { "type": "string" }
-                  }
+                "functions": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "name",
+                            "returnType",
+                            "parameters"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "qualified": {
+                                "type": "string"
+                            },
+                            "returnType": {
+                                "type": "string"
+                            },
+                            "parameters": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "required": [
+                                        "name",
+                                        "type"
+                                    ],
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        },
+                                        "default": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "default": []
+                            },
+                            "attributes": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "default": []
+                            },
+                            "since": {
+                                "type": "string"
+                            },
+                            "deprecated": {
+                                "type": "boolean",
+                                "default": false
+                            }
+                        }
+                    },
+                    "default": []
                 },
-                "default": []
-              },
-              "since": { "type": "string" },
-              "deprecated": { "type": "boolean", "default": false }
+                "types": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "name",
+                            "kind"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "qualified": {
+                                "type": "string"
+                            },
+                            "kind": {
+                                "type": "string",
+                                "enum": [
+                                    "struct",
+                                    "class",
+                                    "union"
+                                ]
+                            },
+                            "fields": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "required": [
+                                        "name",
+                                        "type"
+                                    ],
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "default": []
+                            },
+                            "bases": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "default": []
+                            },
+                            "since": {
+                                "type": "string"
+                            },
+                            "deprecated": {
+                                "type": "boolean",
+                                "default": false
+                            }
+                        }
+                    },
+                    "default": []
+                },
+                "enums": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "name",
+                            "values"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "scoped": {
+                                "type": "boolean",
+                                "default": false
+                            },
+                            "values": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "required": [
+                                        "name"
+                                    ],
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "default": []
+                            },
+                            "since": {
+                                "type": "string"
+                            },
+                            "deprecated": {
+                                "type": "boolean",
+                                "default": false
+                            }
+                        }
+                    },
+                    "default": []
+                },
+                "macros": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "name"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "default": []
+                },
+                "constants": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "name",
+                            "type"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "type": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "default": []
+                }
             }
-          },
-          "default": []
         },
-        "macros": {
-          "type": "array",
-          "items": {
+        "blocks": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["name"],
             "properties": {
-              "name": { "type": "string" },
-              "value": { "type": "string" }
-            }
-          },
-          "default": []
+                "functions": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "symbol",
+                            "blockId",
+                            "status"
+                        ],
+                        "properties": {
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "blockId": {
+                                "type": "string"
+                            },
+                            "title": {
+                                "type": "string"
+                            },
+                            "category": {
+                                "type": "string"
+                            },
+                            "status": {
+                                "type": "string",
+                                "enum": [
+                                    "COMPLETE",
+                                    "IMPORTANT",
+                                    "CUSTOM",
+                                    "DEPRECATED",
+                                    "HIDDEN",
+                                    "BLOCKED"
+                                ]
+                            },
+                            "tags": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "default": []
+                            },
+                            "doc": {
+                                "type": "string"
+                            },
+                            "since": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "default": []
+                },
+                "types": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "symbol",
+                            "blockId",
+                            "status"
+                        ],
+                        "properties": {
+                            "symbol": {
+                                "type": "string"
+                            },
+                            "blockId": {
+                                "type": "string"
+                            },
+                            "title": {
+                                "type": "string"
+                            },
+                            "category": {
+                                "type": "string"
+                            },
+                            "status": {
+                                "type": "string",
+                                "enum": [
+                                    "COMPLETE",
+                                    "IMPORTANT",
+                                    "CUSTOM",
+                                    "DEPRECATED",
+                                    "HIDDEN",
+                                    "BLOCKED"
+                                ]
+                            },
+                            "tags": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "default": []
+                            },
+                            "doc": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "default": []
+                }
+            },
+            "default": {}
         },
-        "constants": {
-          "type": "array",
-          "items": {
+        "profiles": {
             "type": "object",
-            "additionalProperties": false,
-            "required": ["name", "type"],
-            "properties": {
-              "name": { "type": "string" },
-              "type": { "type": "string" },
-              "value": { "type": "string" }
-            }
-          },
-          "default": []
-        }
-      }
-    },
-    "blocks": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "functions": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": ["symbol", "blockId", "status"],
-            "properties": {
-              "symbol": { "type": "string" },
-              "blockId": { "type": "string" },
-              "title": { "type": "string" },
-              "category": { "type": "string" },
-              "status": { "type": "string", "enum": ["COMPLETE", "IMPORTANT", "CUSTOM", "DEPRECATED", "HIDDEN", "BLOCKED"] },
-              "tags": { "type": "array", "items": { "type": "string" }, "default": [] },
-              "doc": { "type": "string" },
-              "since": { "type": "string" }
-            }
-          },
-          "default": []
+            "description": "Named block selection sets.",
+            "additionalProperties": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "include"
+                ],
+                "properties": {
+                    "include": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "exclude": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "default": {}
         },
-        "types": {
-          "type": "array",
-          "items": {
+        "breakage": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["symbol", "blockId", "status"],
             "properties": {
-              "symbol": { "type": "string" },
-              "blockId": { "type": "string" },
-              "title": { "type": "string" },
-              "category": { "type": "string" },
-              "status": { "type": "string", "enum": ["COMPLETE", "IMPORTANT", "CUSTOM", "DEPRECATED", "HIDDEN", "BLOCKED"] },
-              "tags": { "type": "array", "items": { "type": "string" }, "default": [] },
-              "doc": { "type": "string" }
+                "previousVersion": {
+                    "type": "string"
+                },
+                "removedSymbols": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "changedSignatures": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
             }
-          },
-          "default": []
+        },
+        "metadata": {
+            "type": "object",
+            "additionalProperties": true
+        },
+        "uiAdapters": {
+            "type": "array",
+            "description": "Declarative placeholders for future UI/type/block/panel/frameStage adapters. No runtime behavior implied yet.",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "id",
+                    "kind",
+                    "adapterType"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Unique adapter identifier within this descriptor."
+                    },
+                    "kind": {
+                        "type": "string",
+                        "enum": [
+                            "type",
+                            "function",
+                            "enum",
+                            "macro",
+                            "constant",
+                            "panel",
+                            "frameStage",
+                            "layout"
+                        ],
+                        "description": "Kind of element this adapter applies to."
+                    },
+                    "target": {
+                        "type": "string",
+                        "description": "Qualified symbol or conceptual target (panel id, frame stage, or layout scope). Optional for some adapter types."
+                    },
+                    "stages": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [],
+                        "description": "List of frame stages this adapter hooks into (if adapterType=frameHook)."
+                    },
+                    "adapterType": {
+                        "type": "string",
+                        "enum": [
+                            "valueRenderer",
+                            "blockRenderer",
+                            "panelRenderer",
+                            "frameHook",
+                            "layoutEngine",
+                            "custom"
+                        ],
+                        "description": "High-level adapter role classification."
+                    },
+                    "provides": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [],
+                        "description": "Capability tags this adapter provides."
+                    },
+                    "dependsOn": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": [],
+                        "description": "Adapter ids this one depends on (ordering / prerequisite)."
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "EXPERIMENTAL",
+                            "STABLE",
+                            "INTERNAL"
+                        ],
+                        "default": "EXPERIMENTAL"
+                    },
+                    "since": {
+                        "type": "string"
+                    },
+                    "doc": {
+                        "type": "string"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": []
+                    }
+                }
+            },
+            "default": []
         }
-      },
-      "default": {}
-    },
-    "profiles": {
-      "type": "object",
-      "description": "Named block selection sets.",
-      "additionalProperties": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["include"],
-        "properties": {
-          "include": { "type": "array", "items": { "type": "string" } },
-          "exclude": { "type": "array", "items": { "type": "string" } },
-          "description": { "type": "string" }
-        }
-      },
-      "default": {}
-    },
-    "breakage": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "previousVersion": { "type": "string" },
-        "removedSymbols": { "type": "array", "items": { "type": "string" } },
-        "changedSignatures": { "type": "array", "items": { "type": "string" } }
-      }
-    },
-    "metadata": { "type": "object", "additionalProperties": true }
-    ,
-    "uiAdapters": {
-      "type": "array",
-      "description": "Declarative placeholders for future UI/type/block/panel/frameStage adapters. No runtime behavior implied yet.",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["id", "kind", "adapterType"],
-        "properties": {
-          "id": { "type": "string", "description": "Unique adapter identifier within this descriptor." },
-          "kind": { "type": "string", "enum": ["type", "function", "enum", "macro", "constant", "panel", "frameStage", "layout"], "description": "Kind of element this adapter applies to." },
-          "target": { "type": "string", "description": "Qualified symbol or conceptual target (panel id, frame stage, or layout scope). Optional for some adapter types." },
-          "stages": { "type": "array", "items": { "type": "string" }, "default": [], "description": "List of frame stages this adapter hooks into (if adapterType=frameHook)." },
-          "adapterType": { "type": "string", "enum": ["valueRenderer", "blockRenderer", "panelRenderer", "frameHook", "layoutEngine", "custom"], "description": "High-level adapter role classification." },
-          "provides": { "type": "array", "items": { "type": "string" }, "default": [], "description": "Capability tags this adapter provides." },
-          "dependsOn": { "type": "array", "items": { "type": "string" }, "default": [], "description": "Adapter ids this one depends on (ordering / prerequisite)." },
-          "status": { "type": "string", "enum": ["EXPERIMENTAL", "STABLE", "INTERNAL"], "default": "EXPERIMENTAL" },
-          "since": { "type": "string" },
-          "doc": { "type": "string" },
-          "tags": { "type": "array", "items": { "type": "string" }, "default": [] }
-        }
-      },
-      "default": []
     }
-  }
 }

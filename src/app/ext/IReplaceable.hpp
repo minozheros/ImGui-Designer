@@ -3,12 +3,14 @@
 #include <string>
 #include <memory>
 
-namespace ImGuiDesigner {
+namespace ImGuiDesigner
+{
 
-// Marker base for replaceable / pluggable components.
-class IReplaceable {
-public:
-    virtual ~IReplaceable() = default;
-};
+    // Marker base for replaceable / pluggable components.
+    class IReplaceable
+    {
+    public:
+        virtual ~IReplaceable() = default;
+    };
 
 } // namespace ImGuiDesigner

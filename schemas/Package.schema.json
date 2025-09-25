@@ -86,16 +86,23 @@
             "properties": {
                 "languages": {
                     "type": "array",
-                    "items": { "type": "string" },
+                    "items": {
+                        "type": "string"
+                    },
                     "minItems": 1
                 },
                 "paths": {
                     "type": "array",
-                    "items": { "type": "string" },
+                    "items": {
+                        "type": "string"
+                    },
                     "minItems": 1
                 }
             },
-            "required": ["languages", "paths" ]
+            "required": [
+                "languages",
+                "paths"
+            ]
         },
         "blocklist": {
             "type": "object",
@@ -103,17 +110,23 @@
             "properties": {
                 "symbols": {
                     "type": "array",
-                    "items": { "type": "string" },
+                    "items": {
+                        "type": "string"
+                    },
                     "default": []
                 },
                 "blocks": {
                     "type": "array",
-                    "items": { "type": "string" },
+                    "items": {
+                        "type": "string"
+                    },
                     "default": []
                 },
                 "patterns": {
                     "type": "array",
-                    "items": { "type": "string" },
+                    "items": {
+                        "type": "string"
+                    },
                     "default": []
                 },
                 "reason": {

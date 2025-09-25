@@ -21,7 +21,7 @@ public:
 
     void addBlock(std::unique_ptr<VisualBlock> block)
     {
-    spdlog::debug("VisualWindow::addBlock called. Block count before: {}", blocks.size());
+        spdlog::debug("VisualWindow::addBlock called. Block count before: {}", blocks.size());
         if (block)
         {
             const auto &blockRef = *block;
@@ -67,12 +67,12 @@ public:
         {
             spdlog::warn("VisualWindow::addBlock: exception while positioning node");
         }
-    spdlog::debug("Block count after: {}", blocks.size());
+        spdlog::debug("Block count after: {}", blocks.size());
     }
 
     void render()
     {
-    spdlog::debug("VisualWindow::render called. Block count: {}", blocks.size());
+        spdlog::debug("VisualWindow::render called. Block count: {}", blocks.size());
         ed::SetCurrentEditor(editorContext);
         ed::Begin("MainNodeEditor");
         for (auto &block : blocks)
@@ -84,7 +84,7 @@ public:
 
     void clear()
     {
-    spdlog::debug("VisualWindow::clear called. Clearing {} blocks.", blocks.size());
+        spdlog::debug("VisualWindow::clear called. Clearing {} blocks.", blocks.size());
         blocks.clear();
     }
 

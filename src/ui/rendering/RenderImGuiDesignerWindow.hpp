@@ -30,8 +30,8 @@ int RenderDesignerWindow(AppContext &ctx, ImGuiContext *imguiCtx, SDL_Window *wi
         bool win_hovered = SDL_GetWindowFlags(window) & SDL_WINDOW_MOUSE_FOCUS;
         float cx = 0.0f, cy = 0.0f;
         SDL_GetMouseState(&cx, &cy);
-    // Demoted from info to debug (per-frame loop)
-    spdlog::debug("SDL state: focused={}, hovered={}, cursorPos=({}, {})", win_focused, win_hovered, cx, cy);
+        // Demoted from info to debug (per-frame loop)
+        spdlog::debug("SDL state: focused={}, hovered={}, cursorPos=({}, {})", win_focused, win_hovered, cx, cy);
     }
 
     ImGui::SetCurrentContext(imguiCtx);
@@ -50,25 +50,25 @@ int RenderDesignerWindow(AppContext &ctx, ImGuiContext *imguiCtx, SDL_Window *wi
 
     // After ImGui new frame, log ImGui IO state for comparison with SDL
     ImGuiIO &io = ImGui::GetIO();
-        // Demoted from info to debug (per-frame IO state)
-        spdlog::debug("ImGui IO: MousePos=({}, {}), MouseDown[0]={}, MouseDownDuration[0]={}, WantCaptureMouse={}", io.MousePos.x, io.MousePos.y, io.MouseDown[0], io.MouseDownDuration[0], io.WantCaptureMouse);
+    // Demoted from info to debug (per-frame IO state)
+    spdlog::debug("ImGui IO: MousePos=({}, {}), MouseDown[0]={}, MouseDownDuration[0]={}, WantCaptureMouse={}", io.MousePos.x, io.MousePos.y, io.MouseDown[0], io.MouseDownDuration[0], io.WantCaptureMouse);
     if (window)
     {
         int wx = 0, wy = 0, ww = 0, wh = 0;
         SDL_GetWindowPosition(window, &wx, &wy);
         SDL_GetWindowSize(window, &ww, &wh);
-    // Demoted from info to debug (per-frame window metrics)
-    spdlog::debug("SDL window pos/size: pos=({}, {}), size=({}, {})", wx, wy, ww, wh);
+        // Demoted from info to debug (per-frame window metrics)
+        spdlog::debug("SDL window pos/size: pos=({}, {}), size=({}, {})", wx, wy, ww, wh);
         float cx = 0.0f, cy = 0.0f;
         SDL_GetMouseState(&cx, &cy);
-    // Demoted from info to debug (per-frame cursor metrics)
-    spdlog::debug("Cursor global pos=({}, {}), local pos relative to window=({}, {})", cx, cy, cx - wx, cy - wy);
+        // Demoted from info to debug (per-frame cursor metrics)
+        spdlog::debug("Cursor global pos=({}, {}), local pos relative to window=({}, {})", cx, cy, cx - wx, cy - wy);
     }
 
     spdlog::debug("Rendering Designer screen");
     spdlog::debug("RenderDesignerWindow: incoming imguiCtx={}, ImGui::GetCurrentContext()={}", (void *)imguiCtx, (void *)ImGui::GetCurrentContext());
-        // Demoted from info to debug (per-frame context pointer)
-        spdlog::debug("RenderDesignerWindow: imguiCtx pointer={}, ImGui::GetCurrentContext()={}", (void *)imguiCtx, (void *)ImGui::GetCurrentContext());
+    // Demoted from info to debug (per-frame context pointer)
+    spdlog::debug("RenderDesignerWindow: imguiCtx pointer={}, ImGui::GetCurrentContext()={}", (void *)imguiCtx, (void *)ImGui::GetCurrentContext());
 
     // Setup the dockspace layout
     if (ctx.dockingManager)

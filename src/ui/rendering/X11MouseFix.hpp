@@ -53,7 +53,7 @@ namespace X11MouseFix
                 io.MousePos = ImVec2((float)relative_x, (float)relative_y);
                 // Demoted from info to debug (can trigger repeatedly while invalid coords persist)
                 spdlog::debug("X11 multi-monitor fix: Corrected invalid coords - Global=({:.0f},{:.0f}) Window=({},{}) Relative=({:.0f},{:.0f}) -> ImGui=({:.1f},{:.1f}) GLFW(hovered={},focused={})",
-                             global_x, global_y, win_x, win_y, relative_x, relative_y, io.MousePos.x, io.MousePos.y, glfw_hovered, glfw_focused);
+                              global_x, global_y, win_x, win_y, relative_x, relative_y, io.MousePos.x, io.MousePos.y, glfw_hovered, glfw_focused);
             }
             else
             {

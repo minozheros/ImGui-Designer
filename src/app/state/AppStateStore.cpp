@@ -13,7 +13,7 @@ namespace app::state
 
     std::optional<std::string> AppStateStore::loadLastLeftTab() const
     {
-    std::ifstream f(statePath);
+        std::ifstream f(statePath);
         if (!f.is_open())
             return std::nullopt;
         try
