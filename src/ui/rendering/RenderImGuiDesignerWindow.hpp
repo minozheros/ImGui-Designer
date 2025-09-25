@@ -211,13 +211,26 @@ int RenderDesignerWindow(AppContext &ctx, ImGuiContext *imguiCtx, SDL_Window *wi
     ImGui::End();
 
     // First-run prompt: if no packs installed, offer to install std_core
-    if (noPacksInstalled && ctx.firstRunModal && !ctx.firstRunModal->isOpen())
+    if (noPacksInstalled && ctx.firstRunModal && !ctx.firstRunModal->isOpen() && !ctx.firstRunModal->isDismissed())
     {
         ctx.firstRunModal->open();
     }
     if (ctx.firstRunModal)
     {
         ctx.firstRunModal->render();
+        // If the modal signaled a request to focus the Pack Manager (after install or skip), apply it once.
+        if (ctx.firstRunModal->shouldFocusPackManager())
+        {
+            // Force focus next frame by setting savedLeftTab; also immediate focus this frame if possible
+            if (savedLeftTab != "Pack Manager")
+            {
+                savedLeftTab = "Pack Manager";
+                ctx.stateStore.saveLastLeftTab(savedLeftTab);
+            }
+            // Set next window focus for Pack Manager (will apply next frame since window already ended this frame)
+            ImGui::FocusWindow(ImGui::FindWindowByName("Pack Manager"));
+            ctx.firstRunModal->clearFocusRequest();
+        }
     }
 
     // Mark focus decision as applied to avoid stealing focus every frame

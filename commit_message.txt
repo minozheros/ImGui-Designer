@@ -21,56 +21,45 @@
  Refs
  - Addresses the reconfigure failure: "Cannot add target-level dependencies to non-existent target 'ImGui-Designer_tests'".
 
+fix(ui:first-run): Modal now dismisses properly (Install / Skip) and no longer reopens
+
+Summary
+
+Details
+	- Added dismissed_ / installing_ / installSucceeded_ flags; guarded open() against re-entry.
+	- Rewrote render() to use keepOpen flag and explicit CloseCurrentPopup() on exit paths.
+	- Changed isOpen() semantic to exclude dismissed state; added isDismissed().
+	- Only call open() when !isOpen() && !isDismissed().
+
+Behavioral Changes
+
+Outcome
+
 Build / CMake
-- Prefer system-installed SDL3 (find_package/pkg-config). Fetch SDL3 only if not found.
-- When fetching SDL3 as a subproject:
 	- New toggles: IMGUIDESIGNER_USE_BUNDLED_SDL3 (force bundled), IMGUIDESIGNER_SDL_SAFE_ALSA_ONLY (preset for ALSA-only + PipeWire off).
 	- Optional backend flags when bundling: IMGUIDESIGNER_DISABLE_SDL_PIPEWIRE, IMGUIDESIGNER_SDL_ALSA_ONLY.
 	- Defaults are OFF; enable the preset to match ALSA-only builds when needed.
 	- Disable SDL_INSTALL to keep the subproject lean.
-- Conditional SDL3 include dirs (source include vs system include) based on USE_FETCHED_SDL3.
-- Keep OpenGL and other deps unchanged; maintain CONFIGURE_DEPENDS GLOB for sources.
 
 UI / UX
-- Add MainMenuBar (File/View/Settings/Help):
 	- File→Quit dispatches quit event.
 	- View→Save/Load/Reset layout via LayoutStore.
 	- Settings→Show Bottom Bar toggle persisted to preferences.
-- Persist and restore last selected left dock tab (Toolbar, Pack Manager, Pack Viewer) via AppStateStore.
-- Default focus: Toolbar unless no packs; first run prompts to install Standard Core pack.
-- Move Pack Manager and Pack Viewer tabs next to Toolbar on the left; set minimum dock width; re-dock on existing layouts.
-- Toolbar search only autofocuses when Toolbar tab is focused (no focus stealing).
 
 State / Persistence
-- Add AppStateStore (registry/app_state.json) for last-left-tab.
-- Add LayoutStore to save/load/reset ImGui layout (registry/layout.ini); const-safe SaveIniSettingsToMemory usage.
-- Wire stores into AppContext and render loop; bottom bar visibility now respects a persisted preference.
 
 Packs / Schemas / CI
-- Add JSON Schemas: FeatureSet, Package, Tutorial, LibraryRegistry, PackIndex.
-- Add example and official registries (packs.example.json, packs.official.json) and libraries.example.json.
-- Add Python tools: fetch_packs.py and validate_manifests.py; integrate validation as a build step and CI workflow (.github/workflows/validate-manifests.yml).
-- Update PackIndexLoader to load and present packs in Pack Manager/Viewer.
 
 Code / Files touched (high level)
-- CMakeLists.txt (SDL3 strategy, ALSA-only and PipeWire toggles, conditional includes).
-- src/ui/rendering/RenderImGuiDesignerWindow.hpp (menu integration; tab persistence; first-run logic; bottom bar toggle).
-- src/ui/components/MainMenuBar.{hpp,cpp} (new).
-- src/app/state/{AppStateStore,LayoutStore}.{hpp,cpp} (new) + AppContext wiring and main.cpp setup.
-- src/ui/panels/* (PackManagerPanel, PackViewerPanel, FirstRunModal) and ToolbarPanel focus behavior.
-- src/ui/docking/DockingManager.cpp (left tabs placement and sizing).
-- schemas/*, registry/*, featuresets/*, packages/*, tutorials/* (manifests and examples).
-- .github/workflows/validate-manifests.yml (CI validation).
-- NodeEditor.json and CONTRIBUTING_MANIFESTS.md adjustments.
 
 Validation
-- Reconfigure+Build: successful; ImGui-Designer and tests built cleanly.
-- build/build.log captured; no PipeWire compile errors.
-- Behavior validated manually: menu appears; layout actions functional; last-left-tab persists; first-run prompt shown when no packs.
 
 Docs
-- README: Add section “SDL3 selection and audio backends”, documenting system vs bundled behavior, ALSA-safe preset, per-backend toggles, and SDL_AUDIODRIVER tips.
 
 Notes
-- System SDL3 remains untouched; bundled SDL3 receives ALSA-only and no-PipeWire defaults to match typical ALSA environments and avoid fragile PipeWire headers.
-- Options IMGUIDESIGNER_DISABLE_SDL_PIPEWIRE and IMGUIDESIGNER_SDL_ALSA_ONLY can be toggled if needed.
+
+UX: After installing Standard Core or skipping first-run modal, automatically focus Pack Manager
+- Added requestFocusPackManager_ flag in FirstRunModal with accessors.
+- Set flag on successful install, skip, or close after attempted install.
+- Consumed flag in RenderDesignerWindow to focus and persist Pack Manager selection.
+- This guides new users directly to pack management workflow after onboarding decision.
