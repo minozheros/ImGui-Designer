@@ -5,6 +5,9 @@ Centralized entry point for in-repo documentation. Additional design docs and sp
 ## Index
 
 - [Extensibility & Customization](./EXTENSIBILITY.md)
+- [Widgets & Node/Block Types](./Nodes.md)
+- [Project Notes](./Notes.md)
+- [Contributing Manifests](./ContributingManifests.md)
 - (Planned) Packs & Distribution Guide
 - (Planned) Schema Evolution & Compatibility Policy
 - (Planned) Runtime Compilation / Hot Reload Architecture

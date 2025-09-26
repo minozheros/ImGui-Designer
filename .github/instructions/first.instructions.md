@@ -4,7 +4,7 @@
 
 1. **Rule Compliance:**
 
-- Reread `.github/instructions/first.instructions.md`, `NOTES.md`, and any policy files after every 3 code/file changes, after every file edit, or before major features/refactors. Do this automatically, without extra comments.
+- Reread `.github/instructions/first.instructions.md`, `docs/Notes.md`, and any policy files after every 3 code/file changes, after every file edit, or before major features/refactors. Do this automatically, without extra comments.
 
 2. **Encapsulation:**
 
@@ -170,7 +170,7 @@
 - Make small, incremental code changes.
 - Do not break existing functionality.
 - Ensure changes are robust, maintainable, and production-ready.
-- Document all design decisions and noteworthy changes in `NOTES.md`.
+- Document all design decisions and noteworthy changes in `docs/Notes.md`.
 
 10. **Contextual File Selection:**
 

@@ -128,6 +128,9 @@ Additional design documents and specifications live in the `docs/` directory:
 
 - Extensibility & Customization (`docs/EXTENSIBILITY.md`)
 - Documentation Index (`docs/README.md`)
+- Widgets & Node/Block Types (`docs/Nodes.md`)
+- Project Notes (`docs/Notes.md`)
+- Contributing Manifests (`docs/ContributingManifests.md`)
 
 Future planned docs (placeholders in index): Packs & Distribution, Schema Evolution Policy, Runtime Compilation Architecture, Theming Guidelines.
 

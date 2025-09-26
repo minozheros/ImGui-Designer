@@ -1,3 +1,15 @@
+docs(cleanup): remove root documentation stubs now in docs/
+
+Remove deprecated root doc files after successful migration to docs/:
+ - EXTENSIBILITY.md (full content lives at docs/EXTENSIBILITY.md)
+ - README_NODES.md  -> docs/Nodes.md
+ - NOTES.md         -> docs/Notes.md
+ - CONTRIBUTING_MANIFESTS.md -> docs/ContributingManifests.md
+
+Result: root directory now retains only README.md (plus source/build files) for a cleaner top-level surface; all topic-specific docs are centralized under docs/ with index updates already in place.
+
+---
+
 chore(extensibility): add uiAdapters schema and interface scaffolding
 
 Add `uiAdapters` to `LibraryDescriptor.schema.json` with expanded adapter types:
@@ -34,3 +46,10 @@ docs(structure): move extensibility doc into docs/ and add index
 - Added `docs/README.md` as central documentation index.
 - Updated root `README.md` with Documentation section linking to docs.
 - Fixed markdown formatting issues (lists, angle brackets) during move.
+
+docs(cleanup): consolidate root docs and add Nodes reference
+
+- Migrated `README_NODES.md` to `docs/Nodes.md` and removed original.
+- Deleted root `EXTENSIBILITY.md` stub (primary doc already in `docs/`).
+- Added Nodes link to `docs/README.md` index and root `README.md` Documentation section.
+- Ensured commit message reflects restructuring for historical traceability.
