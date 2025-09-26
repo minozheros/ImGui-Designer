@@ -45,11 +45,23 @@ bool TranslationManager::reload(const std::string &lang)
     auto it = langFiles_.find(lang);
     if (it == langFiles_.end())
     {
-        // If no explicit file registered, try default i18n/<lang>.json
+        // If no explicit file registered, try relative i18n/<lang>.json then fallback to source dir
         std::filesystem::path p = std::filesystem::path("i18n") / (lang + ".json");
         if (!std::filesystem::exists(p))
         {
+#ifdef IMGUIDESIGNER_SOURCE_DIR
+            std::filesystem::path fallback = std::filesystem::path(IMGUIDESIGNER_SOURCE_DIR) / "i18n" / (lang + ".json");
+            if (std::filesystem::exists(fallback))
+            {
+                p = fallback;
+            }
+            else
+            {
+                return false;
+            }
+#else
             return false;
+#endif
         }
         std::unordered_map<std::string, std::string> tmp;
         if (!loadFileInto(lang, p.string(), tmp))
@@ -132,8 +144,15 @@ std::string TranslationManager::translate(const std::string &key) const
         }
         else
         {
-            // Try default en.json
+            // Try default en.json (relative then source dir fallback)
             std::filesystem::path p = std::filesystem::path("i18n") / "en.json";
+            if (!std::filesystem::exists(p))
+            {
+#ifdef IMGUIDESIGNER_SOURCE_DIR
+                std::filesystem::path fallback = std::filesystem::path(IMGUIDESIGNER_SOURCE_DIR) / "i18n" / "en.json";
+                if (std::filesystem::exists(fallback))
+                    p = fallback;
+            }
             if (std::filesystem::exists(p))
             {
                 std::ifstream ifs(p);
@@ -151,6 +170,25 @@ std::string TranslationManager::translate(const std::string &key) const
                     }
                 }
             }
+#else
+            if (std::filesystem::exists(p))
+            {
+                std::ifstream ifs(p);
+                if (ifs.is_open())
+                {
+                    try
+                    {
+                        nlohmann::json j;
+                        ifs >> j;
+                        if (j.contains(key) && j[key].is_string())
+                            return j[key].get<std::string>();
+                    }
+                    catch (...)
+                    {
+                    }
+                }
+            }
+#endif
         }
     }
     // Return key as ultimate fallback

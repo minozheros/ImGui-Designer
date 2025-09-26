@@ -309,6 +309,12 @@ set_target_properties(ImGui-Designer PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 
+# Provide compiled-in project source directory for runtime resource fallbacks (e.g., i18n catalogs)
+target_compile_definitions(ImGui-Designer PRIVATE IMGUIDESIGNER_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
+if(IMGUIDESIGNER_ENABLE_TESTS)
+    target_compile_definitions(ImGui-Designer_tests PRIVATE IMGUIDESIGNER_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
+endif()
+
 
 # =============================
 # Post-Build Steps

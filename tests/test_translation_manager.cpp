@@ -8,17 +8,14 @@
 //  - language switch maintains isolation (different value or falls back)
 // (Rules: TEST-01, TEST-03)
 
-#ifdef ENABLE_WIP_TESTS
-// Forward spec: actual language file loading path not yet finalized. [wip]
-TEST_CASE("TranslationManager loadLanguage baseline", "[i18n][wip]") {
+TEST_CASE("TranslationManager loadLanguage baseline", "[i18n]") {
     auto &tm = TranslationManager::instance();
     REQUIRE(tm.loadLanguage("en"));
     auto lang = tm.currentLanguage();
     REQUIRE((lang == "en"));
 }
 
-// Forward spec: switching languages relies on external files. [wip]
-TEST_CASE("TranslationManager switch language", "[i18n][wip]") {
+TEST_CASE("TranslationManager switch language", "[i18n]") {
     auto &tm = TranslationManager::instance();
     REQUIRE(tm.loadLanguage("en"));
     std::string sampleKey = "menu.file"; // should exist in catalogs; if not, test still valid by fallback
@@ -31,11 +28,29 @@ TEST_CASE("TranslationManager switch language", "[i18n][wip]") {
     // Ensure no crash and either (different translation) or fallback semantics.
     REQUIRE_FALSE(deVal.empty());
 }
-#endif // ENABLE_WIP_TESTS
 
 TEST_CASE("TranslationManager missing key returns key", "[i18n]") {
     auto &tm = TranslationManager::instance();
     tm.loadLanguage("en");
     auto missing = tm.translate("__totally_missing_key__");
     REQUIRE(missing == "__totally_missing_key__");
+}
+
+TEST_CASE("TranslationManager pluralization basic", "[i18n]") {
+    auto &tm = TranslationManager::instance();
+    REQUIRE(tm.loadLanguage("en"));
+    // Keys present in en.json: packs.install.success.one / .other
+    REQUIRE(tm.plural("packs.install.success", 1, {"1"}) == "1 pack installed");
+    REQUIRE(tm.plural("packs.install.success", 3, {"3"}) == "3 packs installed");
+}
+
+TEST_CASE("TranslationManager format basic", "[i18n]") {
+    auto &tm = TranslationManager::instance();
+    REQUIRE(tm.loadLanguage("de"));
+    // Re-use plural template via format to ensure placeholder replacement works directly.
+    // We'll translate singular form and apply replacement.
+    auto templ = tm.translate("packs.install.success.one");
+    REQUIRE_FALSE(templ.empty());
+    auto formatted = tm.format("packs.install.success.one", {"1"});
+    REQUIRE(formatted.find("1") != std::string::npos);
 }
