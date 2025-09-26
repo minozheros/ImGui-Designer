@@ -12,8 +12,8 @@
 
 3. **Commit Workflow:**
 
-- Overwrite `commit_message.txt` with a clear, up-to-date message before every commit.
-- Stage and commit all changes using `git commit -F commit_message.txt`.
+- Overwrite `.dev/markers/commit_message.txt` with a clear, up-to-date message before every commit.
+- Stage and commit all changes using `git commit -F .dev/markers/commit_message.txt`.
 - Commits are made automatically only after the user acknowledges that the objective is achieved, or can be triggered manually with `!c`.
 
 4. **Code Quality & Review:**

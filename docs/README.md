@@ -24,7 +24,7 @@ Centralized entry point for in-repo documentation. Additional design docs and sp
 1. Create a new markdown file under `docs/` with a concise name (PascalCase or hyphenated).
 2. Add an entry to the Index above.
 3. If the document supersedes root-level content, replace the old file with a stub pointer.
-4. Update `commit_message.txt` if part of a larger feature or refactor.
+4. Update `.dev/markers/commit_message.txt` if part of a larger feature or refactor.
 
 ## Roadmap for Docs (High-Level)
 

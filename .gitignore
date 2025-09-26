@@ -48,3 +48,6 @@ _deps/
 # Generated files
 src/generated/
 
+# Internal marker & commit helper files
+/.dev/markers/
+

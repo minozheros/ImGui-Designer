@@ -4,6 +4,8 @@ find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
 set(IMGUI_H_PATH "${CMAKE_SOURCE_DIR}/build/_deps/imgui-src/imgui.h")
 set(API_INFO_OUTPUT_DIR "${CMAKE_SOURCE_DIR}/scripts/output/")
+set(MARKER_DIR "${CMAKE_SOURCE_DIR}/.dev/markers")
+file(MAKE_DIRECTORY ${MARKER_DIR})
 
 
 add_custom_command(
@@ -88,11 +90,11 @@ add_custom_command(
 )
 
 add_custom_command(
-    OUTPUT ${CMAKE_SOURCE_DIR}/node_factory_map_generated.ok
+    OUTPUT ${MARKER_DIR}/node_factory_map_generated.ok
            ${GENERATED_MAPS_DIR}/NodeFactoryMap.hpp
     COMMAND ${CMAKE_COMMAND} -E make_directory ${GENERATED_MAPS_DIR}
     COMMAND ${Python3_EXECUTABLE} ${NODE_FACTORY_MAP_SCRIPT}
-    COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_SOURCE_DIR}/node_factory_map_generated.ok
+    COMMAND ${CMAKE_COMMAND} -E touch ${MARKER_DIR}/node_factory_map_generated.ok
     DEPENDS ${NODE_FACTORY_MAP_SCRIPT} ${IMGUI_FUNCTIONS_JSON} ${GENERATED_PARAMS_DIR}/ImGuiBlockParams.hpp
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Generating node factory map"
@@ -103,7 +105,7 @@ add_custom_target(imgui_param_structs
 )
 
 add_custom_target(node_factory_map
-    DEPENDS ${CMAKE_SOURCE_DIR}/node_factory_map_generated.ok
+    DEPENDS ${MARKER_DIR}/node_factory_map_generated.ok
 )
 
 add_custom_target(node_params_map
@@ -119,9 +121,9 @@ add_dependencies(ImGui-Designer imgui_api_info imgui_param_structs node_factory_
 # Define all generated files that should be cleaned
 set(GENERATED_FILES
     # Marker files
-    ${CMAKE_SOURCE_DIR}/node_factory_map_generated.ok
-    ${CMAKE_SOURCE_DIR}/param_structs_generated.ok
-    ${CMAKE_SOURCE_DIR}/node_params_map_generated.ok
+    ${MARKER_DIR}/node_factory_map_generated.ok
+    ${MARKER_DIR}/param_structs_generated.ok
+    ${MARKER_DIR}/node_params_map_generated.ok
 
     # Generated header files (now in src/generated/)
     ${CMAKE_SOURCE_DIR}/src/generated/params/ImGuiBlockParams.hpp

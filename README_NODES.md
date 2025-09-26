@@ -1,9 +1,0 @@
-# ImGui Widgets and Node/Block Types
-
-This file lists all standard ImGui widgets and your custom node/block types. Use this as a reference for what is implemented and what could be added to your node editor.
-
-**Note:** For project rules, workflow guidelines, and coding standards, see `.github/instructions/first.instructions.md`. If there is any conflicting information between this file and `first.instructions.md`, `first.instructions.md` takes precedence.
-
----
-
-If a widget or block is listed above but not yet implemented as a node/block in your editor, consider adding it for feature completeness.
