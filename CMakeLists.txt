@@ -3,6 +3,9 @@
 cmake_minimum_required(VERSION 3.11)
 project(ImGui-Designer LANGUAGES CXX)
 
+# Centralize marker directory & helpers
+include(cmake/Markers.cmake)
+
 # Warn users about proper CMake usage
 if(NOT CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_CURRENT_BINARY_DIR AND NOT CMAKE_DISABLE_SOURCE_CHANGES)
     message(WARNING

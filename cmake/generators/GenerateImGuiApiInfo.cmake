@@ -4,8 +4,6 @@ find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
 set(IMGUI_H_PATH "${CMAKE_SOURCE_DIR}/build/_deps/imgui-src/imgui.h")
 set(API_INFO_OUTPUT_DIR "${CMAKE_SOURCE_DIR}/scripts/output/")
-set(MARKER_DIR "${CMAKE_SOURCE_DIR}/.dev/markers")
-file(MAKE_DIRECTORY ${MARKER_DIR})
 
 
 add_custom_command(
