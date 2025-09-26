@@ -122,6 +122,15 @@ The extension will automatically use `./build.sh` for building and `./build.sh c
 - Runtime compilation and hot-reload using RCC++
 - Export functionality for integration into other projects
 
+## Documentation
+
+Additional design documents and specifications live in the `docs/` directory:
+
+- Extensibility & Customization (`docs/EXTENSIBILITY.md`)
+- Documentation Index (`docs/README.md`)
+
+Future planned docs (placeholders in index): Packs & Distribution, Schema Evolution Policy, Runtime Compilation Architecture, Theming Guidelines.
+
 ## SDL3 selection and audio backends
 
 The build prefers a system-installed SDL3 when available. If not found, it bundles SDL3.

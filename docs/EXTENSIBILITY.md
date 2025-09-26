@@ -1,21 +1,4 @@
-# Extensibility Documentation Moved
-
-The full extensibility and customization design document now lives at:
-
-`docs/EXTENSIBILITY.md`
-
-This stub remains to preserve links and provide a clear redirect.
-
-Sections covered there:
-
-- Groundwork interfaces & registries
-- `uiAdapters` schema field specification
-- Frame hook stages & lifecycle
-- Customization Pack concept & phased rollout
-- Potential schema evolution & safety notes
-
----
-Last updated as part of docs restructuring.# Extensibility (Groundwork)
+# Extensibility (Groundwork)
 
 This document outlines reserved scaffolding for future runtime‑replaceable components in ImGui-Designer. None of the interfaces described here are currently wired into the application logic; they exist so that upcoming schema, pack, and runtime work has stable identifiers to target.
 

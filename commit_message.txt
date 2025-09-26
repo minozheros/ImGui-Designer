@@ -27,3 +27,10 @@ Includes:
 - scripts/validate_manifests.py (descriptor validation hook)
 
 No runtime code yet consumes these; purely structural groundwork.
+
+docs(structure): move extensibility doc into docs/ and add index
+
+- Relocated full `EXTENSIBILITY.md` to `docs/EXTENSIBILITY.md` with root stub pointer for backward compatibility.
+- Added `docs/README.md` as central documentation index.
+- Updated root `README.md` with Documentation section linking to docs.
+- Fixed markdown formatting issues (lists, angle brackets) during move.
