@@ -23,19 +23,9 @@ namespace app::state
         if (prev != imguiCtx)
             ImGui::SetCurrentContext(imguiCtx);
 
-        // Build ini data
-        ImGuiContext &g = *imguiCtx;
-        ImGuiSettingsHandler *ini_handler = ImGui::FindSettingsHandler("Window");
-        (void)ini_handler; // Using top-level API below; keep for reference
-
         size_t out_size = 0;
         const char *ini_data = ImGui::SaveIniSettingsToMemory(&out_size);
-        if (!ini_data || out_size == 0)
-        {
-            if (prev != imguiCtx)
-                ImGui::SetCurrentContext(prev);
-            return false;
-        }
+
         std::ofstream ofs(path, std::ios::binary);
         if (!ofs.is_open())
         {
@@ -43,9 +33,12 @@ namespace app::state
                 ImGui::SetCurrentContext(prev);
             return false;
         }
-        ofs.write(ini_data, static_cast<std::streamsize>(out_size));
+        if (ini_data && out_size > 0)
+        {
+            ofs.write(ini_data, static_cast<std::streamsize>(out_size));
+        }
+        // If empty layout (no windows yet), still succeed with empty file
         ofs.close();
-        // Note: Do not free ini_data; owned by ImGui until next call or context destruction.
 
         if (prev != imguiCtx)
             ImGui::SetCurrentContext(prev);

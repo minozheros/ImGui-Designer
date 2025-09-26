@@ -8,6 +8,7 @@
 #include "ui/panels/FirstRunModal.hpp"
 #include "app/state/AppStateStore.hpp"
 #include "app/state/LayoutStore.hpp"
+#include "app/state/ProjectService.hpp"
 #include "ui/components/MainMenuBar.hpp"
 #include <entt/entt.hpp>
 #include <imgui.h>
@@ -36,6 +37,7 @@ public:
     std::unique_ptr<ui::panels::FirstRunModal> firstRunModal;
     app::state::AppStateStore stateStore;
     app::state::LayoutStore layoutStore;
+    app::state::ProjectService projectService; // scaffold for new/open/save actions
     std::unique_ptr<ui::components::MainMenuBar> mainMenuBar;
 
     AppContext() = default;

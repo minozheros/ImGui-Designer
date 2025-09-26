@@ -1,0 +1,20 @@
+feat(layout): implement LayoutStore persistence and enable tests
+
+MOTIVATION:
+Provide persistent docking/window layout save & restore ensuring future session continuity and enabling further UI state features.
+
+CHANGES:
+- Implement LayoutStore save/load/reset using ImGui ini memory APIs
+- Treat empty ImGui state as successful save (creates empty file)
+- Unquarantine and run LayoutStore tests (removed [wip] and guard)
+- Add CMake option IMGUIDESIGNER_ENABLE_WIP_TESTS (context for forward-spec gating)
+
+RULES REFERENCED:
+- TEST-01 (tests added/updated for behavior change)
+- COMMIT-01 (prepare commit message marker)
+- ARCH-01 (encapsulated UI/state logic)
+- CLEAN-01 (no dead code introduced)
+
+NOTES:
+TranslationManager still forward-spec; future commit will implement file-backed loading.
+

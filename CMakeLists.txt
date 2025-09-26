@@ -24,7 +24,9 @@ endif()
 
 set(CMAKE_CXX_STANDARD 23)
 
-option(IMGUIDESIGNER_ENABLE_TESTS "Enable building tests (Catch2)" OFF)
+# Default to ON so tests are built in CI / local unless explicitly disabled
+option(IMGUIDESIGNER_ENABLE_TESTS "Enable building tests (Catch2)" ON)
+option(IMGUIDESIGNER_ENABLE_WIP_TESTS "Compile tests tagged [wip] (forward-spec, may fail)" OFF)
 
 # Enable testing (optional)
 if(IMGUIDESIGNER_ENABLE_TESTS)
@@ -49,6 +51,14 @@ if(IMGUIDESIGNER_FETCH_OFFICIAL_PACKS)
 endif()
 include(cmake/ManifestValidation.cmake)
 option(IMGUIDESIGNER_VALIDATE_ON_BUILD "Run manifest validation as part of build" ON)
+
+# Optionally validate rule sync (Markdown vs YAML) each build
+option(IMGUIDESIGNER_VALIDATE_RULES_ON_BUILD "Validate that rules Markdown and YAML mirror are in sync" ON)
+
+# Optional: always provide a target to (re)generate the machine-readable rules mirror.
+# This does NOT run automatically unless IMGUIDESIGNER_GENERATE_RULES_ON_BUILD is ON.
+option(IMGUIDESIGNER_GENERATE_RULES_TARGET "Add the generate_rules_yaml target for manual regeneration of rules.yml" ON)
+option(IMGUIDESIGNER_GENERATE_RULES_ON_BUILD "Automatically regenerate rules.yml from canonical markdown before validation/build" OFF)
 
 
 
@@ -238,7 +248,8 @@ add_subdirectory(third_party/imgui-node-editor)
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS src/*.cpp src/*.hpp)
 list(REMOVE_ITEM SRC_FILES ${CMAKE_SOURCE_DIR}/src/main.cpp)
 if(IMGUIDESIGNER_ENABLE_TESTS)
-    file(GLOB TEST_SOURCES tests/test_*.cpp)
+    # Use CONFIGURE_DEPENDS and recurse so newly added tests in subdirs are picked up automatically
+    file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS tests/test_*.cpp)
 endif()
 
 
@@ -252,6 +263,9 @@ if(IMGUIDESIGNER_ENABLE_TESTS)
         ${TEST_SOURCES}
         ${SRC_FILES}   
     )
+    if(IMGUIDESIGNER_ENABLE_WIP_TESTS)
+        target_compile_definitions(ImGui-Designer_tests PRIVATE ENABLE_WIP_TESTS)
+    endif()
 endif()
 
 # =============================
@@ -352,7 +366,9 @@ endif()
 # =============================
 if(IMGUIDESIGNER_ENABLE_TESTS)
     include(${Catch2_SOURCE_DIR}/extras/Catch.cmake)
-    catch_discover_tests(ImGui-Designer_tests)
+    # Exclude forward-spec / not-yet-implemented tests tagged [wip]
+    set(CATCH2_TEST_SPEC "~[wip]")
+    catch_discover_tests(ImGui-Designer_tests TEST_SPEC "${CATCH2_TEST_SPEC}")
 endif()
 
 # =============================
@@ -376,6 +392,42 @@ if(IMGUIDESIGNER_VALIDATE_ON_BUILD)
     add_dependencies(ImGui-Designer validate_manifests)
     if(IMGUIDESIGNER_ENABLE_TESTS)
         add_dependencies(ImGui-Designer_tests validate_manifests)
+    endif()
+endif()
+
+if(IMGUIDESIGNER_VALIDATE_RULES_ON_BUILD)
+    find_package(Python3 COMPONENTS Interpreter REQUIRED)
+    add_custom_target(validate_rules
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/validate_rules_sync.py
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Validating rule sync (Markdown vs YAML)"
+        VERBATIM
+    )
+    add_dependencies(ImGui-Designer validate_rules)
+    if(IMGUIDESIGNER_ENABLE_TESTS)
+        add_dependencies(ImGui-Designer_tests validate_rules)
+    endif()
+endif()
+
+# Provide optional generation target for rules.yml mirror
+if(IMGUIDESIGNER_GENERATE_RULES_TARGET OR IMGUIDESIGNER_GENERATE_RULES_ON_BUILD)
+    find_package(Python3 COMPONENTS Interpreter REQUIRED)
+    add_custom_target(generate_rules_yaml
+        COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/generate_rules_yaml.py
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Regenerating rules.yml from canonical markdown"
+        VERBATIM
+    )
+endif()
+
+# If automatic regeneration requested, wire generation before validation / main build
+if(IMGUIDESIGNER_GENERATE_RULES_ON_BUILD)
+    if(TARGET validate_rules)
+        add_dependencies(validate_rules generate_rules_yaml)
+    endif()
+    add_dependencies(ImGui-Designer generate_rules_yaml)
+    if(IMGUIDESIGNER_ENABLE_TESTS AND TARGET ImGui-Designer_tests)
+        add_dependencies(ImGui-Designer_tests generate_rules_yaml)
     endif()
 endif()
 

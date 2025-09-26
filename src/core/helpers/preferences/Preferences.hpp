@@ -36,12 +36,22 @@ public:
         }
         if (ptr->is_null())
             return default_value;
-        try
-        {
+        // Enforce strict type matching to avoid implicit conversions (e.g. bool -> int)
+        try {
+            // For integral T we accept only true integer JSON types (explicitly reject booleans)
+            if constexpr (std::is_same_v<T, int>) {
+                if (!ptr->is_number_integer()) return default_value; // excludes bool already
+            } else if constexpr (std::is_same_v<T, double> || std::is_same_v<T, float>) {
+                // Accept any numeric (integer or floating) but not boolean
+                if (!ptr->is_number()) return default_value;
+            } else if constexpr (std::is_same_v<T, bool>) {
+                if (!ptr->is_boolean()) return default_value;
+            } else if constexpr (std::is_same_v<T, std::string>) {
+                if (!ptr->is_string()) return default_value;
+            }
+            // Perform the extraction (will throw if incompatible)
             return ptr->get<T>();
-        }
-        catch (...)
-        {
+        } catch (...) {
             return default_value;
         }
     }

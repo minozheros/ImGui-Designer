@@ -1,0 +1,1104 @@
+version: 2
+generated: true
+schema: rules-schema-v2
+rules:
+- id: META-01
+  level: MUST
+  title: Always reread this file plus any explicit policy doc after every 3 file edits OR before starting
+    a new feature/refactor.
+  short_title: Always reread this file plus any
+  description: Always reread this file plus any explicit policy doc after every 3 file edits OR before
+    starting a new feature/refactor.
+  section: 1. Meta & Rule Compliance
+  tags:
+  - compliance
+  - meta
+  - rule
+  since_version: null
+- id: ARCH-01
+  level: MUST
+  title: UI/component logic lives in dedicated classes with `render()/update()`; no free-form ImGui in
+    globals / `main.cpp`.
+  short_title: UI component logic lives dedicated classes
+  description: UI/component logic lives in dedicated classes with `render()/update()`; no free-form ImGui
+    in globals / `main.cpp`.
+  section: 2. Architecture & Encapsulation
+  tags:
+  - arch
+  - architecture
+  - encapsulation
+  since_version: null
+- id: GEN-01
+  level: MUST
+  title: Generated artifacts reside only under `src/generated/`; modify generators, not outputs.
+  short_title: Generated artifacts reside only under src
+  description: Generated artifacts reside only under `src/generated/`; modify generators, not outputs.
+  section: 2. Architecture & Encapsulation
+  tags:
+  - architecture
+  - encapsulation
+  - gen
+  since_version: null
+- id: CMK-01
+  level: MUST
+  title: CMake only; never call `make` directly.
+  short_title: CMake only never call make directly
+  description: CMake only; never call `make` directly.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - cmk
+  - coding
+  - mandatory
+  - standards
+  since_version: null
+- id: OWN-01
+  level: MUST
+  title: RAII + smart pointers; avoid raw owning `new/delete`.
+  short_title: RAII smart pointers avoid raw owning
+  description: RAII + smart pointers; avoid raw owning `new/delete`.
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - code
+  - own
+  - quality
+  - review
+  since_version: null
+- id: LANG-01
+  level: SHOULD
+  title: Use C++23 features that clarify intent (ranges, `expected`, `string_view`, `span`).
+  short_title: Use C 23 features that clarify
+  description: Use C++23 features that clarify intent (ranges, `expected`, `string_view`, `span`).
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - lang
+  - mandatory
+  - standards
+  since_version: null
+- id: LOG-01
+  level: MUST
+  title: Loop-intensive logs <= debug unless failure-critical (already defined above; reaffirmed).
+  short_title: Loop intensive logs debug unless failure
+  description: Loop-intensive logs <= debug unless failure-critical (already defined above; reaffirmed).
+  section: 10. Logging
+  tags:
+  - log
+  - logging
+  since_version: null
+- id: ERR-01
+  level: MUST
+  title: Use `expected`/documented error channels over sentinel codes.
+  short_title: Use expected documented error channels over
+  description: Use `expected`/documented error channels over sentinel codes.
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - code
+  - err
+  - quality
+  - review
+  since_version: null
+- id: NAM-01
+  level: MUST
+  title: Filenames & class names PascalCase.
+  short_title: Filenames class names PascalCase
+  description: Filenames & class names PascalCase.
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - code
+  - nam
+  - quality
+  - review
+  since_version: null
+- id: REV-01
+  level: MUST
+  title: Split large functions (> ~60 lines) unless cohesive & linear.
+  short_title: Split large functions 60 lines unless
+  description: Split large functions (> ~60 lines) unless cohesive & linear.
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - code
+  - quality
+  - rev
+  - review
+  since_version: null
+- id: COMMIT-01
+  level: MUST
+  title: Prepare commit message in `.dev/markers/commit_message.txt` (overwrite each time) before committing.
+  short_title: Prepare commit message dev markers commitmessage
+  description: Prepare commit message in `.dev/markers/commit_message.txt` (overwrite each time) before
+    committing.
+  section: 3.1 Commit Message Flow
+  tags:
+  - commit
+  - flow
+  - message
+  since_version: null
+- id: MARK-01
+  level: MUST
+  title: All sentinel markers live in `.dev/markers/`.
+  short_title: All sentinel markers live dev markers
+  description: All sentinel markers live in `.dev/markers/`.
+  section: 3.2 Marker Directory
+  tags:
+  - directory
+  - mark
+  - marker
+  since_version: null
+- id: TEST-01
+  level: MUST
+  title: Update/add tests for behavior changes (mapping, schemas, generation).
+  short_title: Update add tests behavior changes mapping
+  description: Update/add tests for behavior changes (mapping, schemas, generation).
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - code
+  - quality
+  - review
+  - test
+  since_version: null
+- id: CONSIST-01
+  level: MUST
+  title: Update this file in same commit when rule changes.
+  short_title: Update this file same commit when
+  description: Update this file in same commit when rule changes.
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - code
+  - consist
+  - quality
+  - review
+  since_version: null
+- id: CLEAN-01
+  level: MUST
+  title: Remove dead / commented-out code immediately.
+  short_title: Remove dead commented out code immediately
+  description: Remove dead / commented-out code immediately.
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - clean
+  - code
+  - quality
+  - review
+  since_version: null
+- id: META-02
+  level: SHOULD
+  title: 'When unclear: make a brief explicit assumption OR ask a focused question if risk of rework is
+    high.'
+  short_title: When unclear make brief explicit assumption
+  description: 'When unclear: make a brief explicit assumption OR ask a focused question if risk of rework
+    is high.'
+  section: 1. Meta & Rule Compliance
+  tags:
+  - compliance
+  - meta
+  - rule
+  since_version: null
+- id: META-03
+  level: MUST
+  title: "Promote recurring tacit practices here\u2014no hidden tribal knowledge."
+  short_title: Promote recurring tacit practices here no
+  description: "Promote recurring tacit practices here\u2014no hidden tribal knowledge."
+  section: 1. Meta & Rule Compliance
+  tags:
+  - compliance
+  - meta
+  - rule
+  since_version: null
+- id: SCOPE-01
+  level: MUST
+  title: No new external services/dependencies without rationale & documentation.
+  short_title: No new external services dependencies without
+  description: No new external services/dependencies without rationale & documentation.
+  section: 1.1 Scope Boundaries
+  tags:
+  - boundaries
+  - scope
+  since_version: null
+- id: SCOPE-02
+  level: SHOULD
+  title: Avoid speculative abstraction; refactor when duplication or churn appears.
+  short_title: Avoid speculative abstraction refactor when duplication
+  description: Avoid speculative abstraction; refactor when duplication or churn appears.
+  section: 1.1 Scope Boundaries
+  tags:
+  - boundaries
+  - scope
+  since_version: null
+- id: ARCH-02
+  level: SHOULD
+  title: Single Responsibility per class; split when concerns diverge (e.g., UI vs persistence).
+  short_title: Single Responsibility per class split when
+  description: Single Responsibility per class; split when concerns diverge (e.g., UI vs persistence).
+  section: 2. Architecture & Encapsulation
+  tags:
+  - arch
+  - architecture
+  - encapsulation
+  since_version: null
+- id: COMMIT-02
+  level: MUST
+  title: 'Use imperative scoped prefixes: `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `perf:`, `test:`,
+    `build:`, `ci:`.'
+  short_title: Use imperative scoped prefixes feat fix
+  description: 'Use imperative scoped prefixes: `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `perf:`,
+    `test:`, `build:`, `ci:`.'
+  section: 3.1 Commit Message Flow
+  tags:
+  - commit
+  - flow
+  - message
+  since_version: null
+- id: COMMIT-03
+  level: SHOULD
+  title: Split multi-topic changes unless atomic by necessity.
+  short_title: Split multi topic changes unless atomic
+  description: Split multi-topic changes unless atomic by necessity.
+  section: 3.1 Commit Message Flow
+  tags:
+  - commit
+  - flow
+  - message
+  since_version: null
+- id: COMMIT-04
+  level: MUST
+  title: Use `git commit -F .dev/markers/commit_message.txt`.
+  short_title: Use git commit F dev markers
+  description: Use `git commit -F .dev/markers/commit_message.txt`.
+  section: 3.1 Commit Message Flow
+  tags:
+  - commit
+  - flow
+  - message
+  since_version: null
+- id: MARK-02
+  level: MUST
+  title: 'Naming pattern: `<feature>_<artifact>_generated.ok`.'
+  short_title: Naming pattern feature artifact generated ok
+  description: 'Naming pattern: `<feature>_<artifact>_generated.ok`.'
+  section: 3.2 Marker Directory
+  tags:
+  - directory
+  - mark
+  - marker
+  since_version: null
+- id: MARK-03
+  level: MUST
+  title: Touch marker only after successful generation sequence.
+  short_title: Touch marker only after successful generation
+  description: Touch marker only after successful generation sequence.
+  section: 3.2 Marker Directory
+  tags:
+  - directory
+  - mark
+  - marker
+  since_version: null
+- id: MARK-04
+  level: MAY
+  title: Add new markers sparingly; prefer leveraging existing ones.
+  short_title: Add new markers sparingly prefer leveraging
+  description: Add new markers sparingly; prefer leveraging existing ones.
+  section: 3.2 Marker Directory
+  tags:
+  - directory
+  - mark
+  - marker
+  since_version: null
+- id: MARK-05
+  level: SHOULD
+  title: Extend generator CMake; reference `MARKER_DIR`.
+  short_title: Extend generator CMake reference MARKERDIR
+  description: Extend generator CMake; reference `MARKER_DIR`.
+  section: 3.3 Adding a New Marker
+  tags:
+  - a
+  - adding
+  - mark
+  - new
+  since_version: null
+- id: MARK-06
+  level: MUST
+  title: Add custom command producing outputs + `touch` marker.
+  short_title: Add custom command producing outputs touch
+  description: Add custom command producing outputs + `touch` marker.
+  section: 3.3 Adding a New Marker
+  tags:
+  - a
+  - adding
+  - mark
+  - new
+  since_version: null
+- id: MARK-07
+  level: SHOULD
+  title: Add dependent custom target if other targets rely on outputs.
+  short_title: Add dependent custom target if other
+  description: Add dependent custom target if other targets rely on outputs.
+  section: 3.3 Adding a New Marker
+  tags:
+  - a
+  - adding
+  - mark
+  - new
+  since_version: null
+- id: MARK-08
+  level: MUST
+  title: Register marker for clean removal if appropriate.
+  short_title: Register marker clean removal if appropriate
+  description: Register marker for clean removal if appropriate.
+  section: 3.3 Adding a New Marker
+  tags:
+  - a
+  - adding
+  - mark
+  - new
+  since_version: null
+- id: INC-01
+  level: MUST
+  title: Group includes first; minimal, no circular band-aid includes.
+  short_title: Group includes first minimal no circular
+  description: Group includes first; minimal, no circular band-aid includes.
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - code
+  - inc
+  - quality
+  - review
+  since_version: null
+- id: NAM-02
+  level: MUST
+  title: Functions & variables camelCase.
+  short_title: Functions variables camelCase
+  description: Functions & variables camelCase.
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - code
+  - nam
+  - quality
+  - review
+  since_version: null
+- id: NAM-03
+  level: MUST
+  title: Macros & constants UPPER_SNAKE_CASE.
+  short_title: Macros constants UPPERSNAKECASE
+  description: Macros & constants UPPER_SNAKE_CASE.
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - code
+  - nam
+  - quality
+  - review
+  since_version: null
+- id: NAM-04
+  level: SHOULD
+  title: Consistent acronym casing (e.g., `HttpClient`).
+  short_title: Consistent acronym casing e g HttpClient
+  description: Consistent acronym casing (e.g., `HttpClient`).
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - code
+  - nam
+  - quality
+  - review
+  since_version: null
+- id: ENUM-01
+  level: MUST
+  title: Use `enum class`.
+  short_title: Use enum class
+  description: Use `enum class`.
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - code
+  - enum
+  - quality
+  - review
+  since_version: null
+- id: CONST-01
+  level: SHOULD
+  title: Apply `constexpr` / `const` pervasively where stable & beneficial.
+  short_title: Apply constexpr const pervasively where stable
+  description: Apply `constexpr` / `const` pervasively where stable & beneficial.
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - code
+  - const
+  - quality
+  - review
+  since_version: null
+- id: VIRT-01
+  level: MUST
+  title: Mark overrides `override`; use `final` when no further derivation intended.
+  short_title: Mark overrides override use final when
+  description: Mark overrides `override`; use `final` when no further derivation intended.
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - code
+  - quality
+  - review
+  - virt
+  since_version: null
+- id: REV-02
+  level: MUST
+  title: "Remove duplication\u2014extract helper or template."
+  short_title: Remove duplication extract helper template
+  description: "Remove duplication\u2014extract helper or template."
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - code
+  - quality
+  - rev
+  - review
+  since_version: null
+- id: CTRL-01
+  level: SHOULD
+  title: Favor early returns over deep nesting.
+  short_title: Favor early returns over deep nesting
+  description: Favor early returns over deep nesting.
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - code
+  - ctrl
+  - quality
+  - review
+  since_version: null
+- id: TEST-02
+  level: MUST
+  title: "Update golden tests intentionally only\u2014never via incidental regen."
+  short_title: Update golden tests intentionally only never
+  description: "Update golden tests intentionally only\u2014never via incidental regen."
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - code
+  - quality
+  - review
+  - test
+  since_version: null
+- id: DOC-01
+  level: SHOULD
+  title: "Other docs summarize & link back\u2014no divergence."
+  short_title: Other docs summarize link back no
+  description: "Other docs summarize & link back\u2014no divergence."
+  section: 4. Code Quality & Review Checklist
+  tags:
+  - code
+  - doc
+  - quality
+  - review
+  since_version: null
+- id: ACT-01
+  level: MUST
+  title: Perform obvious follow-ups (rebuild, regenerate) without prompting.
+  short_title: Perform obvious follow ups rebuild regenerate
+  description: Perform obvious follow-ups (rebuild, regenerate) without prompting.
+  section: 5. Proactive Action Principles
+  tags:
+  - act
+  - action
+  - principles
+  - proactive
+  since_version: null
+- id: ACT-02
+  level: MUST
+  title: Inspect `build/build.log` on build failure; no guessing.
+  short_title: Inspect build build log build failure
+  description: Inspect `build/build.log` on build failure; no guessing.
+  section: 5. Proactive Action Principles
+  tags:
+  - act
+  - action
+  - principles
+  - proactive
+  since_version: null
+- id: ACT-03
+  level: SHOULD
+  title: "Don\u2019t delegate steps you can execute locally."
+  short_title: Don t delegate steps you can
+  description: "Don\u2019t delegate steps you can execute locally."
+  section: 5. Proactive Action Principles
+  tags:
+  - act
+  - action
+  - principles
+  - proactive
+  since_version: null
+- id: COMMS-01
+  level: MUST
+  title: "Concise, actionable responses\u2014no fluff."
+  short_title: Concise actionable responses no fluff
+  description: "Concise, actionable responses\u2014no fluff."
+  section: 6. Communication Protocol
+  tags:
+  - comms
+  - communication
+  - protocol
+  since_version: null
+- id: COMMS-02
+  level: MUST
+  title: Admit uncertainty explicitly + next info to gather.
+  short_title: Admit uncertainty explicitly next info gather
+  description: Admit uncertainty explicitly + next info to gather.
+  section: 6. Communication Protocol
+  tags:
+  - comms
+  - communication
+  - protocol
+  since_version: null
+- id: COMMS-03
+  level: SHOULD
+  title: "Offer \u22643 relevant follow-up suggestions."
+  short_title: Offer 3 relevant follow up suggestions
+  description: "Offer \u22643 relevant follow-up suggestions."
+  section: 6. Communication Protocol
+  tags:
+  - comms
+  - communication
+  - protocol
+  since_version: null
+- id: COMMS-04
+  level: MUST
+  title: Do not mention being an AI.
+  short_title: Do not mention being AI
+  description: Do not mention being an AI.
+  section: 6. Communication Protocol
+  tags:
+  - comms
+  - communication
+  - protocol
+  since_version: null
+- id: CMK-02
+  level: MUST
+  title: "`.cpp` under `src/` auto-included\u2014no manual list edits."
+  short_title: cpp under src auto included no
+  description: "`.cpp` under `src/` auto-included\u2014no manual list edits."
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - cmk
+  - coding
+  - mandatory
+  - standards
+  since_version: null
+- id: HDR-01
+  level: MUST
+  title: 'Put non-trivial logic in `.cpp`; headers: declarations, trivial inline, templates only.'
+  short_title: Put non trivial logic cpp headers
+  description: 'Put non-trivial logic in `.cpp`; headers: declarations, trivial inline, templates only.'
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - hdr
+  - mandatory
+  - standards
+  since_version: null
+- id: LIB-01
+  level: MUST
+  title: 'Primary libs: ImGui, ImPlot, spdlog, fmt, nlohmann::json, EnTT, Catch2, RCC++ (introduce others
+    only per SCOPE-01).'
+  short_title: Primary libs ImGui ImPlot spdlog fmt
+  description: 'Primary libs: ImGui, ImPlot, spdlog, fmt, nlohmann::json, EnTT, Catch2, RCC++ (introduce
+    others only per SCOPE-01).'
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - lib
+  - mandatory
+  - standards
+  since_version: null
+- id: PAT-01
+  level: SHOULD
+  title: Favor composition; inheritance only when polymorphism is needed.
+  short_title: Favor composition inheritance only when polymorphism
+  description: Favor composition; inheritance only when polymorphism is needed.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - pat
+  - standards
+  since_version: null
+- id: OWN-02
+  level: MUST
+  title: Express ownership explicitly; prefer `unique_ptr` over `shared_ptr` unless shared semantics required.
+  short_title: Express ownership explicitly prefer uniqueptr over
+  description: Express ownership explicitly; prefer `unique_ptr` over `shared_ptr` unless shared semantics
+    required.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - own
+  - standards
+  since_version: null
+- id: VIEW-01
+  level: MUST
+  title: Use `string_view` / `span` for non-owning views with safe lifetimes.
+  short_title: Use stringview span non owning views
+  description: Use `string_view` / `span` for non-owning views with safe lifetimes.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - standards
+  - view
+  since_version: null
+- id: UTIL-01
+  level: SHOULD
+  title: Prefer `variant`, `optional`, `filesystem`, `format`, `ranges` where they simplify code.
+  short_title: Prefer variant optional filesystem format ranges
+  description: Prefer `variant`, `optional`, `filesystem`, `format`, `ranges` where they simplify code.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - standards
+  - util
+  since_version: null
+- id: OWN-03
+  level: MUST
+  title: No raw owning pointers / manual memory management.
+  short_title: No raw owning pointers manual memory
+  description: No raw owning pointers / manual memory management.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - own
+  - standards
+  since_version: null
+- id: STATE-01
+  level: SHOULD
+  title: Avoid global mutable singletons (registries excepted).
+  short_title: Avoid global mutable singletons registries excepted
+  description: Avoid global mutable singletons (registries excepted).
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - standards
+  - state
+  since_version: null
+- id: MACRO-01
+  level: SHOULD
+  title: Avoid macro overuse for logic substitution.
+  short_title: Avoid macro overuse logic substitution
+  description: Avoid macro overuse for logic substitution.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - macro
+  - mandatory
+  - standards
+  since_version: null
+- id: NAM-05
+  level: SHOULD
+  title: Maintain singular/plural naming clarity.
+  short_title: Maintain singular plural naming clarity
+  description: Maintain singular/plural naming clarity.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - nam
+  - standards
+  since_version: null
+- id: REN-01
+  level: MUST
+  title: Rename file when class name changes; keep sync.
+  short_title: Rename file when class name changes
+  description: Rename file when class name changes; keep sync.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - ren
+  - standards
+  since_version: null
+- id: REN-02
+  level: MUST
+  title: Update all references when symbol name changes.
+  short_title: Update all references when symbol name
+  description: Update all references when symbol name changes.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - ren
+  - standards
+  since_version: null
+- id: CONST-02
+  level: SHOULD
+  title: Use `static`, `inline`, and `constexpr` appropriately.
+  short_title: Use static inline constexpr appropriately
+  description: Use `static`, `inline`, and `constexpr` appropriately.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - const
+  - mandatory
+  - standards
+  since_version: null
+- id: VIRT-02
+  level: MUST
+  title: "Correct access specifier usage\u2014encapsulate internals."
+  short_title: Correct access specifier usage encapsulate internals
+  description: "Correct access specifier usage\u2014encapsulate internals."
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - standards
+  - virt
+  since_version: null
+- id: ASK-01
+  level: MUST
+  title: Clarify genuinely ambiguous requirements before implementing risky assumptions.
+  short_title: Clarify genuinely ambiguous requirements before implementing
+  description: Clarify genuinely ambiguous requirements before implementing risky assumptions.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - ask
+  - coding
+  - mandatory
+  - standards
+  since_version: null
+- id: FIX-01
+  level: MUST
+  title: Investigate & fix surfaced issues or document limitation.
+  short_title: Investigate fix surfaced issues document limitation
+  description: Investigate & fix surfaced issues or document limitation.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - fix
+  - mandatory
+  - standards
+  since_version: null
+- id: SCOPE-03
+  level: MUST
+  title: Decline out-of-scope / policy-violating requests politely with rationale.
+  short_title: Decline out scope policy violating requests
+  description: Decline out-of-scope / policy-violating requests politely with rationale.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - scope
+  - standards
+  since_version: null
+- id: REV-03
+  level: SHOULD
+  title: Break up classes accruing multiple responsibilities.
+  short_title: Break up classes accruing multiple responsibilities
+  description: Break up classes accruing multiple responsibilities.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - rev
+  - standards
+  since_version: null
+- id: REV-04
+  level: SHOULD
+  title: Refactor overly long / complex functions.
+  short_title: Refactor overly long complex functions
+  description: Refactor overly long / complex functions.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - rev
+  - standards
+  since_version: null
+- id: CLAR-01
+  level: SHOULD
+  title: Improve readability when code is hard to parse.
+  short_title: Improve readability when code is hard
+  description: Improve readability when code is hard to parse.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - clar
+  - coding
+  - mandatory
+  - standards
+  since_version: null
+- id: QUAL-01
+  level: MUST
+  title: Align with modern C++ best practices (see 7.1 core summary + appendix).
+  short_title: Align with modern C best practices
+  description: Align with modern C++ best practices (see 7.1 core summary + appendix).
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - qual
+  - standards
+  since_version: null
+- id: STYLE-01
+  level: MUST
+  title: Match project conventions before adding new style patterns.
+  short_title: Match project conventions before adding new
+  description: Match project conventions before adding new style patterns.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - standards
+  - style
+  since_version: null
+- id: PERF-01
+  level: SHOULD
+  title: Optimize only after measuring; eliminate pathological inefficiencies.
+  short_title: Optimize only after measuring eliminate pathological
+  description: Optimize only after measuring; eliminate pathological inefficiencies.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - perf
+  - standards
+  since_version: null
+- id: SEC-01
+  level: SHOULD
+  title: Elevate safety/security concerns (bounds, lifetime, ownership) proactively.
+  short_title: Elevate safety security concerns bounds lifetime
+  description: Elevate safety/security concerns (bounds, lifetime, ownership) proactively.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - sec
+  - standards
+  since_version: null
+- id: MEM-01
+  level: MUST
+  title: Resolve improper memory handling (ownership leaks, dangling, races).
+  short_title: Resolve improper memory handling ownership leaks
+  description: Resolve improper memory handling (ownership leaks, dangling, races).
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - mem
+  - standards
+  since_version: null
+- id: THREAD-01
+  level: MUST
+  title: Ensure thread safety for shared mutable state or confine state.
+  short_title: Ensure thread safety shared mutable state
+  description: Ensure thread safety for shared mutable state or confine state.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - standards
+  - thread
+  since_version: null
+- id: ERR-02
+  level: SHOULD
+  title: Strengthen error handling paths for robustness.
+  short_title: Strengthen error handling paths robustness
+  description: Strengthen error handling paths for robustness.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - err
+  - mandatory
+  - standards
+  since_version: null
+- id: LOG-02
+  level: SHOULD
+  title: Improve logging clarity if diagnostics are poor.
+  short_title: Improve logging clarity if diagnostics are
+  description: Improve logging clarity if diagnostics are poor.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - log
+  - mandatory
+  - standards
+  since_version: null
+- id: TEST-03
+  level: SHOULD
+  title: Expand tests where coverage is weak in touched areas.
+  short_title: Expand tests where coverage is weak
+  description: Expand tests where coverage is weak in touched areas.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - standards
+  - test
+  since_version: null
+- id: DOC-02
+  level: SHOULD
+  title: Improve inline/docs clarity when modifying complex logic.
+  short_title: Improve inline docs clarity when modifying
+  description: Improve inline/docs clarity when modifying complex logic.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - doc
+  - mandatory
+  - standards
+  since_version: null
+- id: VCS-01
+  level: SHOULD
+  title: "Keep commit history clean\u2014avoid unrelated changes in same commit."
+  short_title: Keep commit history clean avoid unrelated
+  description: "Keep commit history clean\u2014avoid unrelated changes in same commit."
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - mandatory
+  - standards
+  - vcs
+  since_version: null
+- id: DEPLOY-01
+  level: SHOULD
+  title: Preserve deploy/runtime stability; avoid breaking scripts inadvertently.
+  short_title: Preserve deploy runtime stability avoid breaking
+  description: Preserve deploy/runtime stability; avoid breaking scripts inadvertently.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - deploy
+  - mandatory
+  - standards
+  since_version: null
+- id: IMPROVE-01
+  level: MUST
+  title: Leave code at least slightly better than you found it.
+  short_title: Leave code least slightly better than
+  description: Leave code at least slightly better than you found it.
+  section: 7. Coding Standards (Mandatory Core)
+  tags:
+  - coding
+  - improve
+  - mandatory
+  - standards
+  since_version: null
+- id: HIST-01
+  level: MUST
+  title: Keep commits small & single-purpose.
+  short_title: Keep commits small single purpose
+  description: Keep commits small & single-purpose.
+  section: 8. Change Management & History Hygiene
+  tags:
+  - change
+  - hist
+  - history
+  - management
+  since_version: null
+- id: HIST-02
+  level: MUST
+  title: Avoid breaking functionality unless refactor scope explicitly allows.
+  short_title: Avoid breaking functionality unless refactor scope
+  description: Avoid breaking functionality unless refactor scope explicitly allows.
+  section: 8. Change Management & History Hygiene
+  tags:
+  - change
+  - hist
+  - history
+  - management
+  since_version: null
+- id: HIST-03
+  level: SHOULD
+  title: "Use `docs/Notes.md` for historical/architectural rationale only\u2014rules stay here."
+  short_title: Use docs Notes md historical architectural
+  description: "Use `docs/Notes.md` for historical/architectural rationale only\u2014rules stay here."
+  section: 8. Change Management & History Hygiene
+  tags:
+  - change
+  - hist
+  - history
+  - management
+  since_version: null
+- id: CTX-01
+  level: SHOULD
+  title: Select the most relevant file autonomously when low risk of divergence.
+  short_title: Select most relevant file autonomously when
+  description: Select the most relevant file autonomously when low risk of divergence.
+  section: 9. Contextual File Selection
+  tags:
+  - contextual
+  - ctx
+  - file
+  - selection
+  since_version: null
+- id: CTX-02
+  level: SHOULD
+  title: Ask only when multiple plausible targets materially diverge.
+  short_title: Ask only when multiple plausible targets
+  description: Ask only when multiple plausible targets materially diverge.
+  section: 9. Contextual File Selection
+  tags:
+  - contextual
+  - ctx
+  - file
+  - selection
+  since_version: null
+- id: CTX-03
+  level: MUST
+  title: Offer alternative approaches when trade-offs are meaningful.
+  short_title: Offer alternative approaches when trade offs
+  description: Offer alternative approaches when trade-offs are meaningful.
+  section: 9. Contextual File Selection
+  tags:
+  - contextual
+  - ctx
+  - file
+  - selection
+  since_version: null
+- id: LOG-03
+  level: MUST
+  title: 'Central log: `build/ImGui-Designer.log` captures all levels.'
+  short_title: Central log build ImGui Designer log
+  description: 'Central log: `build/ImGui-Designer.log` captures all levels.'
+  section: 10. Logging
+  tags:
+  - log
+  - logging
+  since_version: null
+- id: LOG-04
+  level: MUST
+  title: Dedup via `src/core/helpers/init/spdlog_dedup.hpp`; do not reimplement filtering.
+  short_title: Dedup src core helpers init spdlogdedup
+  description: Dedup via `src/core/helpers/init/spdlog_dedup.hpp`; do not reimplement filtering.
+  section: 10. Logging
+  tags:
+  - log
+  - logging
+  since_version: null
+- id: GEN-02
+  level: MUST
+  title: Do not hand-edit generated headers under `src/generated/`.
+  short_title: Do not hand edit generated headers
+  description: Do not hand-edit generated headers under `src/generated/`.
+  section: 11. Generated Files Policy
+  tags:
+  - files
+  - gen
+  - generated
+  - policy
+  since_version: null
+- id: GEN-03
+  level: MUST
+  title: Modify scripts in `scripts/` then regenerate.
+  short_title: Modify scripts scripts then regenerate
+  description: Modify scripts in `scripts/` then regenerate.
+  section: 11. Generated Files Policy
+  tags:
+  - files
+  - gen
+  - generated
+  - policy
+  since_version: null
+- id: GEN-04
+  level: SHOULD
+  title: Clean stale artifacts (`clean_generated`) before regen if drift suspected.
+  short_title: Clean stale artifacts cleangenerated before regen
+  description: Clean stale artifacts (`clean_generated`) before regen if drift suspected.
+  section: 11. Generated Files Policy
+  tags:
+  - files
+  - gen
+  - generated
+  - policy
+  since_version: null

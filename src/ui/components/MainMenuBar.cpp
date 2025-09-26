@@ -46,23 +46,24 @@ namespace ui::components
     {
         if (ImGui::MenuItem(TR("menu.file.new").c_str(), "Ctrl+N"))
         {
-            // TODO: implement new project/session. Placeholder.
-            spdlog::info("File > New invoked");
+            ctx.projectService.newProject();
         }
         if (ImGui::MenuItem(TR("menu.file.open").c_str(), "Ctrl+O"))
         {
-            // TODO: implement file dialog or project open
-            spdlog::info("File > Open invoked");
+            // Placeholder: real implementation will open a file dialog. For now no-op.
+            spdlog::info("File > Open selected (dialog not yet implemented)");
         }
         if (ImGui::MenuItem(TR("menu.file.save").c_str(), "Ctrl+S"))
         {
-            // TODO: implement save project/session
-            spdlog::info("File > Save invoked");
+            if (!ctx.projectService.saveProject())
+            {
+                spdlog::info("File > Save fell back (likely requires Save As)");
+            }
         }
         if (ImGui::MenuItem(TR("menu.file.save_as").c_str(), "Ctrl+Shift+S"))
         {
-            // TODO
-            spdlog::info("File > Save As invoked");
+            // Placeholder: would prompt for path; we simulate a no-op.
+            spdlog::info("File > Save As selected (dialog not yet implemented)");
         }
         ImGui::Separator();
         if (ImGui::MenuItem(TR("menu.file.quit").c_str(), "Ctrl+Q"))

@@ -1,307 +1,277 @@
 ### Development & Assistant Rules (Canonical Source)
 
+> Rule Levels: `MUST` (hard requirement), `SHOULD` (strong recommendation—justify deviations), `MAY` (advisory). Each rule has an ID: PREFIX-NN. Reference IDs in commits & reviews.
+> Machine-readable derivative: `.github/instructions/rules.yml` (non-canonical). Always update BOTH when changing rules here. Tooling/automation should treat the YAML as a generated mirror; this Markdown remains the single source of truth.
+> Sync guard: `scripts/validate_rules_sync.py` (CMake target `validate_rules`) runs each build (toggle with `IMGUIDESIGNER_VALIDATE_RULES_ON_BUILD`) to detect drift between this file and the YAML mirror.
+> Regeneration: run `scripts/generate_rules_yaml.py` (or CMake target `generate_rules_yaml` if enabled) to rebuild the YAML mirror (schema v2: includes `short_title`). Always edit this Markdown first; then regenerate. Optional CMake toggles: `IMGUIDESIGNER_GENERATE_RULES_TARGET` (adds target, ON by default) and `IMGUIDESIGNER_GENERATE_RULES_ON_BUILD` (auto-regenerate before validation/build, OFF by default).
+
+**Cheat Sheet (Top 15 Critical MUST Rules)**
+
+1. [META-01][MUST] Reread this file every 3 edits or before starting a feature/refactor.
+2. [ARCH-01][MUST] All UI logic lives in classes with `render()/update()`; no free-form ImGui in `main.cpp`.
+3. [GEN-01][MUST] Never hand-edit anything under `src/generated/`; regenerate via scripts.
+4. [CMK-01][MUST] Use CMake only; never invoke `make` directly.
+5. [OWN-01][MUST] No raw owning pointers; use RAII (`unique_ptr` default, `shared_ptr` only with clear shared lifetime).
+6. [LANG-01][MUST] Use modern C++23 features where they simplify or clarify (ranges, `std::expected`, `string_view`, `span`).
+7. [LOG-01][MUST] Logging inside hot loops = `debug` or lower unless failure-critical.
+8. [ERR-01][MUST] Use structured error channels (`expected`/status) over sentinel return codes.
+9. [NAM-01][MUST] Naming conventions: Files & classes PascalCase; funcs/vars camelCase; constants/macros UPPER_SNAKE_CASE.
+10. [REV-01][MUST] Split functions > ~60 lines unless linear & cohesive.
+11. [COMMIT-01][MUST] Prepare commit message in `.dev/markers/commit_message.txt` before committing.
+12. [MARK-01][MUST] Generator markers live only in `.dev/markers/`; touch after successful generation.
+13. [TEST-01][MUST] Update/add tests when changing behavior (schemas, node mapping, generation logic).
+14. [CONSIST-01][MUST] If a rule changes, update this file in same commit.
+15. [CLEAN-01][MUST] Remove dead/commented-out code promptly; don’t accumulate clutter.
+
+Consult appendix + section 7.1 for extended facilities and advisory style.
+
 > This file is the single canonical rule set. Other docs (e.g. `docs/Notes.md`, `README.md`) may reference or summarize but MUST NOT drift. When in doubt, defer to this file.
 
 ---
+
 ## 1. Meta & Rule Compliance
 
-- Always reread this file plus any explicit policy doc after every 3 file edits OR before starting a new feature/refactor (implicit, no chatter).
-- Treat missing clarity as a prompt to (a) make a reasonable assumption and note it briefly or (b) ask a concise clarifying question if assumption would risk rework.
-- Never let undocumented tribal knowledge accumulate—promote recurring tacit rules here.
+- [META-01][MUST] Always reread this file plus any explicit policy doc after every 3 file edits OR before starting a new feature/refactor.
+- [META-02][SHOULD] When unclear: make a brief explicit assumption OR ask a focused question if risk of rework is high.
+- [META-03][MUST] Promote recurring tacit practices here—no hidden tribal knowledge.
 
 ### 1.1 Scope Boundaries
-- Do not introduce external services, network calls, or dependencies without explicit rationale and documentation.
-- Avoid speculative abstraction: only extract when duplication or volatility justify it.
+
+- [SCOPE-01][MUST] No new external services/dependencies without rationale & documentation.
+- [SCOPE-02][SHOULD] Avoid speculative abstraction; refactor when duplication or churn appears.
 
 ---
+
 ## 2. Architecture & Encapsulation
 
-- All UI/component logic resides in dedicated C++ classes exposing a clear `render()` (and/or `update()`)—no free-form ImGui calls in `main.cpp` or global functions.
-- Generated artifacts live under `src/generated/` only; never hand-edit them—change the generating script instead.
-- Keep one responsibility per class; split when a class grows unrelated concerns (UI + persistence, etc.).
+- [ARCH-01][MUST] UI/component logic lives in dedicated classes with `render()/update()`; no free-form ImGui in globals / `main.cpp`.
+- [GEN-01][MUST] Generated artifacts reside only under `src/generated/`; modify generators, not outputs.
+- [ARCH-02][SHOULD] Single Responsibility per class; split when concerns diverge (e.g., UI vs persistence).
 
 ---
+
 ## 3. Commit & Marker Workflow
 
 ### 3.1 Commit Message Flow
-- Prepare commit messages in `.dev/markers/commit_message.txt` (overwrite each time).
-- Use imperative, concise scope prefixes: `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `perf:`, `test:`, `build:`, `ci:`.
-- Multi-topic change? Split commits unless truly atomic.
-- Commit using: `git commit -F .dev/markers/commit_message.txt`.
+
+- [COMMIT-01][MUST] Prepare commit message in `.dev/markers/commit_message.txt` (overwrite each time) before committing.
+- [COMMIT-02][MUST] Use imperative scoped prefixes: `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `perf:`, `test:`, `build:`, `ci:`.
+- [COMMIT-03][SHOULD] Split multi-topic changes unless atomic by necessity.
+- [COMMIT-04][MUST] Use `git commit -F .dev/markers/commit_message.txt`.
 
 ### 3.2 Marker Directory
-- All transient sentinel files live in `.dev/markers/` (ignored by default).
-- Current markers (may expand):
-  - `node_factory_map_generated.ok`
-  - `param_structs_generated.ok`
-  - `node_params_map_generated.ok`
-- Naming pattern: `<feature>_<artifact>_generated.ok`.
-- Touch marker only after successful generation sequence.
+
+- [MARK-01][MUST] All sentinel markers live in `.dev/markers/`.
+- [MARK-02][MUST] Naming pattern: `<feature>_<artifact>_generated.ok`.
+- [MARK-03][MUST] Touch marker only after successful generation sequence.
+- [MARK-04][MAY] Add new markers sparingly; prefer leveraging existing ones.
 
 ### 3.3 Adding a New Marker
-1. Extend the relevant CMake generator file; reference `MARKER_DIR` (from `cmake/Markers.cmake`).
-2. Add a custom command producing real outputs + a `touch` of the marker.
-3. Add a custom target depending on the marker if other targets need it.
-4. Append marker path to a clean list if it should be removed by `clean_generated`.
+
+1. [MARK-05][SHOULD] Extend generator CMake; reference `MARKER_DIR`.
+2. [MARK-06][MUST] Add custom command producing outputs + `touch` marker.
+3. [MARK-07][SHOULD] Add dependent custom target if other targets rely on outputs.
+4. [MARK-08][MUST] Register marker for clean removal if appropriate.
 
 ---
+
 ## 4. Code Quality & Review Checklist
 
-Before finalizing an edit (mentally or explicitly ensure):
+Before finalizing an edit ensure:
 
 Structure & Includes:
-- Includes minimal & grouped first; no missing includes; no circular include band-aids.
-- No dead/unused code or commented-out blocks lingering.
+
+- [INC-01][MUST] Group includes first; minimal, no circular band-aid includes.
+- [CLEAN-01][MUST] Remove dead / commented-out code immediately.
 
 Naming & Consistency:
-- Filenames & class names: PascalCase.
-- Functions & variables: camelCase.
-- Macros & constants: UPPER_SNAKE_CASE.
-- Consistent acronym casing (e.g., `HttpClient`, not `HTTPClient`).
+
+- [NAM-01][MUST] Filenames & class names PascalCase.
+- [NAM-02][MUST] Functions & variables camelCase.
+- [NAM-03][MUST] Macros & constants UPPER_SNAKE_CASE.
+- [NAM-04][SHOULD] Consistent acronym casing (e.g., `HttpClient`).
 
 Modern C++ Practices:
-- Prefer RAII & smart pointers; avoid raw `new/delete`.
-- Use `enum class` over plain enums.
-- Use `constexpr` / `const` aggressively where possible.
-- Validate use of `override` and `final` appropriately.
+
+- [OWN-01][MUST] RAII + smart pointers; avoid raw owning `new/delete`.
+- [ENUM-01][MUST] Use `enum class`.
+- [CONST-01][SHOULD] Apply `constexpr` / `const` pervasively where stable & beneficial.
+- [VIRT-01][MUST] Mark overrides `override`; use `final` when no further derivation intended.
 
 Refactoring / Maintainability:
-- Split large functions (> ~60 lines) unless a linear narrative warrants it.
-- Eliminate copy-paste; extract helpers or templates.
+
+- [REV-01][MUST] Split large functions (> ~60 lines) unless cohesive & linear.
+- [REV-02][MUST] Remove duplication—extract helper or template.
 
 Robustness & Diagnostics:
-- Logging inside hot loops: level `debug` or lower (unless critical failure path).
-- Favor early returns for error paths.
-- Prefer `std::expected` (when available internally) or documented error channels over ambiguous sentinel values.
+
+- [LOG-01][MUST] Loop logging = `debug` or lower unless failure-critical.
+- [CTRL-01][SHOULD] Favor early returns over deep nesting.
+- [ERR-01][MUST] Use `expected`/documented error channels over sentinel codes.
 
 Testing & Validation:
-- Add or update tests when modifying behavior (node mapping, schema validation, generation logic).
-- Keep generated file golden tests stable—update intentionally, never implicitly.
+
+- [TEST-01][MUST] Update/add tests for behavior changes (mapping, schemas, generation).
+- [TEST-02][MUST] Update golden tests intentionally only—never via incidental regen.
 
 Documentation Alignment:
-- If a rule changed, update this file in the same commit.
-- Summaries in other docs point back here, not vice versa.
+
+- [CONSIST-01][MUST] Update this file in same commit when rule changes.
+- [DOC-01][SHOULD] Other docs summarize & link back—no divergence.
 
 ---
+
 ## 5. Proactive Action Principles
-- Perform obvious next steps (re-run build after edits, regenerate when generators change) without prompting.
-- After any build, inspect `build/build.log` if errors occurred—never guess.
-- Avoid asking the user to perform a step you can perform locally.
+
+- [ACT-01][MUST] Perform obvious follow-ups (rebuild, regenerate) without prompting.
+- [ACT-02][MUST] Inspect `build/build.log` on build failure; no guessing.
+- [ACT-03][SHOULD] Don’t delegate steps you can execute locally.
 
 ---
+
 ## 6. Communication Protocol
-- No fluff; precise, actionable responses.
-- If unsure: say "I don't know" + propose next information to gather.
-- Provide up to three relevant follow-up suggestions unless user disables.
-- Do not mention being an AI.
+
+- [COMMS-01][MUST] Concise, actionable responses—no fluff.
+- [COMMS-02][MUST] Admit uncertainty explicitly + next info to gather.
+- [COMMS-03][SHOULD] Offer ≤3 relevant follow-up suggestions.
+- [COMMS-04][MUST] Do not mention being an AI.
 
 ---
+
 ## 7. Coding Standards (Mandatory Core)
 
 Build & Layout:
-- CMake only—do not invoke `make` directly.
-- All `.cpp` under `src/` are auto-included; no manual CMake list maintenance needed.
+
+- [CMK-01][MUST] CMake only; never call `make` directly.
+- [CMK-02][MUST] `.cpp` under `src/` auto-included—no manual list edits.
 
 Header / Source Separation:
-- Non-trivial logic belongs in `.cpp`; headers limited to declarations, inline trivial, templates.
+
+- [HDR-01][MUST] Put non-trivial logic in `.cpp`; headers: declarations, trivial inline, templates only.
 
 Language / Library Usage:
-- C++23 and standard library features encouraged (ranges, `std::expected`, etc.).
-- Primary libs: ImGui, ImPlot, spdlog, fmt, nlohmann::json, EnTT, Catch2, RCC++.
+
+- [LANG-01][SHOULD] Use C++23 features that clarify intent (ranges, `expected`, `string_view`, `span`).
+- [LIB-01][MUST] Primary libs: ImGui, ImPlot, spdlog, fmt, nlohmann::json, EnTT, Catch2, RCC++ (introduce others only per SCOPE-01).
 
 Idioms & Patterns:
-- Favor composition over inheritance unless polymorphism adds real value.
-- Pass ownership explicitly; prefer `unique_ptr` over `shared_ptr` unless shared semantics required.
-- Use `span` / `string_view` for non-owning views where lifetimes are safe.
 
-Selected Allowed Utilities (when justified):
-- `std::variant`, `std::optional`, `std::filesystem`, `std::format`, `std::ranges`.
+- [PAT-01][SHOULD] Favor composition; inheritance only when polymorphism is needed.
+- [OWN-02][MUST] Express ownership explicitly; prefer `unique_ptr` over `shared_ptr` unless shared semantics required.
+- [VIEW-01][MUST] Use `string_view` / `span` for non-owning views with safe lifetimes.
+
+Selected Allowed Utilities:
+
+- [UTIL-01][SHOULD] Prefer `variant`, `optional`, `filesystem`, `format`, `ranges` where they simplify code.
 
 Disallowed / Discouraged Without Rationale:
-- Raw owning pointers, manual memory management.
-- Global mutable singletons (except controlled registries already defined).
-- Overuse of macros for logic substitution.
 
-Extended Reference (Still Valid):
-- Full extended modern C++ checklist retained below (kept verbatim for completeness). If trimming is needed in future, move to an appendix doc.
+- [OWN-03][MUST] No raw owning pointers / manual memory management.
+- [STATE-01][SHOULD] Avoid global mutable singletons (registries excepted).
+- [MACRO-01][SHOULD] Avoid macro overuse for logic substitution.
 
-2. **Encapsulation:**
+Extended Reference: (See appendix + section 7.1 summary.)
 
-- All UI/component logic must be in dedicated C++ classes with a clear interface and a `render()` method. No inline UI logic in window/global functions.
-
-3. **Commit Workflow:**
-
-- Overwrite `.dev/markers/commit_message.txt` with a clear, up-to-date message before every commit.
-- Stage and commit all changes using `git commit -F .dev/markers/commit_message.txt`.
-- Commits are made automatically only after the user acknowledges that the objective is achieved, or can be triggered manually with `!c`.
-
-4. **Code Quality & Review:**
-
-- Before finishing any file edit, review for:
-  - Redundant/duplicate code or sections
-  - All `#include` directives grouped at the very top of the file, before any namespace or code
-  - All required `#include` directives for any types, functions, or macros used in the file are present (no missing includes)
-  - No empty or redundant namespace blocks (e.g., `namespace foo {}`)
-  - Proper function/class placement and organization
-  - Consistent formatting and project style
-  - Removal of obsolete code
-- Remove redundancy and follow naming/folder conventions.
-- All filenames must be in `PascalCase` (e.g., `MyClass.hpp`, `VisualBlockTypes.hpp`).
-- All class names must be in `PascalCase` (e.g., `MyClass`, `VisualBlockTypes`).
-- All function and variable names must be in `camelCase` (e.g., `myFunction`, `visualBlockTypes`).
-- All constants and macros must be in `UPPER_SNAKE_CASE` (e.g., `MAX_BUFFER_SIZE`, `DEFAULT_COLOR`).
-- All acronyms in names must be consistently cased (e.g., `HttpRequest`, `XMLParser`).
-- Ensure proper use of singular/plural forms in names (e.g., `Item`, `Items`).
-- If you change a class name, ensure the filename matches the new class name.
-- If you change a function or variable name, ensure all references to it are updated.
-- Ensure proper use of `const`, `constexpr`, `static`, and `inline` where applicable.
-- Ensure proper use of access specifiers (`public`, `protected`, `private`) in classes.
-- Ensure proper use of `override` and `final` keywords in virtual functions and classes.
-- If you enoucnter a complex or ambiguous situation, seek clarification before proceeding.
-- If you encounter a bug or issue, investigate and fix it if possible, or report it clearly.
-- If you encounter a request that is out of scope or against policy, politely decline and explain why.
-- If you encouter classes that are too large or have too many responsibilities, refactor them into smaller, more focused classes.
-- If you encounter functions that are too long or complex, refactor them into smaller, more focused functions.
-- If you encounter code that is hard to read or understand, refactor it for clarity and simplicity.
-- If you encounter code that is not following best practices or modern C++ standards, refactor it to comply.
-- If you encounter code that is not following project conventions or style, refactor it to match.
-- If you encounter code that is not following performance best practices, refactor it for efficiency.
-- If you encounter code that is not following security best practices, refactor it for safety.
-- If you encounter code that is not following memory management best practices, refactor it for proper resource handling.
-- If you encounter code that is not following threading best practices, refactor it for thread safety.
-- If you encounter code that is not following error handling best practices, refactor it for robustness.
-- If you encounter code that is not following logging best practices, refactor it for better diagnostics.
-- If you encounter code that is not following testing best practices, refactor it for better coverage and reliability.
-- If you encounter code that is not following documentation best practices, refactor it for better clarity and completeness.
-- If you encounter code that is not following version control best practices, refactor it for better history and collaboration.
-- If you encounter code that is not following deployment best practices, refactor it for better delivery and maintenance.
-- If you encounter code that is not following any other best practices, refactor it for overall quality and excellence.
+- [NAM-05][SHOULD] Maintain singular/plural naming clarity.
+- [REN-01][MUST] Rename file when class name changes; keep sync.
+- [REN-02][MUST] Update all references when symbol name changes.
+- [CONST-02][SHOULD] Use `static`, `inline`, and `constexpr` appropriately.
+- [VIRT-02][MUST] Correct access specifier usage—encapsulate internals.
+- [ASK-01][MUST] Clarify genuinely ambiguous requirements before implementing risky assumptions.
+- [FIX-01][MUST] Investigate & fix surfaced issues or document limitation.
+- [SCOPE-03][MUST] Decline out-of-scope / policy-violating requests politely with rationale.
+- [REV-03][SHOULD] Break up classes accruing multiple responsibilities.
+- [REV-04][SHOULD] Refactor overly long / complex functions.
+- [CLAR-01][SHOULD] Improve readability when code is hard to parse.
+- [QUAL-01][MUST] Align with modern C++ best practices (see 7.1 core summary + appendix).
+- [STYLE-01][MUST] Match project conventions before adding new style patterns.
+- [PERF-01][SHOULD] Optimize only after measuring; eliminate pathological inefficiencies.
+- [SEC-01][SHOULD] Elevate safety/security concerns (bounds, lifetime, ownership) proactively.
+- [MEM-01][MUST] Resolve improper memory handling (ownership leaks, dangling, races).
+- [THREAD-01][MUST] Ensure thread safety for shared mutable state or confine state.
+- [ERR-02][SHOULD] Strengthen error handling paths for robustness.
+- [LOG-02][SHOULD] Improve logging clarity if diagnostics are poor.
+- [TEST-03][SHOULD] Expand tests where coverage is weak in touched areas.
+- [DOC-02][SHOULD] Improve inline/docs clarity when modifying complex logic.
+- [VCS-01][SHOULD] Keep commit history clean—avoid unrelated changes in same commit.
+- [DEPLOY-01][SHOULD] Preserve deploy/runtime stability; avoid breaking scripts inadvertently.
+- [IMPROVE-01][MUST] Leave code at least slightly better than you found it.
 
 ---
-### 7.1 Extended Modern C++ Checklist
 
-- **Build System:** This project uses CMake as its build system. **Do not use `make` directly** - always use CMake commands. All build configuration, dependencies, and compilation are managed through CMakeLists.txt and related CMake files.
-- All classes and non-trivial functions must be split into header (`.hpp`) and source (`.cpp`) files. Only trivial one-liners or templates may be header-only. No implementation logic in headers except for inline, trivial, or template code.
-- Use C++23, modern C++ best practices, and the C++ Standard Library.
-- Use ImGui, nlohmann/json, and spdlog as documented.
-- Use short includes (e.g., `#include "enums/VisualBlockTypes.hpp"`).
-- Follow established folder structure for enums, interfaces, and types.
-- All `.cpp` files in `src/` are automatically included in the build by CMake. You do not need to manually update CMakeLists.txt when adding new source files to `src/`.
-- When adding or changing code in any file, always follow the existing structure, formatting, and conventions present in that file. Do not introduce inconsistent organization, style, or layout.
-- Use `std::unique_ptr` and `std::shared_ptr` for dynamic memory management. Avoid raw pointers unless absolutely necessary.
-- Use `override` for all overridden virtual functions.
-- Use `final` for classes that are not intended to be inherited from.
-- Use `const` and `constexpr` where applicable.
-- Use `enum class` instead of plain `enum` for better type safety.
-- Use `nullptr` instead of `NULL` or `0` for pointer initialization.
-- Use `auto` for type inference where the type is obvious from the context.
-- Use range-based for loops instead of traditional for loops where applicable.
-- Use `std::vector` or `std::array` instead of raw arrays.
-- Use `std::string` instead of C-style strings.
-- Use `std::make_unique` and `std::make_shared` for creating smart pointers.
-- Use `emplace_back` instead of `push_back` when adding elements to STL containers.
-- Use `std::optional` for values that may or may not be present.
-- Use `std::variant` for types that can hold multiple types.
-- Use `std::filesystem` for file and path operations.
-- Use `std::thread` and related classes for multithreading.
-- Use `std::mutex` and related classes for thread synchronization.
-- Use `std::chrono` for time-related operations.
-- Use `std::algorithm` functions for common operations like sorting, searching, and transforming collections.
-- Use `std::tuple` for grouping multiple values of different types.
-- Use `std::pair` for grouping two values of different types.
-- Use `std::function` for function objects and callbacks.
-- Use `std::bind` for binding function arguments.
-- Use `std::accumulate` for summing or accumulating values in a collection.
-- Use `std::transform` for transforming elements in a collection.
-- Use `std::find_if` for finding elements in a collection based on a predicate.
-- Use `std::sort` for sorting collections.
-- Use `std::copy` for copying elements from one collection to another.
-- Use `std::remove_if` for removing elements from a collection based on a predicate.
-- Use `std::for_each` for applying a function to each element in a collection.
-- Use `std::all_of`, `std::any_of`, and `std::none_of` for checking conditions on collections.
-- Use `std::iota` for generating sequences of numbers.
-- Use `std::shuffle` for randomizing the order of elements in a collection.
-- Use `std::sample` for randomly sampling elements from a collection.
-- Use `std::clamp` for clamping values within a range.
-- Use `std::gcd` and `std::lcm` for computing greatest common divisors and least common multiples.
-- Use `std::bitset` for managing sets of bits.
-- Use `std::regex` for regular expressions.
-- Use `std::any` for type-safe containers of single values of any type.
-- Use `std::scoped_lock` for locking multiple mutexes.
-- Use `std::jthread` for joining threads automatically when they go out of scope.
-- Use `std::barrier` and `std::latch` for thread synchronization.
-- Use `std::stop_token` for cooperative thread cancellation.
-- Use `std::span` for non-owning views of contiguous sequences of objects.
-- Use `std::mdspan` for multi-dimensional array views.
-- Use `std::format` for formatting strings.
-- Use `std::source_location` for capturing source code location information.
-- Use `std::expected` for functions that may fail and return an error.
-- Use `std::ranges` for range-based algorithms and views.
-- Use `std::numbers` for mathematical constants.
-- Use `std::execution` for parallel algorithms.
-- Use `std::atomic` for atomic operations on shared data.
-- Use `std::coroutine` for asynchronous programming.
-- Use `std::literals` for user-defined literals.
-- Use `std::syncstream` for synchronized output to streams.
-- Use `std::pmr` for polymorphic memory resources.
-- Use `std::bit` for bit manipulation utilities.
-- Use `std::chrono_literals` for time literals.
-- Use `std::views` for creating views of ranges.
-- Use `std::to_array` for creating arrays from initializer lists.
-- Use `std::to_underlying` for converting enum class values to their underlying type.
-- Use `std::assume_aligned` for assuming pointer alignment.
-- Use `std::is_constant_evaluated` for checking if code is being evaluated at compile time.
-- Use `std::is_nothrow_move_constructible` and related type traits for checking type properties.
-- Use `std::is_aggregate` for checking if a type is an aggregate.
-- Use `std::is_invocable` and related type traits for checking if a callable can be invoked with certain arguments.
-- Use `std::is_swappable` and related type traits for checking if a type is swappable.
-- Use `std::is_trivially_copyable` and related type traits for checking if a type is trivially copyable.
-- Use `std::is_standard_layout` and related type traits for checking if a type has standard layout.
-- Use `std::is_volatile` and related type traits for checking if a type is volatile.
-- Use `std::is_final` and related type traits for checking if a class is final.
-- Use `std::is_abstract` and related type traits for checking if a class is abstract.
-- Use `std::is_polymorphic` and related type traits for checking if a class is polymorphic.
-- Use `std::is_empty` and related type traits for checking if a class is empty.
-- Use `std::is_literal_type` and related type traits for checking if a type is a literal type.
-- Use `std::is_signed` and related type traits for checking if a type is signed.
-- Use `std::is_unsigned` and related type traits for checking if a type is unsigned.
-- Use `std::is_integral` and related type traits for checking if a type is an integral type.
-- Use `std::is_floating_point` and related type traits for checking if a type is a floating point type.
-- Use `std::is_arithmetic` and related type traits for checking if a type is an arithmetic type.
-- Use `std::is_enum` and related type traits for checking if a type is an enum.
-- Use `std::is_class` and related type traits for checking if a type is a class.
+### 7.1 Extended Modern C++ Checklist (Moved)
+
+The extended enumerative Modern C++ facility checklist has been moved to `docs/ModernCppChecklist.md` to keep this file concise.
+
+Rationale:
+
+- Reduces noise for day-to-day rule scanning.
+- Keeps advisory (non-binding) guidance separate from enforceable rules.
+- Enables future versioning and pruning without churn in the canonical instructions.
+
+When reviewing or refactoring, consult the appendix:
+`docs/ModernCppChecklist.md`
+
+If adding new items, update the appendix and (only if enforceable) summarize the principle here.
+
+Enforceable Core Summary (must follow unless justified in commit message):
+
+- Prefer standard library facilities over custom re‑implementations (algorithms, containers, smart pointers, `<chrono>`, `<filesystem>`, `<ranges>`).
+- Use RAII and smart pointers (`std::unique_ptr` by default; `std::shared_ptr` only with clear shared ownership). No raw owning pointers.
+- Use `enum class`, `constexpr` / `consteval`, and `override` consistently; mark intentionally non-inheritable types `final`.
+- Avoid manual memory management, C-style arrays, and `new`/`delete` in application code (allowed inside clearly isolated low-level utility if unavoidable).
+- Use `std::optional` for nullable semantics and `std::variant` (or domain types) instead of parallel flag/value patterns.
+- Use `std::expected` (or equivalent status type) for recoverable errors; exceptions only for unrecoverable failures.
+- Prefer range-based for loops and standard/ranges algorithms over handwritten index loops when readability is equal or better.
+- Use `std::string_view` / `std::span` for non-owning views instead of raw pointer + length pairs.
+- Pre-size / reserve containers when size is known to avoid avoidable reallocations.
+- Avoid premature optimization: measure before introducing complexity (SIMD, custom allocators, manual pooling, etc.).
+- Keep functions focused (single responsibility) and avoid deeply nested control flow—favor early returns.
+- Prefer clear intent over clever constructs (readability > terseness).
 
 ---
+
 ## 8. Change Management & History Hygiene
-- Small, incremental commits; isolate concerns.
-- No functionality breakage unless explicitly part of a refactor ticket.
-- Update `docs/Notes.md` only for architectural decisions or historical breadcrumbs—rules live here.
+
+- [HIST-01][MUST] Keep commits small & single-purpose.
+- [HIST-02][MUST] Avoid breaking functionality unless refactor scope explicitly allows.
+- [HIST-03][SHOULD] Use `docs/Notes.md` for historical/architectural rationale only—rules stay here.
 
 ---
+
 ## 9. Contextual File Selection
-- If ambiguous, choose the most relevant file; ask only if multiple plausible targets would diverge materially.
-- Provide alternative approaches where design trade-offs exist.
+
+- [CTX-01][SHOULD] Select the most relevant file autonomously when low risk of divergence.
+- [CTX-02][SHOULD] Ask only when multiple plausible targets materially diverge.
+- [CTX-03][MUST] Offer alternative approaches when trade-offs are meaningful.
 
 ---
+
 ## 10. Logging
-- Log file: `build/ImGui-Designer.log` (all spdlog levels).
-- Deduplication handled in `src/core/helpers/init/spdlog_dedup.hpp`.
-- Loop-intensive logs must be `debug` or lower unless failure-critical.
+
+- [LOG-03][MUST] Central log: `build/ImGui-Designer.log` captures all levels.
+- [LOG-04][MUST] Dedup via `src/core/helpers/init/spdlog_dedup.hpp`; do not reimplement filtering.
+- [LOG-01][MUST] Loop-intensive logs <= debug unless failure-critical (already defined above; reaffirmed).
 
 ---
+
 ## 11. Generated Files Policy
-- Never hand-edit generated headers under `src/generated/`.
-- Modify the corresponding script in `scripts/` and regenerate.
-- Ensure regeneration steps don't leave stale artifacts (use `clean_generated` when necessary).
+
+- [GEN-02][MUST] Do not hand-edit generated headers under `src/generated/`.
+- [GEN-03][MUST] Modify scripts in `scripts/` then regenerate.
+- [GEN-04][SHOULD] Clean stale artifacts (`clean_generated`) before regen if drift suspected.
 
 ---
+
 ## 12. Recommended Defaults & Expansion (Advisory)
-These are advisory; violating them requires rationale documented in commit message or `docs/Notes.md`.
+
+These are advisory; deviations require rationale in commit message or `docs/Notes.md`.
 
 ---
+
 ## 13. Appendix: Advisory Expansion Guidance
 
-Use these as *house style*. When proposing alternatives, state trade-offs succinctly.
+Use these as _house style_. When proposing alternatives, state trade-offs succinctly.
 
 1. Codegen templating (packs)
 

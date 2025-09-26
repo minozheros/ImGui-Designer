@@ -48,6 +48,7 @@ JOBS=$(nproc)
 TARGET=""
 RECONFIGURE=false
 LOG_OUTPUT=false
+AUTO_RECONFIGURE=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -121,6 +122,37 @@ if [ "$CLEAN_BUILD" = true ]; then
     print_success "Build directory cleaned."
 fi
 
+# Detect test file changes (only if tests are enabled by default; we always configure with tests ON later)
+# This allows new/removed tests/test_*.cpp files to trigger an automatic reconfigure without the user
+# needing to pass the 'reconfigure' argument manually.
+TEST_MANIFEST_PATH="build/.tests_manifest"
+if [ -d "tests" ]; then
+    CURRENT_TEST_LIST=$(find tests -type f -name 'test_*.cpp' 2>/dev/null | sort)
+    # Build a hash representing the set of test files plus their mtimes & sizes for robustness
+    TEST_SIG=""
+    while IFS= read -r f; do
+        if [ -f "$f" ]; then
+            stat_line=$(stat -c '%n:%Y:%s' "$f" 2>/dev/null || echo "$f:0:0")
+            TEST_SIG+="$stat_line\n"
+        fi
+    done <<< "$CURRENT_TEST_LIST"
+    TEST_HASH=$(printf "%s" "$TEST_SIG" | md5sum | cut -d' ' -f1)
+    if [ -f "$TEST_MANIFEST_PATH" ]; then
+        OLD_HASH=$(cut -d' ' -f1 "$TEST_MANIFEST_PATH" 2>/dev/null || true)
+        if [ "$OLD_HASH" != "$TEST_HASH" ]; then
+            AUTO_RECONFIGURE=true
+        fi
+    else
+        # No manifest yet; trigger initial record after first configure
+        AUTO_RECONFIGURE=true
+    fi
+fi
+
+if [ "$AUTO_RECONFIGURE" = true ] && [ "$RECONFIGURE" = false ]; then
+    print_status "Detected test file additions/removals/changes -> auto reconfigure will run."
+    RECONFIGURE=true
+fi
+
 # Handle special targets that don't require full build setup
 if [ -n "$TARGET" ]; then
     if [ ! -d "build" ]; then
@@ -148,13 +180,13 @@ cd build
 # Configure with CMake (always if reconfigure is requested, or if CMakeCache.txt doesn't exist)
 if [ "$RECONFIGURE" = true ] || [ ! -f "CMakeCache.txt" ]; then
     print_status "Configuring with CMake (Build Type: $BUILD_TYPE)..."
-    if ! cmake -DCMAKE_BUILD_TYPE="$BUILD_TYPE" ..; then
+    if ! cmake -DCMAKE_BUILD_TYPE="$BUILD_TYPE" -DIMGUIDESIGNER_ENABLE_TESTS=ON ..; then
         print_error "CMake configuration failed."
         exit 1
     fi
 elif [ "$CLEAN_BUILD" = true ]; then
     print_status "Reconfiguring after clean (Build Type: $BUILD_TYPE)..."
-    if ! cmake -DCMAKE_BUILD_TYPE="$BUILD_TYPE" ..; then
+    if ! cmake -DCMAKE_BUILD_TYPE="$BUILD_TYPE" -DIMGUIDESIGNER_ENABLE_TESTS=ON ..; then
         print_error "CMake configuration failed."
         exit 1
     fi
@@ -164,10 +196,15 @@ fi
 
 # Build
 print_status "Building with $JOBS parallel jobs..."
-if ! run_make make -j"$JOBS"; then
+if ! run_make make -j"$JOBS" ImGui-Designer ImGui-Designer_tests; then
     print_error "Build failed."
     exit 1
 fi
 
 print_success "Build completed successfully!"
 print_status "You can now run: ./bin/ImGui-Designer"
+
+# Persist new test manifest hash (after successful build) if we computed one
+if [ -n "$TEST_HASH" ]; then
+    printf "%s  tests\n" "$TEST_HASH" > "$TEST_MANIFEST_PATH" 2>/dev/null || true
+fi
