@@ -2,7 +2,7 @@
 
 A visual creator for ImGui-based UIs using a node/block editor with live preview and C++ code generation.
 
-**Note:** For project rules, workflow guidelines, and coding standards, see `.github/instructions/first.instructions.md`. If there is any conflicting information between this file and `first.instructions.md`, `first.instructions.md` takes precedence.
+**Development Rules:** Canonical project rules & workflow live in `.github/instructions/first.instructions.md` (this README never supersedes it).
 
 ## Build Instructions
 
@@ -215,4 +215,4 @@ These controls allow temporary elevation of logging noise (e.g., when pairing wi
 
 ## Project Structure
 
-See `NOTES.md` for detailed project structure and development guidelines.
+See `docs/Notes.md` for historical notes & rationale (not authoritative rules).

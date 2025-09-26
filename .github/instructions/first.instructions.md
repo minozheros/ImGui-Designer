@@ -1,10 +1,129 @@
-### Assistant Workflow Rules (Minimal, Complete)
+### Development & Assistant Rules (Canonical Source)
 
-**⚠️ IMPORTANT: Read and understand these rules before starting any development task. Read the top comments and any embedded instructions in every file you want to edit before starting to edit it, and follow the stated rules. This includes understanding file-specific conventions, TODOs, or special handling requirements. These guidelines ensure consistent, high-quality code and proper project maintenance.**
+> This file is the single canonical rule set. Other docs (e.g. `docs/Notes.md`, `README.md`) may reference or summarize but MUST NOT drift. When in doubt, defer to this file.
 
-1. **Rule Compliance:**
+---
+## 1. Meta & Rule Compliance
 
-- Reread `.github/instructions/first.instructions.md`, `docs/Notes.md`, and any policy files after every 3 code/file changes, after every file edit, or before major features/refactors. Do this automatically, without extra comments.
+- Always reread this file plus any explicit policy doc after every 3 file edits OR before starting a new feature/refactor (implicit, no chatter).
+- Treat missing clarity as a prompt to (a) make a reasonable assumption and note it briefly or (b) ask a concise clarifying question if assumption would risk rework.
+- Never let undocumented tribal knowledge accumulate—promote recurring tacit rules here.
+
+### 1.1 Scope Boundaries
+- Do not introduce external services, network calls, or dependencies without explicit rationale and documentation.
+- Avoid speculative abstraction: only extract when duplication or volatility justify it.
+
+---
+## 2. Architecture & Encapsulation
+
+- All UI/component logic resides in dedicated C++ classes exposing a clear `render()` (and/or `update()`)—no free-form ImGui calls in `main.cpp` or global functions.
+- Generated artifacts live under `src/generated/` only; never hand-edit them—change the generating script instead.
+- Keep one responsibility per class; split when a class grows unrelated concerns (UI + persistence, etc.).
+
+---
+## 3. Commit & Marker Workflow
+
+### 3.1 Commit Message Flow
+- Prepare commit messages in `.dev/markers/commit_message.txt` (overwrite each time).
+- Use imperative, concise scope prefixes: `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `perf:`, `test:`, `build:`, `ci:`.
+- Multi-topic change? Split commits unless truly atomic.
+- Commit using: `git commit -F .dev/markers/commit_message.txt`.
+
+### 3.2 Marker Directory
+- All transient sentinel files live in `.dev/markers/` (ignored by default).
+- Current markers (may expand):
+  - `node_factory_map_generated.ok`
+  - `param_structs_generated.ok`
+  - `node_params_map_generated.ok`
+- Naming pattern: `<feature>_<artifact>_generated.ok`.
+- Touch marker only after successful generation sequence.
+
+### 3.3 Adding a New Marker
+1. Extend the relevant CMake generator file; reference `MARKER_DIR` (from `cmake/Markers.cmake`).
+2. Add a custom command producing real outputs + a `touch` of the marker.
+3. Add a custom target depending on the marker if other targets need it.
+4. Append marker path to a clean list if it should be removed by `clean_generated`.
+
+---
+## 4. Code Quality & Review Checklist
+
+Before finalizing an edit (mentally or explicitly ensure):
+
+Structure & Includes:
+- Includes minimal & grouped first; no missing includes; no circular include band-aids.
+- No dead/unused code or commented-out blocks lingering.
+
+Naming & Consistency:
+- Filenames & class names: PascalCase.
+- Functions & variables: camelCase.
+- Macros & constants: UPPER_SNAKE_CASE.
+- Consistent acronym casing (e.g., `HttpClient`, not `HTTPClient`).
+
+Modern C++ Practices:
+- Prefer RAII & smart pointers; avoid raw `new/delete`.
+- Use `enum class` over plain enums.
+- Use `constexpr` / `const` aggressively where possible.
+- Validate use of `override` and `final` appropriately.
+
+Refactoring / Maintainability:
+- Split large functions (> ~60 lines) unless a linear narrative warrants it.
+- Eliminate copy-paste; extract helpers or templates.
+
+Robustness & Diagnostics:
+- Logging inside hot loops: level `debug` or lower (unless critical failure path).
+- Favor early returns for error paths.
+- Prefer `std::expected` (when available internally) or documented error channels over ambiguous sentinel values.
+
+Testing & Validation:
+- Add or update tests when modifying behavior (node mapping, schema validation, generation logic).
+- Keep generated file golden tests stable—update intentionally, never implicitly.
+
+Documentation Alignment:
+- If a rule changed, update this file in the same commit.
+- Summaries in other docs point back here, not vice versa.
+
+---
+## 5. Proactive Action Principles
+- Perform obvious next steps (re-run build after edits, regenerate when generators change) without prompting.
+- After any build, inspect `build/build.log` if errors occurred—never guess.
+- Avoid asking the user to perform a step you can perform locally.
+
+---
+## 6. Communication Protocol
+- No fluff; precise, actionable responses.
+- If unsure: say "I don't know" + propose next information to gather.
+- Provide up to three relevant follow-up suggestions unless user disables.
+- Do not mention being an AI.
+
+---
+## 7. Coding Standards (Mandatory Core)
+
+Build & Layout:
+- CMake only—do not invoke `make` directly.
+- All `.cpp` under `src/` are auto-included; no manual CMake list maintenance needed.
+
+Header / Source Separation:
+- Non-trivial logic belongs in `.cpp`; headers limited to declarations, inline trivial, templates.
+
+Language / Library Usage:
+- C++23 and standard library features encouraged (ranges, `std::expected`, etc.).
+- Primary libs: ImGui, ImPlot, spdlog, fmt, nlohmann::json, EnTT, Catch2, RCC++.
+
+Idioms & Patterns:
+- Favor composition over inheritance unless polymorphism adds real value.
+- Pass ownership explicitly; prefer `unique_ptr` over `shared_ptr` unless shared semantics required.
+- Use `span` / `string_view` for non-owning views where lifetimes are safe.
+
+Selected Allowed Utilities (when justified):
+- `std::variant`, `std::optional`, `std::filesystem`, `std::format`, `std::ranges`.
+
+Disallowed / Discouraged Without Rationale:
+- Raw owning pointers, manual memory management.
+- Global mutable singletons (except controlled registries already defined).
+- Overuse of macros for logic substitution.
+
+Extended Reference (Still Valid):
+- Full extended modern C++ checklist retained below (kept verbatim for completeness). If trimming is needed in future, move to an appendix doc.
 
 2. **Encapsulation:**
 
@@ -58,21 +177,8 @@
 - If you encounter code that is not following deployment best practices, refactor it for better delivery and maintenance.
 - If you encounter code that is not following any other best practices, refactor it for overall quality and excellence.
 
-5. **Proactive Action:**
-
-- Never ask the user to do something you can do.
-- Act without prompting if the next step is obvious (e.g., rerun build after code change).
-- **Build Logging Rule:** After every build attempt (successful or unsuccessful), immediately read the `build/build.log` file to identify exact compilation errors. Do not proceed with fixes based on assumptions - always work from the actual error content in the log file.
-
-6. **Communication:**
-
-- Prioritize accuracy, clarity, and depth.
-- Never mention being an AI.
-- If unsure, say “I don’t know.”
-- No disclaimers, regretful language, or suggestions to look elsewhere.
-- Provide three follow-up questions after each response, unless told otherwise.
-
-7. **Coding Standards:**
+---
+### 7.1 Extended Modern C++ Checklist
 
 - **Build System:** This project uses CMake as its build system. **Do not use `make` directly** - always use CMake commands. All build configuration, dependencies, and compilation are managed through CMakeLists.txt and related CMake files.
 - All classes and non-trivial functions must be split into header (`.hpp`) and source (`.cpp`) files. Only trivial one-liners or templates may be header-only. No implementation logic in headers except for inline, trivial, or template code.
@@ -165,33 +271,37 @@
 - Use `std::is_enum` and related type traits for checking if a type is an enum.
 - Use `std::is_class` and related type traits for checking if a type is a class.
 
-8. **Change Management:**
+---
+## 8. Change Management & History Hygiene
+- Small, incremental commits; isolate concerns.
+- No functionality breakage unless explicitly part of a refactor ticket.
+- Update `docs/Notes.md` only for architectural decisions or historical breadcrumbs—rules live here.
 
-- Make small, incremental code changes.
-- Do not break existing functionality.
-- Ensure changes are robust, maintainable, and production-ready.
-- Document all design decisions and noteworthy changes in `docs/Notes.md`.
+---
+## 9. Contextual File Selection
+- If ambiguous, choose the most relevant file; ask only if multiple plausible targets would diverge materially.
+- Provide alternative approaches where design trade-offs exist.
 
-10. **Contextual File Selection:**
+---
+## 10. Logging
+- Log file: `build/ImGui-Designer.log` (all spdlog levels).
+- Deduplication handled in `src/core/helpers/init/spdlog_dedup.hpp`.
+- Loop-intensive logs must be `debug` or lower unless failure-critical.
 
-- If a file is not clearly specified in a command, but one or more files are present in the context, select the file that best matches the task. If multiple files could fit and it is ambiguous, ask the user which file to use.
-- Offer multiple solutions or viewpoints when appropriate.
-- Seek clarity if a question is unclear.
-- Acknowledge and correct errors.
+---
+## 11. Generated Files Policy
+- Never hand-edit generated headers under `src/generated/`.
+- Modify the corresponding script in `scripts/` and regenerate.
+- Ensure regeneration steps don't leave stale artifacts (use `clean_generated` when necessary).
 
-11. **Logging**
+---
+## 12. Recommended Defaults & Expansion (Advisory)
+These are advisory; violating them requires rationale documented in commit message or `docs/Notes.md`.
 
-- All application logs are written to `build/ImGui-Designer.log` by default. This file contains all spdlog output, including debug, info, warning, and error messages.
-- The logger is configured in `src/core/helpers/init/spdlog_dedup.hpp` to deduplicate repeated messages and log both to the console and to this file.
-- Check this log for detailed runtime diagnostics, debugging, and error tracking.
+---
+## 13. Appendix: Advisory Expansion Guidance
 
-12. **Generated Files**
-
-- Do not edit manually, but edit the respective scripts to reflect the needed changes!
-
-### Recommended Defaults and Expansion Guidance (Flexible, Easy-to-Extend)
-
-Use these as our “house style” when proposing solutions or adding dependencies. When alternatives make sense, explain trade-offs with a short rationale.
+Use these as *house style*. When proposing alternatives, state trade-offs succinctly.
 
 1. Codegen templating (packs)
 

@@ -18,6 +18,7 @@ Centralized entry point for in-repo documentation. Additional design docs and sp
 - Prefer small, focused documents grouped by topic.
 - Cross-link instead of duplicating content.
 - Keep example code minimal; link to source instead of embedding large snippets.
+- Canonical development rules live in `.github/instructions/first.instructions.md` (do not duplicate them here).
 
 ## Adding New Docs
 
